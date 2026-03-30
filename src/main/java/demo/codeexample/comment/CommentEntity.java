@@ -32,8 +32,6 @@ public class CommentEntity {
     @JoinColumn(name = "task_id")
     private TaskEntity task;
 
-    // Ska vi ha en tid och datum när kommentaren skrevs?
-
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
