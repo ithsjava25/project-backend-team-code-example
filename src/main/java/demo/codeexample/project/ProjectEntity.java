@@ -19,27 +19,31 @@ public class ProjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    Long id;
+    private Long id;
 
     @Column(nullable = false)
-    String title;
+    private String title;
 
-    LocalDate releaseDate;
+    private LocalDate releaseDate;
+
+//    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+//    private Set<TaskEntity> taskList = new HashSet<>();
 
     @Column(nullable = false)
-    User producer;
+    private Long producerId;
 
     @Enumerated(EnumType.STRING)
-    Category category;
+    private Category category;
 
     @Enumerated(EnumType.STRING)
-    Genre genre;
+    private Genre genre;
 
-    String imageURL;
+    private String imageURL;
 
-    public ProjectEntity(String title, LocalDate releaseDate, User producer, Category category, Genre genre, String imageURL){
+    public ProjectEntity(String title, LocalDate releaseDate, Long producerId, Category category, Genre genre, String imageURL){
         this.title = title;
         this.releaseDate = releaseDate;
+        this.producerId = producerId;
         this.category = category;
         this.genre = genre;
         this.imageURL = imageURL;

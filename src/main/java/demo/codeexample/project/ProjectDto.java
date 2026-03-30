@@ -8,11 +8,12 @@ import java.time.LocalDate;
 
 @Data
 public class ProjectDto {
-    Long id;
-    String title;
-    LocalDate releaseDate;
-    User producer;
-    Category category;
-    Genre genre;
-    String imageURL;
+    private Long id;
+    private String title;
+    private LocalDate releaseDate;
+    //private Set<TaskDto> taskList;
+    private Long producerId;
+    private Category category;
+    private Genre genre;
+    private String imageURL;
 }
