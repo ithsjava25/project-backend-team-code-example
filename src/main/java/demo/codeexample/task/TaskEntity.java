@@ -1,6 +1,7 @@
 package demo.codeexample.task;
 
 import demo.codeexample.employee.EmployeeEntity;
+import demo.codeexample.enums.TaskStatus;
 import demo.codeexample.project.ProjectEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,24 +17,23 @@ public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    private Long id;
+    @Column(name = "Task_id")
+    private Long TaskId;
 
-    @Column
     private String Title;
-    @Column
+
     private String Description;
-    @Column
-    private String Status;
-    @Column
+
+    private TaskStatus Status;
+
     private LocalDateTime Deadline;
 
-    @JoinColumn
-    @ManyToOne
-    private ProjectEntity Project;
+    private Long ProjectId;
 
-    @JoinColumn
     @ManyToOne
+    @JoinColumn(name = "Employee_id")
     private EmployeeEntity Employee;
+
 
 
 
