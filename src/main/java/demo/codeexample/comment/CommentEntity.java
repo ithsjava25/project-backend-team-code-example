@@ -35,16 +35,15 @@ public class CommentEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    public  CommentEntity(String content, Long writerId,TaskEntity task) {
+    public CommentEntity(String content, Long writerId, TaskEntity task) {
         this.content = content;
         this.writerId = writerId;
         this.task = task;
+    }
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 
     @Override
