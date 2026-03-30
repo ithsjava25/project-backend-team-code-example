@@ -3,7 +3,6 @@ package demo.codeexample.project;
 import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -14,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "project")
 public class ProjectEntity {
 
     @Id
@@ -21,10 +21,13 @@ public class ProjectEntity {
     @Setter(AccessLevel.NONE)
     Long id;
 
-    @NotNull
+    @Column(nullable = false)
     String title;
 
     LocalDate releaseDate;
+
+    @Column(nullable = false)
+    User producer;
 
     @Enumerated(EnumType.STRING)
     Category category;
@@ -34,7 +37,7 @@ public class ProjectEntity {
 
     String imageURL;
 
-    public ProjectEntity(String title, LocalDate releaseDate, Category category, Genre genre, String imageURL){
+    public ProjectEntity(String title, LocalDate releaseDate, User producer, Category category, Genre genre, String imageURL){
         this.title = title;
         this.releaseDate = releaseDate;
         this.category = category;
@@ -57,4 +60,6 @@ public class ProjectEntity {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
+
 }

@@ -3,6 +3,7 @@ package demo.codeexample.project;
 import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,16 +14,19 @@ import java.time.LocalDate;
 
 @Data
 public class CreateProjectDto {
-    @NotNull(message = "You must choose a title for the project")
+    @NotBlank(message = "Choose a title for the project!")
     String title;
 
     @Future(message = "Movie can't be released in past")
     LocalDate releaseDate;
 
-    @NotNull(message = "You must choose a category")
+    @NotBlank(message = "Who is the producer?")
+    User producer;
+
+    @NotBlank(message = "You must choose a category!")
     Category category;
 
-    @NotNull(message = "You must choose a genre")
+    @NotBlank(message = "You must choose a genre!")
     Genre genre;
 
     String imageURL;
