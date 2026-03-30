@@ -4,11 +4,12 @@ import demo.codeexample.enums.Role;
 import demo.codeexample.task.TaskEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 
 //How user looks in database
@@ -59,7 +60,7 @@ public class UserEntity {
 
 
 //    //Relationships
-@OneToMany(mappedBy = "assignedEmployee", cascade = CascadeType.ALL)
-private List<TaskEntity> tasks = new ArrayList<>();
+@OneToMany
+private Set<TaskEntity> tasks = new HashSet<>();
 
 }
