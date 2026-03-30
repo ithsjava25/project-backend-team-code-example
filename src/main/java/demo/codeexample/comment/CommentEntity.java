@@ -42,11 +42,11 @@ public class CommentEntity {
         this.createdAt = LocalDateTime.now();
     }
 
-    public  CommentEntity(String content, Long writerId,TaskEntity task, LocalDateTime createdAt) {
+    public  CommentEntity(String content, Long writerId,TaskEntity task) {
         this.content = content;
         this.writerId = writerId;
         this.task = task;
-        this.createdAt = createdAt;
+
     }
 
     @Override
