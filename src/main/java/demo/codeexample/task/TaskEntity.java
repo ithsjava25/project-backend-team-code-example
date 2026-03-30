@@ -1,8 +1,8 @@
 package demo.codeexample.task;
 
-import demo.codeexample.employee.EmployeeEntity;
 import demo.codeexample.enums.TaskStatus;
 import demo.codeexample.project.ProjectEntity;
+import demo.codeexample.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -31,20 +31,21 @@ public class TaskEntity {
 
     private LocalDateTime deadline;
 
-    private Long projectId;
+    @ManyToOne
+    @JoinColumn (name = "projectId")
+    ProjectEntity project;
 
     @ManyToOne
-    @JoinColumn(name = "Employee_id")
+    @JoinColumn(name = "userId")
     private UserEntity user;
 
 
-    public TaskEntity (Long taskId, String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId) {
-        this.taskId = taskId;
+    public TaskEntity (String title, String description, TaskStatus status, LocalDateTime deadline, ProjectEntity project, UserEntity user) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.deadline = deadline;
-        this.projectId = projectId;
+        this.project = project;
         this.user = user;
     }
 
