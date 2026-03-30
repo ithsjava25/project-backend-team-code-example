@@ -24,7 +24,7 @@ public class UserEntity {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // Enum PRODUCER, DIRECTOR, RECRUITER, EDITOR
+    private Role role; // Enum PRODUCER, DIRECTOR, RECRUITER, EDITOR, VISITOR
 
     private String password;
 
