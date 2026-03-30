@@ -2,12 +2,15 @@ package demo.codeexample.project;
 
 import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
+import demo.codeexample.task.TaskEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,8 +29,8 @@ public class ProjectEntity {
 
     private LocalDate releaseDate;
 
-//    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-//    private Set<TaskEntity> taskList = new HashSet<>();
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private Set<TaskEntity> taskList = new HashSet<>();
 
     @Column(nullable = false)
     private Long producerId;

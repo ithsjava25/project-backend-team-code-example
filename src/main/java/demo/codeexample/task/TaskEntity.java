@@ -31,9 +31,9 @@ public class TaskEntity {
 
     private LocalDateTime deadline;
 
-//    @ManyToOne
-//    @JoinColumn (name = "projectId")
-//    ProjectEntity project;
+    @ManyToOne
+    @JoinColumn (name = "project_id")
+    ProjectEntity project;
 
     @ManyToOne
     @JoinColumn(name = "userId")
