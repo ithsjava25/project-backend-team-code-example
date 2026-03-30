@@ -55,7 +55,6 @@ public class UserEntity {
     }
 
 
-
 //    //Relationships
 //    @OneToMany(mappedBy = "assignedEmployees")
 //    private List<TaskEntity> tasks;
