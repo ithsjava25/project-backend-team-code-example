@@ -1,10 +1,13 @@
 package demo.codeexample.user;
 
 import demo.codeexample.enums.Role;
+import demo.codeexample.task.TaskEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -56,7 +59,7 @@ public class UserEntity {
 
 
 //    //Relationships
-//    @OneToMany(mappedBy = "assignedEmployees")
-//    private List<TaskEntity> tasks;
+@OneToMany(mappedBy = "assignedEmployee", cascade = CascadeType.ALL)
+private List<TaskEntity> tasks = new ArrayList<>();
 
 }
