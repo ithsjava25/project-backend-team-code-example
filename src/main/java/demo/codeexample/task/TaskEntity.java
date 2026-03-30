@@ -20,32 +20,32 @@ public class TaskEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     @Column(name = "Task_id")
-    private Long TaskId;
+    private Long taskId;
 
-    private String Title;
+    private String title;
 
-    private String Description;
+    private String description;
 
     @Enumerated(EnumType.STRING)
-    private TaskStatus Status;
+    private TaskStatus status;
 
-    private LocalDateTime Deadline;
+    private LocalDateTime deadline;
 
-    private Long ProjectId;
+    private Long projectId;
 
     @ManyToOne
     @JoinColumn(name = "Employee_id")
-    private EmployeeEntity Employee;
+    private UserEntity user;
 
 
-    public TaskEntity (Long TaskId, String Title, String Description, TaskStatus Status, LocalDateTime Deadline, Long ProjectId) {
-        this.TaskId = TaskId;
-        this.Title = Title;
-        this.Description = Description;
-        this.Status = Status;
-        this.Deadline = Deadline;
-        this.ProjectId = ProjectId;
-        this.Employee = new EmployeeEntity();
+    public TaskEntity (Long taskId, String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId) {
+        this.taskId = taskId;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.deadline = deadline;
+        this.projectId = projectId;
+        this.user = user;
     }
 
     @Override
@@ -64,3 +64,4 @@ public class TaskEntity {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }
+
