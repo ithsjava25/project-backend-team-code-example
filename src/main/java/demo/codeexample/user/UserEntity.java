@@ -31,6 +31,13 @@ public class UserEntity {
 
     private String password;
 
+    public UserEntity(String fullName, String email, Role role, String password) {
+        this.fullName = fullName;
+        this.email = email;
+        this.role = role;
+        this.password = password;
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
