@@ -11,6 +11,7 @@ public class ProjectDto {
     Long id;
     String title;
     LocalDate releaseDate;
+    User producer;
     Category category;
     Genre genre;
     String imageURL;
