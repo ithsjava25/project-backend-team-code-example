@@ -4,6 +4,7 @@ import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 
@@ -22,10 +23,10 @@ public class CreateProjectDto {
     @NotBlank(message = "Who is the producer?")
     private Long producerId;
 
-    @NotBlank(message = "You must choose a category!")
+    @NotNull(message = "You must choose a category!")
     Category category;
 
-    @NotBlank(message = "You must choose a genre!")
+    @NotNull(message = "You must choose a genre!")
     Genre genre;
 
     String imageURL;
