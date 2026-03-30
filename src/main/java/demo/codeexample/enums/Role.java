@@ -4,5 +4,6 @@ public enum Role {
     PRODUCER,
     DIRECTOR,
     RECRUITER,
-    EDITOR
+    EDITOR,
+    VISITOR
 }
