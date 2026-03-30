@@ -1,6 +1,7 @@
 package demo.codeexample.user;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -9,26 +10,20 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     // Method to convert Entity to DTO
-    private UserDTO convertToDTO(UserEntity entity) {
-        return new UserDTO(
-                entity.getId(),
-                entity.getFullName(),
-                entity.getEmail(),
-                entity.getRole()
-        );
+    public UserDTO getUserById(Long id) {
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Map Entity -> DTO automatically
+        return modelMapper.map(userEntity, UserDTO.class);
+
     }
 
     // Logic to save a user
-    public UserDTO registerUser(UserEntity user) {
-        // 1. Hash the password
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        // 2. Save to DB
-        UserEntity saved = userRepository.save(user);
-        // 3. Return the "safe" DTO
-        return convertToDTO(saved);
-    }
 
 }
+
+
