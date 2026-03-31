@@ -12,6 +12,4 @@ public class CompanyDto {
     private String companyName;
     private Address address;
     private String email;
-    private Set<ProjectDto> projects;
-    private Set<UserDTO> workers;
 }
