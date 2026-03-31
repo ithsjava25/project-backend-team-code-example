@@ -5,6 +5,7 @@ import demo.codeexample.project.ProjectEntity;
 import demo.codeexample.user.UserEntity;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -18,16 +19,13 @@ public class CreateTaskDto {
     @NotBlank
     private String description ;
 
-    @NotBlank
-    private TaskStatus status ;
-
     @Future
     private LocalDateTime deadline ;
 
-    @NotBlank
+    @NotNull
     private Long projectId ;
 
-    @NotBlank
+    @NotNull
     private Long userId ;
 
 }
