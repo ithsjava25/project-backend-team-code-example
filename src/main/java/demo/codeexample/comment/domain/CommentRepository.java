@@ -1,4 +1,4 @@
-package demo.codeexample.comment;
+package demo.codeexample.comment.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
