@@ -1,6 +1,6 @@
 package demo.codeexample.comment;
 
-import demo.codeexample.task.TaskEntity;
+import demo.codeexample.task.infrastructure.adapters.out.persistence.TaskEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
