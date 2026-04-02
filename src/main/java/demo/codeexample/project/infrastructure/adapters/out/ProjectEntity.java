@@ -1,4 +1,4 @@
-package demo.codeexample.project;
+package demo.codeexample.project.infrastructure.adapters.out;
 
 import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
@@ -27,10 +27,10 @@ public class ProjectEntity {
     @Column(nullable = false)
     private String title;
 
-    private LocalDate releaseDate;
+    @Column(nullable = false)
+    private String description;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private Set<TaskEntity> taskList = new HashSet<>();
+    private LocalDate releaseDate;
 
     @Column(nullable = false)
     private Long producerId;

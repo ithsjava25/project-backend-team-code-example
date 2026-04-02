@@ -1,8 +1,5 @@
 package demo.codeexample.task;
 
-import demo.codeexample.enums.TaskStatus;
-import demo.codeexample.project.ProjectEntity;
-import demo.codeexample.user.UserEntity;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
