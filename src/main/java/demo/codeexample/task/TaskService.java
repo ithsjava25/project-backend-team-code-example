@@ -2,6 +2,8 @@ package demo.codeexample.task;
 
 import demo.codeexample.project.ProjectEntity;
 import demo.codeexample.project.ProjectRepository;
+import demo.codeexample.task.infrastructure.adapters.out.persistence.TaskEntity;
+import demo.codeexample.task.infrastructure.adapters.out.persistence.TaskRepository;
 import demo.codeexample.user.UserEntity;
 import demo.codeexample.user.UserRepository;
 import lombok.AllArgsConstructor;

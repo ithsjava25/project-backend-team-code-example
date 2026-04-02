@@ -2,7 +2,7 @@ package demo.codeexample.project;
 
 import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
-import demo.codeexample.task.TaskEntity;
+import demo.codeexample.task.infrastructure.adapters.out.persistence.TaskEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
