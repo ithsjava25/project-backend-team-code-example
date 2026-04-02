@@ -4,6 +4,7 @@ import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.domain.Project;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Optional;
 public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
 
     private JpaProjectRepository projectRepository;
+    private ModelMapper mapper;
 
     public ProjectPersistenceAdapter(JpaProjectRepository projectRepository){
         this.projectRepository = projectRepository;
@@ -21,7 +23,7 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     @Override
     public List<Project> findAll() {
         return projectRepository.findAll().stream()
-                .map(this::toDomain)
+                .map(entity -> mapper.map(entity, Project.class))
                 .toList();
     }
 
@@ -45,20 +47,5 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
         return Optional.empty();
     }
 
-    private Project toDomain(ProjectEntity entity){
-        return new Project(
-                entity.getId(),
-                entity.getTitle(),
-                entity.getDescription(),
-                entity.getReleaseDate(),
-                entity.getProducerId(),
-                entity.getCategory(),
-                entity.getGenre(),
-                entity.getImageURL()
-        );
-    }
 
-    private ProjectEntity toEntity(Project project){
-
-    }
 }
