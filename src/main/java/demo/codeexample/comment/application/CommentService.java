@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class CommentService {
@@ -30,4 +33,13 @@ public class CommentService {
         return modelMapper.map(commentEntity, CommentDto.class);
     }
 
+    public List<CommentDto> getAllComments() {
+        List<CommentEntity> commentEntities = commentRepository.findAll();
+        final List<CommentDto> commentDtos = new ArrayList<>();
+
+        for (CommentEntity commentEntity : commentEntities) {
+            commentDtos.add(modelMapper.map(commentEntity, CommentDto.class));
+        }
+        return commentDtos;
+    }
 }
