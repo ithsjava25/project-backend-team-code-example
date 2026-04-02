@@ -4,6 +4,7 @@ import demo.codeexample.enums.TaskStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class Task {
@@ -25,6 +26,11 @@ public class Task {
         this.deadline = deadline;
         this.projectId = projectId;
         this.userId = userId;
+    }
+
+
+    public static Task createNew(Long id, String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
+        return new Task(id, title, description, status, deadline, projectId, userId);
     }
 
     public Long getUserId() {

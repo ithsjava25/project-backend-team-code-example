@@ -1,6 +1,5 @@
 package demo.codeexample.task.application.ports.out;
 
-import demo.codeexample.task.TaskEntity;
 import demo.codeexample.task.domain.Task;
 
 import java.util.List;

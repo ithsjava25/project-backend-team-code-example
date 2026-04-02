@@ -5,19 +5,21 @@ import demo.codeexample.task.domain.Task;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 //Porten för allt som kommer in kan göra
 
 public interface TaskUseCase {
 
     List<Task> findAll();
-    Task findById(Long id);
+    Optional<Task> findById(Long id);
 
-    Task create(String title,
+    Task createTask(Long id,
+                    String title,
                       String description,
                       TaskStatus status,
                       LocalDateTime deadline,
-                      Long projectId,
+                    Long projectId,
                       Long userId);
 
 }
