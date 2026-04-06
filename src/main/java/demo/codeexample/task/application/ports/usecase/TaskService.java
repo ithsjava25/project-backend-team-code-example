@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public class TaskService implements TaskUseCase {
 
+    TaskRepositoryPort taskRepository;
 
     public TaskService(TaskRepositoryPort taskRepository) {
         this.taskRepository = taskRepository;
