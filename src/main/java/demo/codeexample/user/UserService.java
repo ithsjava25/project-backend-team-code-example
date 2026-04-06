@@ -2,7 +2,7 @@ package demo.codeexample.user;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -25,5 +25,3 @@ public class UserService {
     // Logic to save a user
 
 }
-
-
