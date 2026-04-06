@@ -16,8 +16,9 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     private JpaProjectRepository projectRepository;
     private ModelMapper mapper;
 
-    public ProjectPersistenceAdapter(JpaProjectRepository projectRepository){
+    public ProjectPersistenceAdapter(JpaProjectRepository projectRepository, ModelMapper mapper){
         this.projectRepository = projectRepository;
+        this.mapper = mapper;
     }
 
     @Override
