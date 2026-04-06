@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+
 public class TaskService implements TaskUseCase {
 
-    private TaskRepositoryPort taskRepository;
+    TaskRepositoryPort taskRepository;
 
     public TaskService(TaskRepositoryPort taskRepository) {
         this.taskRepository = taskRepository;
