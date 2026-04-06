@@ -4,13 +4,13 @@ import demo.codeexample.enums.TaskStatus;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.domain.Task;
-import demo.codeexample.task.infrastructure.adapters.out.persistence.TaskRepository;
-import org.hibernate.sql.ast.tree.expression.Over;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TaskService implements TaskUseCase {
 
     private TaskRepositoryPort taskRepository;
