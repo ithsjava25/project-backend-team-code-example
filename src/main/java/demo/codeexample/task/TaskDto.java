@@ -1,8 +1,6 @@
 package demo.codeexample.task;
 
 import demo.codeexample.enums.TaskStatus;
-import demo.codeexample.project.ProjectEntity;
-import demo.codeexample.user.UserEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;

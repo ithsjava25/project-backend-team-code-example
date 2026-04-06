@@ -1,7 +1,7 @@
 package demo.codeexample.task;
 
 import demo.codeexample.enums.TaskStatus;
-import demo.codeexample.project.ProjectEntity;
+import demo.codeexample.project.infrastructure.adapters.out.ProjectEntity;
 import demo.codeexample.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;

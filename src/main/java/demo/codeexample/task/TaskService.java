@@ -1,7 +1,7 @@
 package demo.codeexample.task;
 
-import demo.codeexample.project.ProjectEntity;
-import demo.codeexample.project.ProjectRepository;
+import demo.codeexample.project.infrastructure.adapters.out.ProjectEntity;
+import demo.codeexample.project.infrastructure.adapters.out.JpaProjectRepository;
 import demo.codeexample.user.UserEntity;
 import demo.codeexample.user.UserRepository;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
+    private final JpaProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
