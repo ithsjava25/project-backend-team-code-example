@@ -1,55 +1,49 @@
-package demo.codeexample.project.infrastructure.adapters.out;
+package demo.codeexample.comment;
 
-import demo.codeexample.enums.Category;
-import demo.codeexample.enums.Genre;
 import demo.codeexample.task.infrastructure.adapters.out.persistence.TaskEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDate;
-import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "project")
-public class ProjectEntity {
+@Entity
+public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
+    @Column(nullable = false, length = 300)
+    private String content;
 
     @Column(nullable = false)
-    private String description;
+    private Long writerId;
 
-    private LocalDate releaseDate;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id")
+    private TaskEntity task;
 
-    @Column(nullable = false)
-    private Long producerId;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    @Enumerated(EnumType.STRING)
-    private Category category;
+    public CommentEntity(String content, Long writerId, TaskEntity task) {
+        this.content = content;
+        this.writerId = writerId;
+        this.task = task;
+    }
 
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
-
-    private String imageURL;
-
-    public ProjectEntity(String title, LocalDate releaseDate, Long producerId, Category category, Genre genre, String imageURL){
-        this.title = title;
-        this.releaseDate = releaseDate;
-        this.producerId = producerId;
-        this.category = category;
-        this.genre = genre;
-        this.imageURL = imageURL;
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 
     @Override
@@ -59,7 +53,7 @@ public class ProjectEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        ProjectEntity that = (ProjectEntity) o;
+        CommentEntity that = (CommentEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 
@@ -67,6 +61,4 @@ public class ProjectEntity {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-
-
 }
