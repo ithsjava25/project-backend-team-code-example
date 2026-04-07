@@ -5,5 +5,6 @@ public enum Role {
     DIRECTOR,
     RECRUITER,
     EDITOR,
-    VISITOR
+    VISITOR,
+    ADMIN
 }

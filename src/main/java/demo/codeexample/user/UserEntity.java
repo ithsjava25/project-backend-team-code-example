@@ -1,18 +1,15 @@
 package demo.codeexample.user;
 
 import demo.codeexample.enums.Role;
-import demo.codeexample.task.TaskEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
-
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
+
 
 
 //How user looks in database
@@ -58,34 +55,19 @@ public class UserEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        UserEntity that = (UserEntity) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
 
-
-//    public UserEntity(String fullName, String email, Role role, String password) {
-//        this.fullName = fullName;
-//        this.email = email;
-//        this.role = role;
-//        this.password = password;
-//    }
-//
-//    @Override
-//    public final boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null) return false;
-//        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-//        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-//        if (thisEffectiveClass != oEffectiveClass) return false;
-//        UserEntity entity = (UserEntity) o;
-//        return getId() != null && Objects.equals(getId(), entity.getId());
-//    }
-//
-//    @Override
-//    public final int hashCode() {
-//        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-//    }
-//
-//
-////    //Relationships
-//@OneToMany
-//private Set<TaskEntity> tasks = new HashSet<>();
-
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }
