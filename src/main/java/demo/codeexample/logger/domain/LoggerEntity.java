@@ -1,4 +1,4 @@
-package demo.codeexample.logger;
+package demo.codeexample.logger.domain;
 
 import demo.codeexample.enums.LoggerAction;
 
