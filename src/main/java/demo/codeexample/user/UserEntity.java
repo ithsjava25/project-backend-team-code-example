@@ -14,9 +14,8 @@ import java.util.Objects;
 
 //How user looks in database
 @Entity
-//@Getter
-//@Setter
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name= "users")
 public class UserEntity {
