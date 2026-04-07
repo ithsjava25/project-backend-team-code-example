@@ -1,6 +1,8 @@
-package demo.codeexample.logger;
+package demo.codeexample.logger.application;
 
 import demo.codeexample.enums.LoggerAction;
+import demo.codeexample.logger.domain.LoggerEntity;
+import demo.codeexample.logger.domain.LoggerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
