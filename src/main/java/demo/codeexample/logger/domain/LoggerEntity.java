@@ -24,11 +24,11 @@ public class LoggerEntity {
 
     private String message;
 
-
     private Long userId;
-
-
     private Long projectId;
+
+    private String entityType;
+    private Long entityId;
 
     private LocalDateTime createdAt;
 

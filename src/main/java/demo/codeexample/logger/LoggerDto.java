@@ -14,9 +14,14 @@ public class LoggerDto {
 
     private String message;
 
+    private Long userId;
     private String userName;
 
+    private Long projectId;
     private String projectTitle;
+
+    private String entityType;
+    private Long entityId;
 
     private LocalDateTime createdAt;
 }
