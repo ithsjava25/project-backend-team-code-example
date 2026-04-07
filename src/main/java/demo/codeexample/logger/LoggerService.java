@@ -1,8 +1,6 @@
 package demo.codeexample.logger;
 
 import demo.codeexample.enums.LoggerAction;
-import demo.codeexample.project.ProjectEntity;
-import demo.codeexample.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +10,12 @@ public class LoggerService {
 
     private final LoggerRepository loggerRepository;
 
-    public void log(LoggerAction action, String message, User user, ProjectEntity project) {
+    public void log(LoggerAction action, String message, Long userId, Long projectId) {
         LoggerEntity log = new LoggerEntity();
         log.setAction(action);
         log.setMessage(message);
-        log.setUser(user);
-        log.setProject(project);
+        log.setUserId(userId);
+        log.setProjectId(projectId);
 
         loggerRepository.save(log);
     }
