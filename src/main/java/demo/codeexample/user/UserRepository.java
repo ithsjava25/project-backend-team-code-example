@@ -9,10 +9,18 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
+
     Optional<UserEntity> findByEmail(String email);
 
+    boolean existsByEmail(String email);
 
-
-    List<UserEntity> findAllByRoleIgnoreCase (Role role);
-
+    List<UserEntity> findByRole(Role role);
+    // finds all users with a specific role
+    // useful for admin: "show me all RECRUITERs"
 }
+
+/*  *Why @Repository? It tells Spring this is a data-access component.
+    * It also enables Spring to translate database exceptions into
+    * Spring's own exception hierarchy — cleaner error handling.
+ */
+
