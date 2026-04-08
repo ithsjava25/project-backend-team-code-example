@@ -1,9 +1,9 @@
 package demo.codeexample.auth;
 
 import demo.codeexample.enums.Role;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class LoginResponse {
     private String token;
     private Role role;
@@ -14,6 +14,7 @@ public class LoginResponse {
         this.role = role;
         this.passwordResetRequired = passwordResetRequired;
     }
+
 
     /*Why return the role in the response?
     The frontend needs to know what role the user has immediately after login —

@@ -12,12 +12,11 @@ public class ChangePasswordRequest {
     they can't change the password without knowing the current one.
     This prevents account takeover.*/
 
-    @NotBlank
+    @NotBlank(message = "Current password is required")
     private String currentPassword;
 
-    @NotBlank
+    @NotBlank(message = "New password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String newPassword;
 
-    //getter setter
 }
