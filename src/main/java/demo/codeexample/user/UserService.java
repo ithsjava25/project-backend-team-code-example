@@ -14,31 +14,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder; // injected by Spring
+    private final EmailService emailService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
-
-//    public UserEntity createUser(String firstName, String lastName, String email, String tempPassword, Role role) {
-//        // Hash before saving - plain text never touches the database
-//        String hashedPassword = passwordEncoder.encode(tempPassword);
-//
-//        UserEntity user = new UserEntity();
-//        user.setFirstName(firstName);
-//        user.setLastName(lastName);
-//        user.setEmail(email);
-//        user.setPassword(hashedPassword);  // storing the hash, not "tempPassword"
-//        user.setRole(role);
-//        user.setPasswordResetRequired(true); // force change on first login
-//
-//        return userRepository.save(user);
-//    }
-
-//    public boolean checkPassword(String rawInput, String storedHash) {
-//        // BCrypt compares them correctly - you never decode the hash
-//        return passwordEncoder.matches(rawInput, storedHash);
-//    }
 
     public UserResponse createUser(CreateUserRequestDTO request) {
 
@@ -54,13 +36,38 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(tempPassword));
         user.setRole(request.getRole());
-        // isActive & passwordResetRequired default to true already
+        // isActive & passwordResetRequired default to true
 
         UserEntity saved = userRepository.save(user);
 
-        // TODO Step 7: email tempPassword to the new user
+        // REMOVE THIS IN PRODUCTION!
+        System.out.println("TEMP PASSWORD FOR " + saved.getEmail() + ": " + tempPassword);
+
+        // Send welcome email with temp password
+
+        /*Why wrap email sending in try-catch?
+        Email is an external system — it can fail for many reasons (network issues, wrong config, mail server down).
+        You don't want a user creation to fail just because the email didn't send.
+        The user is created successfully — maybe retry the email later. This is called graceful degradation.*/
+        try {
+            emailService.sendWelcomeEmail(
+                    saved.getEmail(),
+                    saved.getFirstName(),
+                    tempPassword  // plain text here — only time we use it!
+            );
+
+            /*Why pass tempPassword (plain text) to the email method?
+             This is the only moment in the entire system where the plain password exists in memory.
+             It's generated, immediately hashed for the database, and also immediately sent by email.
+             It's never stored plain anywhere. After this method returns, the plain password is gone forever.*/
+
+        } catch (Exception e) {
+            // Don't fail user creation if email fails!
+            System.err.println("Failed to send welcome email: " + e.getMessage());
+        }
 
         return UserResponse.fromEntity(saved);
+
     }
 
     public UserResponse getUserById(Long id) {
@@ -93,5 +100,6 @@ public class UserService {
     private String generateTempPassword() {
         return UUID.randomUUID().toString().substring(0, 8);
     }
-}
 
+
+}
