@@ -1,43 +1,49 @@
-package demo.codeexample.company.domain;
+package demo.codeexample.comment;
 
+import demo.codeexample.task.infrastructure.adapters.out.persistence.TaskEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Company {
+@Entity
+public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @NotBlank
-    private String companyName;
+    @Column(nullable = false, length = 300)
+    private String content;
 
-    @NotNull
-    private Address address;
+    @Column(nullable = false)
+    private Long writerId;
 
-    @Email
-    private String email;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id")
+    private TaskEntity task;
 
-    //Todo: Add List With Employees
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    public Company(String companyName, Address address, String email){
-        this.companyName = companyName;
-        this.address = address;
-        this.email = email;
+    public CommentEntity(String content, Long writerId, TaskEntity task) {
+        this.content = content;
+        this.writerId = writerId;
+        this.task = task;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 
     @Override
@@ -47,7 +53,7 @@ public class Company {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Company that = (Company) o;
+        CommentEntity that = (CommentEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 
