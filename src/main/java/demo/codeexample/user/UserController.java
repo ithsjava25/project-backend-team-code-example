@@ -4,6 +4,7 @@ import demo.codeexample.enums.Role;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,20 +23,22 @@ public class UserController {
     Without it, @NotBlank and @Email are ignored completely. */
 
     @PostMapping
-    // @PreAuthorize("hasRole('ADMIN')")  ← we'll add this in Step 6
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequestDTO request) {
         UserResponse created = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
-    }
-
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR')")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR') or #id == authentication.principal")
+    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     /* Why @PatchMapping for role update instead of @PutMapping?
@@ -43,6 +46,7 @@ public class UserController {
     You're only changing the role — PATCH is semantically correct.*/
 
     @PatchMapping("/{id}/role")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> updateRole(@PathVariable Long id,
                                                    @RequestBody Role newRole) {
         return ResponseEntity.ok(userService.updateRole(id, newRole));
@@ -54,6 +58,7 @@ public class UserController {
     Using 200 OK with an empty body is technically wrong.*/
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deactivateUser(@PathVariable Long id) {
         userService.deactivateUser(id);
         return ResponseEntity.noContent().build(); // 204 — success, nothing to return

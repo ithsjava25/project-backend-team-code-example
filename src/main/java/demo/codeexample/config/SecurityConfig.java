@@ -42,9 +42,9 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/api/auth/**").permitAll()
-                                // login endpoint must be public — nobody has a token yet!
+                                // login is public
 
-                                .requestMatchers("/api/users/**").hasRole("ADMIN")
+                                .requestMatchers("/api/users/**").authenticated()
                                 // only admins can manage users
 
                                 .anyRequest().authenticated()
