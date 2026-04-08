@@ -62,9 +62,43 @@ public class AuthController {
         }
 
         String token = jwtService.generateToken(user);
-        System.out.println("SUCCESS: token generated");
 
-        return ResponseEntity.ok(new LoginResponse(token, user.getRole()));
+        // Tell frontend if password is required
+
+        return ResponseEntity.ok(new LoginResponse(token, user.getRole(), user.isPasswordResetRequired()));
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(
+            @RequestBody ChangePasswordRequest request,
+            @RequestHeader("Authorization") String authHeader) {
+
+        // Extract email from their token
+        String token = authHeader.substring(7);
+        String email = jwtService.extractEmail(token);
+
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Verify they know their current password
+        if (!passwordEncoder.matches(request.getCurrentPassword(),
+                user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Current password is incorrect");
+        }
+
+        // Validate new password
+        if (request.getNewPassword().length() < 8) {
+            return ResponseEntity.badRequest()
+                    .body("Password must be at least 8 characters");
+        }
+
+        // Update password and clear the reset flag
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setPasswordResetRequired(false);  // ← they've reset, flag cleared!
+        userRepository.save(user);
+
+        return ResponseEntity.ok("Password changed successfully");
     }
 
 }
