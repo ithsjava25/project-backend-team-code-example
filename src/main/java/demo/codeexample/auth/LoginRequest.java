@@ -19,5 +19,4 @@ public class LoginRequest {
     @NotBlank
     private String password;
 
-    // getters & setters MUL LOMBOK TSEKI!
 }

@@ -37,7 +37,7 @@ public class DataInitializer implements CommandLineRunner {
         admin.setFirstName("Admin");
         admin.setLastName("System");
         admin.setEmail("admin@filmstudio.com");
-        admin.setPassword("ChangeMe123!");
+        admin.setPassword(passwordEncoder.encode("ChangeMe123!"));
         admin.setRole(Role.ADMIN);
         admin.setActive(true);
         admin.setPasswordResetRequired(true); // force password change on first login

@@ -2,16 +2,14 @@ package demo.codeexample.user;
 
 import demo.codeexample.enums.Role;
 import jakarta.validation.Valid;
-import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Data
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;

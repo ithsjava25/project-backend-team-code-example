@@ -38,6 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+
         // 1. Look for the Authorization header
         String authHeader = request.getHeader("Authorization");
 
@@ -82,6 +83,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 6. Continue to the actual endpoint
         filterChain.doFilter(request, response);
+
     }
 
 }

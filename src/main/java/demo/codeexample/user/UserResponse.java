@@ -40,6 +40,4 @@ public class UserResponse {
         response.createdAt = entity.getCreatedAt();
         return response;
     }
-
-
 }

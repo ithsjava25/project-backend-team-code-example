@@ -43,7 +43,7 @@ public class UserEntity {
     private Role role; // Enum PRODUCER, DIRECTOR, RECRUITER, EDITOR, VISITOR
 
     @Column(nullable = false)
-    private boolean isActive = true;              // Can be deactivated by admin
+    private boolean active = true;              // Can be deactivated by admin
 
     @Column(nullable = false)
     private boolean passwordResetRequired = true; // Force change on first login
