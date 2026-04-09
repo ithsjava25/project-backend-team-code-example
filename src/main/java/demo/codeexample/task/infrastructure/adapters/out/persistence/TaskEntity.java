@@ -2,7 +2,7 @@ package demo.codeexample.task.infrastructure.adapters.out.persistence;
 
 import demo.codeexample.enums.TaskStatus;
 import demo.codeexample.project.infrastructure.adapters.out.persistence.ProjectEntity;
-import demo.codeexample.user.domain.UserEntity;
+import demo.codeexample.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -37,10 +37,10 @@ public class TaskEntity {
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private UserEntity user;
+    private User user;
 
 
-    public TaskEntity (String title, String description, TaskStatus status, LocalDateTime deadline, ProjectEntity project, UserEntity user) {
+    public TaskEntity (String title, String description, TaskStatus status, LocalDateTime deadline, ProjectEntity project, User user) {
         this.title = title;
         this.description = description;
         this.status = status;

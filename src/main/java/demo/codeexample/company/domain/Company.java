@@ -10,14 +10,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class CompanyEntity {
+public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,7 @@ public class CompanyEntity {
 
     //Todo: Add List With Employees
 
-    public CompanyEntity(String companyName, Address address, String email){
+    public Company(String companyName, Address address, String email){
         this.companyName = companyName;
         this.address = address;
         this.email = email;
@@ -48,7 +47,7 @@ public class CompanyEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        CompanyEntity that = (CompanyEntity) o;
+        Company that = (Company) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

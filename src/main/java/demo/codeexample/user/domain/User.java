@@ -14,7 +14,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Table(name= "users")
-public class UserEntity {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class UserEntity {
 
     private String password;
 
-    public UserEntity(String firstName, String lastName, String email, Role role, String password) {
+    public User(String firstName, String lastName, String email, Role role, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -47,7 +47,7 @@ public class UserEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        UserEntity entity = (UserEntity) o;
+        User entity = (User) o;
         return getId() != null && Objects.equals(getId(), entity.getId());
     }
 

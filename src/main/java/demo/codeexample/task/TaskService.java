@@ -2,7 +2,7 @@ package demo.codeexample.task;
 
 import demo.codeexample.project.ProjectEntity;
 import demo.codeexample.project.ProjectRepository;
-import demo.codeexample.user.domain.UserEntity;
+import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,7 +22,7 @@ public class TaskService {
         ProjectEntity project = projectRepository.findById(dto.getProjectId())
                 .orElseThrow(() -> new RuntimeException("Project not found"));
 
-        UserEntity user = userRepository.findById(dto.getUserId())
+        User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         TaskEntity task = modelMapper.map(dto, TaskEntity.class);
