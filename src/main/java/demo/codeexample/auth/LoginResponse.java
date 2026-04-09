@@ -1,6 +1,6 @@
 package demo.codeexample.auth;
 
-import demo.codeexample.user.doman.Role;
+import demo.codeexample.user.domain.Role;
 import lombok.Getter;
 
 @Getter

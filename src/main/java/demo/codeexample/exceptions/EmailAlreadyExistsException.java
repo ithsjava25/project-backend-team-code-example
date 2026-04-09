@@ -1,4 +1,4 @@
-package demo.codeexample.exception;
+package demo.codeexample.exceptions;
 
 public class EmailAlreadyExistsException extends RuntimeException {
     public EmailAlreadyExistsException(String message) {

@@ -1,4 +1,4 @@
-package demo.codeexample.exception;
+package demo.codeexample.exceptions;
 
 public class UnauthorizedException extends RuntimeException{
     public UnauthorizedException(String message) {

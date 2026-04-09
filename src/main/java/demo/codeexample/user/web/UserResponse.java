@@ -1,7 +1,7 @@
 package demo.codeexample.user.web;
 
-import demo.codeexample.user.doman.Role;
-import demo.codeexample.user.doman.User;
+import demo.codeexample.user.domain.Role;
+import demo.codeexample.user.domain.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;

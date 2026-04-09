@@ -1,10 +1,10 @@
 package demo.codeexample.user.application;
 
-import demo.codeexample.user.doman.Role;
-import demo.codeexample.exception.UserNotFoundException;
-import demo.codeexample.exception.EmailAlreadyExistsException;
-import demo.codeexample.user.doman.User;
-import demo.codeexample.user.doman.UserRepository;
+import demo.codeexample.user.domain.Role;
+import demo.codeexample.exceptions.UserNotFoundException;
+import demo.codeexample.exceptions.EmailAlreadyExistsException;
+import demo.codeexample.user.domain.User;
+import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
 import demo.codeexample.user.web.CreateUserRequestDTO;
 import demo.codeexample.user.web.UserResponse;

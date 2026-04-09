@@ -1,9 +1,9 @@
 package demo.codeexample.auth;
 
-import demo.codeexample.exception.UnauthorizedException;
+import demo.codeexample.exceptions.UnauthorizedException;
 import demo.codeexample.security.JwtService;
-import demo.codeexample.user.doman.User;
-import demo.codeexample.user.doman.UserRepository;
+import demo.codeexample.user.domain.User;
+import demo.codeexample.user.domain.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

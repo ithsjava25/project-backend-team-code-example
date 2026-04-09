@@ -1,8 +1,8 @@
 package demo.codeexample.security;
 
-import demo.codeexample.user.doman.Role;
-import demo.codeexample.user.doman.User;
-import demo.codeexample.user.doman.UserRepository;
+import demo.codeexample.user.domain.Role;
+import demo.codeexample.user.domain.User;
+import demo.codeexample.user.domain.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
