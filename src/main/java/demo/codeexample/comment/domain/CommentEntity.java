@@ -1,15 +1,12 @@
 package demo.codeexample.comment.domain;
 
-import demo.codeexample.task.TaskEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Getter
 @Setter
