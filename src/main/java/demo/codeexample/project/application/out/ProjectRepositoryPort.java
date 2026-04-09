@@ -15,6 +15,8 @@ public interface ProjectRepositoryPort {
 
     List<Project> findProjectByGenre(Genre genre);
 
+    List<Project> findProjectContainingTitle(String title);
+
     Project save(Project project);
 
     Optional<Project> findById(Long id);

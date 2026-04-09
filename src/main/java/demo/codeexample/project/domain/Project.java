@@ -2,6 +2,7 @@ package demo.codeexample.project.domain;
 
 import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,9 @@ import java.time.LocalDate;
 @Setter
 public class Project {
 
+    @Setter(AccessLevel.NONE)
     private final Long id;
+
     private String title;
     private String description;
     private LocalDate releaseDate;

@@ -43,6 +43,13 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     @Override
+    public List<Project> findProjectContainingTitle(String title) {
+        return jpaRepository.findByTitleContainingIgnoreCase(title).stream()
+                .map(this::toDomain)
+                .toList();
+    }
+
+    @Override
     public Project save(Project project) {
         ProjectEntity entity = toEntity(project);
         ProjectEntity saved = jpaRepository.save(entity);
@@ -51,8 +58,8 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
 
     @Override
     public Optional<Project> findById(Long id) {
-        Optional<ProjectEntity> entity = jpaRepository.findById(id);
-        return Optional.of(mapper.map(entity, Project.class));
+        return jpaRepository.findById(id)
+                .map(this::toDomain);
     }
 
     private ProjectEntity toEntity(Project project){

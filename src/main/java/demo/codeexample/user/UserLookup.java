@@ -17,6 +17,8 @@ public interface UserLookup {
 
     Optional<UserDto> findById(Long id);
 
+    boolean validateUserRole(Long id, Role role);
+
     record UserDto(Long id, String firstName, String lastName, String email, Role role){}
 }
 

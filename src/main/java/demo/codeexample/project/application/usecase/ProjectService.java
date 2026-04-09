@@ -2,6 +2,7 @@ package demo.codeexample.project.application.usecase;
 
 import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
+import demo.codeexample.exceptions.UserAuthorizationException;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.UserPort;
@@ -41,18 +42,22 @@ public class ProjectService implements ProjectUseCase {
     @Override
     public Project createProject(String title, String description, LocalDate releaseDate, Long producerId,
                                  Category category, Genre genre, String imageURL) {
+        if(!userPort.validateProducer(producerId))
+            throw new UserAuthorizationException(producerId);
+
         Project newProject = Project.createNew(title, description, releaseDate, producerId,
                 category, genre, imageURL);
         return repository.save(newProject);
     }
 
     @Override
-    public Optional<Project> findProjectByTitle(String title) {
-        return Optional.empty();
+    public List<Project> findProjectContainingTitle(String title) {
+        return repository.findProjectContainingTitle(title);
     }
 
     @Override
     public ProjectDetails getProjectDetails(Long projectId) {
         return null;
     }
+
 }

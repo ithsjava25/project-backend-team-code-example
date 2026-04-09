@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+import static demo.codeexample.enums.Role.PRODUCER;
+
 @Component
 public class CustomerAdapter implements UserPort {
 
@@ -28,6 +30,11 @@ public class CustomerAdapter implements UserPort {
         return userLookup.findByRole(role).stream()
                 .map(dto -> new UserInfo(dto.id(), dto.firstName(), dto.lastName(), dto.role()))
                 .toList();
+    }
+
+    @Override
+    public boolean validateProducer(Long id) {
+        return userLookup.validateUserRole(id, PRODUCER);
     }
 
     @Override

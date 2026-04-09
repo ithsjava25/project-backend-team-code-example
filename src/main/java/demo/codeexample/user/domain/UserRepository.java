@@ -14,5 +14,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     List<UserEntity> findAllByRoleIgnoreCase (Role role);
 
-    Optional<Object> findByFirstNameAndLastNameIgnoreCase(String firstname, String lastName);
+    Optional<UserEntity> findByFirstNameAndLastNameIgnoreCase(String firstname, String lastName);
 }

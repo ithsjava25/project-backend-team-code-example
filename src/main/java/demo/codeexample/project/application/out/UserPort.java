@@ -12,6 +12,8 @@ public interface UserPort {
 
     List<UserInfo> findByRole(Role role);
 
+    boolean validateProducer(Long id);
+
     List<UserLookup.UserDto> findAll();
 
     record UserInfo(Long id, String firstname, String lastname, Role role){}

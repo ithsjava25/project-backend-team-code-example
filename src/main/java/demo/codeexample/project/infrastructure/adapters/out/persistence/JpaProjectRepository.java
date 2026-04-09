@@ -13,4 +13,6 @@ public interface JpaProjectRepository extends JpaRepository<ProjectEntity, Long>
     List<ProjectEntity> findByCategory(Category category);
 
     List<ProjectEntity> findByGenre(Genre genre);
+
+    List<ProjectEntity> findByTitleContainingIgnoreCase(String title);
 }

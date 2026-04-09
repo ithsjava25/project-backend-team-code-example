@@ -1,6 +1,7 @@
 package demo.codeexample.user.application;
 
 import demo.codeexample.enums.Role;
+import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.user.UserLookup;
 import demo.codeexample.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,15 @@ public class UserService implements UserLookup {
     public Optional<UserDto> findById(Long id) {
         return repository.findById(id)
                 .map(entity -> mapper.map(entity, UserDto.class));
+    }
+
+
+    @Override
+    public boolean validateUserRole(Long id, Role role) {
+        UserDto user = findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        return user.role() == role;
     }
 
     @Override
