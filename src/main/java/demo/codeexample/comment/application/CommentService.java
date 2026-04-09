@@ -17,7 +17,7 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final TaskRepository taskRepository;
+    //private final TaskRepository taskRepository;
     private final ModelMapper modelMapper;
     //private final "Some kind of Authorization service" with saved user
 
