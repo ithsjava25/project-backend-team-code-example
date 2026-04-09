@@ -1,5 +1,6 @@
 package demo.codeexample.user;
 
+import demo.codeexample.user.application.UserService;
 import demo.codeexample.user.doman.Role;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

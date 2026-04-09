@@ -1,5 +1,6 @@
-package demo.codeexample.user;
+package demo.codeexample.user.application;
 
+import demo.codeexample.user.*;
 import demo.codeexample.user.doman.Role;
 import demo.codeexample.exception.UserNotFoundException;
 import demo.codeexample.exception.EmailAlreadyExistsException;
