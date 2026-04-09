@@ -1,4 +1,4 @@
-package demo.codeexample.logger;
+package demo.codeexample.logger.domain;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

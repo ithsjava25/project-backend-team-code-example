@@ -1,8 +1,7 @@
-package demo.codeexample.logger;
+package demo.codeexample.logger.domain;
 
 import demo.codeexample.enums.LoggerAction;
-import demo.codeexample.project.ProjectEntity;
-import demo.codeexample.user.domain.User;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,11 +24,11 @@ public class LoggerEntity {
 
     private String message;
 
-    @ManyToOne
-    private User user;
+    private Long userId;
+    private Long projectId;
 
-    @ManyToOne
-    private ProjectEntity project;
+    private String entityType;
+    private Long entityId;
 
     private LocalDateTime createdAt;
 
