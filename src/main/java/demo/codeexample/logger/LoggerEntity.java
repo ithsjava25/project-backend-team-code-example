@@ -2,7 +2,7 @@ package demo.codeexample.logger;
 
 import demo.codeexample.enums.LoggerAction;
 import demo.codeexample.project.ProjectEntity;
-import demo.codeexample.user.UserEntity;
+import demo.codeexample.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +26,7 @@ public class LoggerEntity {
     private String message;
 
     @ManyToOne
-    private UserEntity user;
+    private User user;
 
     @ManyToOne
     private ProjectEntity project;
