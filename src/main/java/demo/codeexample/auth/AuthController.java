@@ -2,7 +2,7 @@ package demo.codeexample.auth;
 
 import demo.codeexample.exception.UnauthorizedException;
 import demo.codeexample.security.JwtService;
-import demo.codeexample.user.UserEntity;
+import demo.codeexample.user.User;
 import demo.codeexample.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
-        UserEntity user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -61,7 +61,7 @@ public class AuthController {
         String email = jwtService.extractEmail(token);
 
         // Load user
-        UserEntity user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Verify current password

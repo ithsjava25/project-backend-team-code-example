@@ -29,7 +29,7 @@ public class UserResponse {
 
 
     // Constructor mapping from entity
-    public static UserResponse fromEntity(UserEntity entity) {
+    public static UserResponse fromEntity(User entity) {
         UserResponse response = new UserResponse();
         response.id = entity.getId();
         response.firstName = entity.getFirstName();

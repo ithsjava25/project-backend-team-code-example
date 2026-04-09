@@ -1,6 +1,5 @@
 package demo.codeexample.exception;
 
-import demo.codeexample.user.exception.EmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

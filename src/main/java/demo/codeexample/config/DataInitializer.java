@@ -1,7 +1,7 @@
 package demo.codeexample.config;
 
 import demo.codeexample.enums.Role;
-import demo.codeexample.user.UserEntity;
+import demo.codeexample.user.User;
 import demo.codeexample.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +33,7 @@ public class DataInitializer implements CommandLineRunner {
             return; // admin already exist - do nothing
         }
 
-        UserEntity admin = new UserEntity();
+        User admin = new User();
         admin.setFirstName("Admin");
         admin.setLastName("System");
         admin.setEmail("admin@filmstudio.com");

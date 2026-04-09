@@ -12,13 +12,13 @@ import java.util.Optional;
  * Spring's own exception hierarchy — cleaner error handling. */
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<UserEntity> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     boolean existsByEmail(String email);
 
-    List<UserEntity> findByRole(Role role);
+    List<User> findByRole(Role role);
     // finds all users with a specific role
     // useful for admin: "show me all RECRUITERs"
 }

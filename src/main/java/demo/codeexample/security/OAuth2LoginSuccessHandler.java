@@ -37,7 +37,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         System.out.println("OAuth2 login: " + email);
 
         // 2. Find or create user in YOUR database
-        UserEntity user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseGet(() -> createNewOAuthUser(email, firstName, lastName));
 
         // 3. Check user is active
@@ -58,11 +58,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         // frontend reads the token from URL and stores it
     }
 
-    private UserEntity createNewOAuthUser(String email, String firstName, String lastName) {
+    private User createNewOAuthUser(String email, String firstName, String lastName) {
 
         // New user via Google gets VISITOR role by default
         // Admin can upgrade their role later
-        UserEntity newUser = new UserEntity();
+        User newUser = new User();
         newUser.setEmail(email);
         newUser.setFirstName(firstName != null ? firstName : "Unknown");
         newUser.setLastName(lastName != null ? lastName : "Unknown");

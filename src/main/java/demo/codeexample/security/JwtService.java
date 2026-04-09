@@ -1,6 +1,6 @@
 package demo.codeexample.security;
 
-import demo.codeexample.user.UserEntity;
+import demo.codeexample.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -33,7 +33,7 @@ public class JwtService {
     }
 
     // Called after successful login — creates the token
-    public String generateToken(UserEntity user) {
+    public String generateToken(User user) {
         return Jwts.builder()
                 .subject(user.getEmail())           // who this token belongs to
                 .claim("role", user.getRole())      // extra data inside payload

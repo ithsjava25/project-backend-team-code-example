@@ -2,7 +2,7 @@ package demo.codeexample.user;
 
 import demo.codeexample.enums.Role;
 import demo.codeexample.exception.UserNotFoundException;
-import demo.codeexample.user.exception.EmailAlreadyExistsException;
+import demo.codeexample.exception.EmailAlreadyExistsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class UserService {
 
         String tempPassword = generateTempPassword();
 
-        UserEntity user = new UserEntity();
+        User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
@@ -39,7 +39,7 @@ public class UserService {
         user.setRole(request.getRole());
         // isActive & passwordResetRequired default to true
 
-        UserEntity saved = userRepository.save(user);
+        User saved = userRepository.save(user);
 
         // REMOVE THIS IN PRODUCTION!
         System.out.println("TEMP PASSWORD FOR " + saved.getEmail() + ": " + tempPassword);
@@ -72,7 +72,7 @@ public class UserService {
     }
 
     public UserResponse getUserById(Long id) {
-        UserEntity user = userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
         return UserResponse.fromEntity(user);
     }
@@ -85,14 +85,14 @@ public class UserService {
     }
 
     public UserResponse updateRole(Long id, Role newRole) {
-        UserEntity user = userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found: " + id));
         user.setRole(newRole);
         return UserResponse.fromEntity(userRepository.save(user));
     }
 
     public void deactivateUser(Long id) {
-        UserEntity user = userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found: " + id));
         user.setActive(false);
         userRepository.save(user);
