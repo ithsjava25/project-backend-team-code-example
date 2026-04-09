@@ -34,7 +34,7 @@ public class TaskEntity {
     private Long userId;
 
 
-    public TaskEntity (Long taskId, String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
+    public TaskEntity (String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
         this.title = title;
         this.description = description;
         this.status = status;

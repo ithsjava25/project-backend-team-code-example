@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class TaskPersistenceAdapter implements TaskRepositoryPort {
 
-    public final JpaTaskRepository jpaTaskRepository;
+    private final JpaTaskRepository jpaTaskRepository;
 
     public TaskPersistenceAdapter(JpaTaskRepository jpaTaskRepository) {
     this.jpaTaskRepository = jpaTaskRepository;
@@ -51,7 +51,6 @@ public class TaskPersistenceAdapter implements TaskRepositoryPort {
 
     private TaskEntity toEntity(Task task) {
         return new TaskEntity(
-                task.getTaskId(),
                 task.getTitle(),
                 task.getDescription(),
                 task.getStatus(),
