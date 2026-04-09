@@ -12,12 +12,12 @@ public class LoggerService {
 
     private final LoggerRepository loggerRepository;
 
-    public void log(LoggerAction action, String message, Long userId, Long projectId) {
+    public void log(LoggerAction action, Long userId, String entityType, Long entityId) {
         LoggerEntity log = new LoggerEntity();
         log.setAction(action);
-        log.setMessage(message);
         log.setUserId(userId);
-        log.setProjectId(projectId);
+        log.setEntityType(entityType);
+        log.setEntityId(entityId);
 
         loggerRepository.save(log);
     }

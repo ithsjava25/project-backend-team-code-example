@@ -1,8 +1,6 @@
 package demo.codeexample.task.infrastructure.adapters.out.persistence;
 
 import demo.codeexample.enums.TaskStatus;
-import demo.codeexample.project.infrastructure.adapters.out.ProjectEntity;
-import demo.codeexample.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -31,22 +29,18 @@ public class TaskEntity {
 
     private LocalDateTime deadline;
 
-    @ManyToOne
-    @JoinColumn (name = "project_id")
-    ProjectEntity project;
+    private Long projectId;
 
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private UserEntity user;
+    private Long userId;
 
 
-    public TaskEntity (String title, String description, TaskStatus status, LocalDateTime deadline, ProjectEntity project, UserEntity user) {
+    public TaskEntity (Long taskId, String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.deadline = deadline;
-        this.project = project;
-        this.user = user;
+        this.projectId = projectId;
+        this.userId = userId;
     }
 
     @Override

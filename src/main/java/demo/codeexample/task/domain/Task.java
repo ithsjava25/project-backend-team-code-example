@@ -1,15 +1,18 @@
 package demo.codeexample.task.domain;
 
 import demo.codeexample.enums.TaskStatus;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class Task {
 
-    private final Long id ;
+    @Setter(AccessLevel.NONE)
+    private final Long taskId ;
     private final String title ;
     private final String description ;
     private final TaskStatus status ;
@@ -18,8 +21,8 @@ public class Task {
     private final Long userId ;
 
 
-    public Task(Long id, String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
-        this.id = id;
+    public Task(Long taskId, String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
+        this.taskId = taskId;
         this.title = title;
         this.description = description;
         this.status = status;
@@ -29,35 +32,8 @@ public class Task {
     }
 
 
-    public static Task createNew(Long id, String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
-        return new Task(id, title, description, status, deadline, projectId, userId);
+    public static Task createNew(String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
+        return new Task(null, title, description, status, deadline, projectId, userId);
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public TaskStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getDeadline() {
-        return deadline;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
 }

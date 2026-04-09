@@ -1,6 +1,8 @@
 package demo.codeexample.task.application.ports.usecase;
 
+import demo.codeexample.enums.LoggerAction;
 import demo.codeexample.enums.TaskStatus;
+import demo.codeexample.logger.LoggerPort;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.domain.Task;
@@ -11,11 +13,14 @@ import java.util.Optional;
 
 public class TaskService implements TaskUseCase {
 
-    TaskRepositoryPort taskRepository;
+    private final TaskRepositoryPort taskRepository;
+    private final LoggerPort logger;
 
 
-    public TaskService(TaskRepositoryPort taskRepository) {
+
+    public TaskService(TaskRepositoryPort taskRepository, LoggerPort logger) {
         this.taskRepository = taskRepository;
+        this.logger = logger;
     }
 
     @Override
@@ -29,14 +34,17 @@ public class TaskService implements TaskUseCase {
     }
 
     @Override
-    public Task createTask(Long id, String title,
+    public Task createTask(String title,
                 String description,
                 TaskStatus status,
                 LocalDateTime deadline,
                 Long projectId,
                 Long userId){
-        Task task = Task.createNew  (id, title, description, status, deadline, projectId, userId);
-        return taskRepository.save(task);
+        Task task = Task.createNew  (title, description, status, deadline, projectId, userId);
+
+        Task savedTask = taskRepository.save(task);
+        logger.log(LoggerAction.TASK_CREATED, userId, "TASK", savedTask.getId());
+        return savedTask;
 
     }
 }
