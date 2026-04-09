@@ -1,6 +1,5 @@
 package demo.codeexample.user.domain;
 
-import demo.codeexample.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;

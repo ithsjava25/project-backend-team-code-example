@@ -1,4 +1,4 @@
-package demo.codeexample.enums;
+package demo.codeexample.task.domain;
 
 public enum TaskStatus {
     CREATED,

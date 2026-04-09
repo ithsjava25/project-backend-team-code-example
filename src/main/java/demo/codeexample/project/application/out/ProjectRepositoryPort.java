@@ -1,7 +1,7 @@
 package demo.codeexample.project.application.out;
 
-import demo.codeexample.enums.Category;
-import demo.codeexample.enums.Genre;
+import demo.codeexample.project.domain.Category;
+import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.domain.Project;
 
 import java.util.List;

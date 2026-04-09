@@ -1,6 +1,6 @@
 package demo.codeexample.user.application;
 
-import demo.codeexample.enums.Role;
+import demo.codeexample.user.domain.Role;
 import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.user.UserLookup;
 import demo.codeexample.user.domain.UserRepository;

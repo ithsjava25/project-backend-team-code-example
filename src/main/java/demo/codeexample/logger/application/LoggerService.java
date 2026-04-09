@@ -1,6 +1,7 @@
 package demo.codeexample.logger.application;
 
-import demo.codeexample.enums.LoggerAction;
+import demo.codeexample.logger.LoggerPort;
+import demo.codeexample.logger.domain.LoggerAction;
 import demo.codeexample.logger.domain.LoggerEntity;
 import demo.codeexample.logger.domain.LoggerRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LoggerService {
+public class LoggerService implements LoggerPort{
 
     private final LoggerRepository loggerRepository;
 
@@ -21,4 +22,5 @@ public class LoggerService {
 
         loggerRepository.save(log);
     }
+
 }

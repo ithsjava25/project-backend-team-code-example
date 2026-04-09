@@ -1,6 +1,6 @@
 package demo.codeexample.user;
 
-import demo.codeexample.enums.Role;
+import demo.codeexample.user.domain.Role;
 
 import java.util.List;
 import java.util.Optional;

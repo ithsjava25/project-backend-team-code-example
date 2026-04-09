@@ -1,4 +1,4 @@
-package demo.codeexample.enums;
+package demo.codeexample.user.domain;
 
 public enum Role {
     PRODUCER,

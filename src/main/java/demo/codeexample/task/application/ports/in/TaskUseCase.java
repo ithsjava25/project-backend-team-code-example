@@ -1,6 +1,6 @@
 package demo.codeexample.task.application.ports.in;
 
-import demo.codeexample.enums.TaskStatus;
+import demo.codeexample.task.domain.TaskStatus;
 import demo.codeexample.task.domain.Task;
 
 import java.time.LocalDateTime;

@@ -1,7 +1,5 @@
 package demo.codeexample.project.domain;
 
-import demo.codeexample.enums.Category;
-import demo.codeexample.enums.Genre;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

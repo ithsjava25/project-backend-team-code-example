@@ -1,18 +1,15 @@
 package demo.codeexample.project.application.usecase;
 
-import demo.codeexample.enums.Category;
-import demo.codeexample.enums.Genre;
+import demo.codeexample.project.domain.Category;
+import demo.codeexample.project.domain.Genre;
 import demo.codeexample.exceptions.UserAuthorizationException;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.domain.Project;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public class ProjectService implements ProjectUseCase {
 

@@ -1,7 +1,7 @@
 package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
-import demo.codeexample.enums.Category;
-import demo.codeexample.enums.Genre;
+import demo.codeexample.project.domain.Category;
+import demo.codeexample.project.domain.Genre;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;

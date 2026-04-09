@@ -1,6 +1,5 @@
 package demo.codeexample.task.domain;
 
-import demo.codeexample.enums.TaskStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
