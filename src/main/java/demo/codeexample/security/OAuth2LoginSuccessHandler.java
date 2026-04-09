@@ -52,10 +52,20 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 5. Return token to frontend
         // For a REST API, redirect with token as query parameter
-        response.sendRedirect(
-                "http://localhost:3000/oauth2/callback?token=" + token
-        );
+//        response.sendRedirect(
+//                "http://localhost:3000/oauth2/callback?token=" + token
+//        );
         // frontend reads the token from URL and stores it
+
+// Replace the sendRedirect line with this temporarily:
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(
+                "{\"token\": \"" + token + "\", \"role\": \"" + user.getRole() + "\"}"
+        );
+
+
+
     }
 
     private User createNewOAuthUser(String email, String firstName, String lastName) {

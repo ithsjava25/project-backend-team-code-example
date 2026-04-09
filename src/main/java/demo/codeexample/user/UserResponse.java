@@ -29,15 +29,15 @@ public class UserResponse {
 
 
     // Constructor mapping from entity
-    public static UserResponse fromEntity(User entity) {
+    public static UserResponse fromEntity(User user) {
         UserResponse response = new UserResponse();
-        response.id = entity.getId();
-        response.firstName = entity.getFirstName();
-        response.lastName = entity.getLastName();
-        response.email = entity.getEmail();
-        response.role = entity.getRole();
-        response.isActive = entity.isActive();
-        response.createdAt = entity.getCreatedAt();
+        response.id = user.getId();
+        response.firstName = user.getFirstName();
+        response.lastName = user.getLastName();
+        response.email = user.getEmail();
+        response.role = user.getRole();
+        response.isActive = user.isActive();
+        response.createdAt = user.getCreatedAt();
         return response;
     }
 }
