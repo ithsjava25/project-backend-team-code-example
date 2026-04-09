@@ -32,7 +32,8 @@ public class Project {
         this.imageURL = imageURL;
     }
 
-    public Project createNewProject(Long id){
+    public static Project createNew(String title, String description, LocalDate releaseDate, Long producerId,
+                                    Category category, Genre genre, String imageURL){
         return new Project(null, title, description, releaseDate, producerId, category, genre, imageURL);
     }
 

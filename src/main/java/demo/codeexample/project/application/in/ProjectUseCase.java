@@ -16,7 +16,8 @@ public interface ProjectUseCase {
 
     List<Project> findProjectByGenre(Genre genre);
 
-    Project createProject();
+    Project createProject(String title, String description, LocalDate releaseDate, Long producerId,
+                          Category category, Genre genre, String imageURL);
 
     Optional<Project> findProjectByTitle(String title);
 

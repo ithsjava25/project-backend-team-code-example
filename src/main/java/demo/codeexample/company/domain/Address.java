@@ -1,4 +1,4 @@
-package demo.codeexample.company;
+package demo.codeexample.company.domain;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

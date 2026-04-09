@@ -2,8 +2,8 @@ package demo.codeexample.task;
 
 import demo.codeexample.project.ProjectEntity;
 import demo.codeexample.project.ProjectRepository;
-import demo.codeexample.user.UserEntity;
-import demo.codeexample.user.UserRepository;
+import demo.codeexample.user.domain.UserEntity;
+import demo.codeexample.user.domain.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

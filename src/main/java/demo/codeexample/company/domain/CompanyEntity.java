@@ -1,41 +1,44 @@
-package demo.codeexample.user;
+package demo.codeexample.company.domain;
 
-import demo.codeexample.enums.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.List;
 import java.util.Objects;
 
-
-//How user looks in database
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name= "users")
-public class UserEntity {
+public class CompanyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    private String fullName;
+    @NotBlank
+    private String companyName;
 
-    @Column(unique = true, nullable = false)
+    @NotNull
+    private Address address;
+
+    @Email
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Role role; // Enum PRODUCER, DIRECTOR, RECRUITER, EDITOR, VISITOR
+    //Todo: Add List With Employees
 
-    private String password;
-
-    public UserEntity(String fullName, String email, Role role, String password) {
-        this.fullName = fullName;
+    public CompanyEntity(String companyName, Address address, String email){
+        this.companyName = companyName;
+        this.address = address;
         this.email = email;
-        this.role = role;
-        this.password = password;
     }
 
     @Override
@@ -45,18 +48,12 @@ public class UserEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        UserEntity entity = (UserEntity) o;
-        return getId() != null && Objects.equals(getId(), entity.getId());
+        CompanyEntity that = (CompanyEntity) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-
-
-//    //Relationships
-//    @OneToMany(mappedBy = "assignedEmployees")
-//    private List<TaskEntity> tasks;
-
 }

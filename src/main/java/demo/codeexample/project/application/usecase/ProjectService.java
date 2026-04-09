@@ -4,39 +4,46 @@ import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
+import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.domain.Project;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public class ProjectService implements ProjectUseCase {
 
-    ProjectRepositoryPort projectRepository;
+    private final ProjectRepositoryPort repository;
+    private final UserPort userPort;
 
-    public ProjectService(ProjectRepositoryPort projectRepository){
-        this.projectRepository = projectRepository;
+    public ProjectService(ProjectRepositoryPort repository, UserPort userPort){
+        this.repository = repository;
+        this.userPort = userPort;
     }
 
     @Override
     public List<Project> findAllProjects() {
-        return List.of();
+        return repository.findAll();
     }
 
     @Override
     public List<Project> findProjectByCategory(Category category) {
-        return List.of();
+        return repository.findProjectByCategory(category);
     }
 
     @Override
     public List<Project> findProjectByGenre(Genre genre) {
-        return List.of();
+        return repository.findProjectByGenre(genre);
     }
 
     @Override
-    public Project createProject() {
-        return null;
+    public Project createProject(String title, String description, LocalDate releaseDate, Long producerId,
+                                 Category category, Genre genre, String imageURL) {
+        Project newProject = Project.createNew(title, description, releaseDate, producerId,
+                category, genre, imageURL);
+        return repository.save(newProject);
     }
 
     @Override

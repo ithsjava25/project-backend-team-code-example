@@ -2,7 +2,7 @@ package demo.codeexample.logger;
 
 import demo.codeexample.enums.LoggerAction;
 import demo.codeexample.project.ProjectEntity;
-import demo.codeexample.user.UserEntity;
+import demo.codeexample.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

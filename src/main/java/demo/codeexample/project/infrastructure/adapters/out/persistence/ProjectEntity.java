@@ -1,16 +1,13 @@
-package demo.codeexample.project.infrastructure.adapters.out;
+package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
 import demo.codeexample.enums.Category;
 import demo.codeexample.enums.Genre;
-import demo.codeexample.task.infrastructure.adapters.out.persistence.TaskEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Getter
