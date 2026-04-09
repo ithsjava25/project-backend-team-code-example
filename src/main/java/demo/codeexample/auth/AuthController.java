@@ -34,13 +34,12 @@ public class AuthController {
                 .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Invalid credentials");
+            throw new UnauthorizedException("Invalid password");
+            // ↑ now the global handler catches this and returns ErrorResponse
         }
 
         if (!user.isActive()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("Account is deactivated");
+            throw new UnauthorizedException("Account is deactivated");
         }
 
         String token = jwtService.generateToken(user);
