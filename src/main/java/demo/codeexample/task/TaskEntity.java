@@ -2,7 +2,7 @@ package demo.codeexample.task;
 
 import demo.codeexample.enums.TaskStatus;
 import demo.codeexample.project.ProjectEntity;
-import demo.codeexample.user.User;
+import demo.codeexample.user.doman.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;

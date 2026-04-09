@@ -1,6 +1,5 @@
-package demo.codeexample.user;
+package demo.codeexample.user.doman;
 
-import demo.codeexample.user.doman.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -2,7 +2,7 @@ package demo.codeexample.auth;
 
 import demo.codeexample.exception.UnauthorizedException;
 import demo.codeexample.security.JwtService;
-import demo.codeexample.user.User;
+import demo.codeexample.user.doman.User;
 import demo.codeexample.user.doman.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package demo.codeexample.user;
+package demo.codeexample.user.web;
 
 import demo.codeexample.user.doman.Role;
 import jakarta.validation.constraints.Email;

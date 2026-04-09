@@ -1,4 +1,4 @@
-package demo.codeexample.user;
+package demo.codeexample.user.infrastructure;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

@@ -1,4 +1,4 @@
-package demo.codeexample.user;
+package demo.codeexample.user.web;
 
 import demo.codeexample.user.application.UserService;
 import demo.codeexample.user.doman.Role;
