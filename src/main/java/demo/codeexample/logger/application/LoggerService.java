@@ -13,6 +13,7 @@ public class LoggerService implements LoggerPort{
 
     private final LoggerRepository loggerRepository;
 
+    @Override
     public void log(LoggerAction action, Long userId, String entityType, Long entityId) {
         LoggerEntity log = new LoggerEntity();
         log.setAction(action);
