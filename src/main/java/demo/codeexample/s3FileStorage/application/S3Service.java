@@ -1,4 +1,4 @@
-package demo.codeexample.s3FileStorage;
+package demo.codeexample.s3FileStorage.application;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;

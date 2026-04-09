@@ -22,10 +22,31 @@
 
 <div id="uploadSection">
     <h3>Upload File</h3>
-    <input type="file" id="fileInput">
+    <input type="file" id="fileInput" style="display: none">
+
+    <label for="fileInput" class="button">Choose file</label>
+    <p id="fileNameDisplay" style="margin-top: 10px; font-style: italic; color: #555;">No file chosen</p>
+
     <button onclick="uploadFile()" class="button">Upload to S3</button>
     <p id="status"></p>
 </div>
+<script>
+    // Vi hämtar elementen
+    const fileInput = document.getElementById('fileInput');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+    // Vi lyssnar efter "change"-eventet (när användaren valt en fil)
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files.length > 0) {
+            // Hämta namnet på den första filen
+            const fileName = this.files[0].name;
+            // Uppdatera texten på skärmen
+            fileNameDisplay.textContent = "Selected file: " + fileName;
+        } else {
+            fileNameDisplay.textContent = "No file chosen";
+        }
+    });
+</script>
 
 <h3>Files in S3</h3>
 <table class="file-list">
@@ -66,6 +87,8 @@
         if (input.files.length === 0) return;
         const file = input.files[0];
         const status = document.getElementById('status');
+
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
         status.innerText = 'Getting presigned URL...';
 
         try {
@@ -92,6 +115,12 @@
 
                 status.innerText = 'Upload and notification successful!';
                 fetchFiles();
+
+                if (fileNameDisplay) {
+                    fileNameDisplay.textContent = "no file chosen"
+                }
+                input.value = '';
+
             } else {
                 status.innerText = 'S3 Upload failed: ' + putRes.statusText;
             }
@@ -121,7 +150,7 @@
         if (!res) return;
 
         if (res.ok) {
-            fetchFiles();
+            await fetchFiles();
         } else {
             alert('Delete failed!');
         }

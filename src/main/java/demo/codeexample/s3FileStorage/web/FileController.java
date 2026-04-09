@@ -1,5 +1,6 @@
-package demo.codeexample.s3FileStorage;
+package demo.codeexample.s3FileStorage.web;
 
+import demo.codeexample.s3FileStorage.application.S3Service;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
