@@ -1,0 +1,39 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Get Java version from pom.xml
+      - name: Get Java version
+        run: |
+          JAVA_VERSION=$(mvn help:evaluate -Dexpression=maven.compiler.release -q -DforceStdout)
+          echo "JAVA_VERSION=$JAVA_VERSION" >> $GITHUB_ENV
+
+      # 3. Setup Java
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: maven
+
+      # 4. Build project
+      - name: Build
+        run: mvn clean install
+
+      # 5. Run tests
+      - name: Test
+        run: mvn test
+
