@@ -1,6 +1,6 @@
-package demo.codeexample.user;
+package demo.codeexample.user.doman;
 
-import demo.codeexample.user.doman.Role;
+import demo.codeexample.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

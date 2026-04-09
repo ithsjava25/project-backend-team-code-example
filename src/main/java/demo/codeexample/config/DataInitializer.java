@@ -2,7 +2,7 @@ package demo.codeexample.config;
 
 import demo.codeexample.user.doman.Role;
 import demo.codeexample.user.User;
-import demo.codeexample.user.UserRepository;
+import demo.codeexample.user.doman.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

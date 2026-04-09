@@ -1,6 +1,6 @@
 package demo.codeexample.security;
 
-import demo.codeexample.user.UserRepository;
+import demo.codeexample.user.doman.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -4,6 +4,7 @@ import demo.codeexample.user.*;
 import demo.codeexample.user.doman.Role;
 import demo.codeexample.exception.UserNotFoundException;
 import demo.codeexample.exception.EmailAlreadyExistsException;
+import demo.codeexample.user.doman.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
