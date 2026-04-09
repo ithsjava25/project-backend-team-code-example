@@ -30,7 +30,6 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String lastName;
-//    private String fullName;
 
     @Column(unique = true, nullable = false)
     private String email; // this is the login identifier (work email)
