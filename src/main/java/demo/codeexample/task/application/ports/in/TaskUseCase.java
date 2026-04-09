@@ -14,8 +14,7 @@ public interface TaskUseCase {
     List<Task> findAll();
     Optional<Task> findById(Long id);
 
-    Task createTask(Long id,
-                    String title,
+    Task createTask(String title,
                       String description,
                       TaskStatus status,
                       LocalDateTime deadline,
