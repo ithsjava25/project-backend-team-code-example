@@ -3,8 +3,6 @@ import demo.codeexample.comment.CommentDto;
 import demo.codeexample.comment.domain.CommentRepository;
 import demo.codeexample.comment.CreateCommentDto;
 import demo.codeexample.comment.domain.CommentEntity;
-import demo.codeexample.task.TaskEntity;
-import demo.codeexample.task.TaskRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
