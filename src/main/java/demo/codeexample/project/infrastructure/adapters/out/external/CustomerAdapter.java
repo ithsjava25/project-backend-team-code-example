@@ -1,6 +1,6 @@
 package demo.codeexample.project.infrastructure.adapters.out.external;
 
-import demo.codeexample.enums.Role;
+import demo.codeexample.user.domain.Role;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.user.UserLookup;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
-import static demo.codeexample.enums.Role.PRODUCER;
+import static demo.codeexample.user.domain.Role.PRODUCER;
 
 @Component
 public class CustomerAdapter implements UserPort {

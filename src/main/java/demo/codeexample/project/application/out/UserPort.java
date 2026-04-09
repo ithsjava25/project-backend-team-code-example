@@ -1,6 +1,6 @@
 package demo.codeexample.project.application.out;
 
-import demo.codeexample.enums.Role;
+import demo.codeexample.user.domain.Role;
 import demo.codeexample.user.UserLookup;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package demo.codeexample.enums;
+package demo.codeexample.project.domain;
 
 public enum Genre {
     ACTION,

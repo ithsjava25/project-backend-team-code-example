@@ -1,6 +1,6 @@
 package demo.codeexample.logger;
 
-import demo.codeexample.enums.LoggerAction;
+import demo.codeexample.logger.domain.LoggerAction;
 
 public interface LoggerPort {
     void log(LoggerAction action,

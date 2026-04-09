@@ -1,7 +1,7 @@
 package demo.codeexample.task.application.ports.usecase;
 
-import demo.codeexample.enums.LoggerAction;
-import demo.codeexample.enums.TaskStatus;
+import demo.codeexample.logger.domain.LoggerAction;
+import demo.codeexample.task.domain.TaskStatus;
 import demo.codeexample.logger.LoggerPort;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;

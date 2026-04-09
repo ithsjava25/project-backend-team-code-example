@@ -1,6 +1,6 @@
 package demo.codeexample.task.infrastructure.adapters.out.persistence;
 
-import demo.codeexample.enums.TaskStatus;
+import demo.codeexample.task.domain.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;

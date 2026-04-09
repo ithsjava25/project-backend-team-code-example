@@ -1,12 +1,11 @@
 package demo.codeexample.project.application.in;
 
-import demo.codeexample.enums.Category;
-import demo.codeexample.enums.Genre;
+import demo.codeexample.project.domain.Category;
+import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.domain.Project;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public interface ProjectUseCase {
 

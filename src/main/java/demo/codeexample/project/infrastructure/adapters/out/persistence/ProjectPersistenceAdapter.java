@@ -1,7 +1,7 @@
 package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
-import demo.codeexample.enums.Category;
-import demo.codeexample.enums.Genre;
+import demo.codeexample.project.domain.Category;
+import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.domain.Project;
 import org.modelmapper.ModelMapper;
