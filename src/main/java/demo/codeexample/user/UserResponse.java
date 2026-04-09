@@ -1,6 +1,6 @@
 package demo.codeexample.user;
 
-import demo.codeexample.enums.Role;
+import demo.codeexample.user.doman.Role;
 import lombok.Data;
 
 import java.time.LocalDateTime;

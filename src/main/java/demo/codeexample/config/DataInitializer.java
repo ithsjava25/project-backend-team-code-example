@@ -1,6 +1,6 @@
 package demo.codeexample.config;
 
-import demo.codeexample.enums.Role;
+import demo.codeexample.user.doman.Role;
 import demo.codeexample.user.User;
 import demo.codeexample.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;

@@ -1,6 +1,6 @@
 package demo.codeexample.user;
 
-import demo.codeexample.enums.Role;
+import demo.codeexample.user.doman.Role;
 import demo.codeexample.exception.UserNotFoundException;
 import demo.codeexample.exception.EmailAlreadyExistsException;
 import org.springframework.security.crypto.password.PasswordEncoder;

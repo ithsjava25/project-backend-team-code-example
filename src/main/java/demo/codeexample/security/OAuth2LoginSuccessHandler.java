@@ -1,6 +1,6 @@
 package demo.codeexample.security;
 
-import demo.codeexample.enums.Role;
+import demo.codeexample.user.doman.Role;
 import demo.codeexample.user.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

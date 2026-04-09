@@ -1,6 +1,6 @@
 package demo.codeexample.user;
 
-import demo.codeexample.enums.Role;
+import demo.codeexample.user.doman.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
