@@ -1,6 +1,7 @@
 package demo.codeexample.user;
 
 import demo.codeexample.enums.Role;
+import demo.codeexample.exception.UserNotFoundException;
 import demo.codeexample.user.exception.EmailAlreadyExistsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,7 @@ public class UserService {
 
     public UserResponse getUserById(Long id) {
         UserEntity user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
         return UserResponse.fromEntity(user);
     }
 

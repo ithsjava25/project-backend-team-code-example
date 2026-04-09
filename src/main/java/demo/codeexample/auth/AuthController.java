@@ -1,5 +1,6 @@
 package demo.codeexample.auth;
 
+import demo.codeexample.exception.UnauthorizedException;
 import demo.codeexample.security.JwtService;
 import demo.codeexample.user.UserEntity;
 import demo.codeexample.user.UserRepository;
@@ -30,7 +31,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
         UserEntity user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+                .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
