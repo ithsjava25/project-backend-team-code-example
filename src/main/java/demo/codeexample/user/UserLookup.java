@@ -19,6 +19,10 @@ public interface UserLookup {
 
     boolean validateUserRole(Long id, Role role);
 
-    record UserDto(Long id, String firstName, String lastName, String email, Role role){}
+    UserDto createUser(CreateUserRequestDTO request);
+    UserDto updateRole(Long id, Role newRole);
+    void deactivateUser(Long id);
+
+//    record UserDto(Long id, String firstName, String lastName, String email, Role role){}
 }
 
