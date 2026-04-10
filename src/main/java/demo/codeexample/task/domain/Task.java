@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Task {
 
     @Setter(AccessLevel.NONE)
-    private final Long taskId ;
+    private final Long id ;
     private final String title ;
     private final String description ;
     private final TaskStatus status ;
@@ -20,8 +20,8 @@ public class Task {
     private final Long userId ;
 
 
-    public Task(Long taskId, String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
-        this.taskId = taskId;
+    public Task(Long id, String title, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;

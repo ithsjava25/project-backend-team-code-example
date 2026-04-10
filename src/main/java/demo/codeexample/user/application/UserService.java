@@ -1,6 +1,6 @@
 package demo.codeexample.user.application;
 
-import demo.codeexample.exceptions.EmailAlreadyExistsException;
+import demo.codeexample.user.domain.Role;
 import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.user.CreateUserRequestDTO;
 import demo.codeexample.user.UserDto;
@@ -14,10 +14,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserLookup {
@@ -32,17 +33,9 @@ public class UserService implements UserLookup {
     // ─────────────────────────────────────────
 
     @Override
-    public List<UserDto> findAll() {
-        return repository.findAll().stream()
-                .map(entity -> mapper.map(entity, UserDto.class))
-                .toList();
-    }
-
-    @Override
-    public List<UserDto> findByRole(Role role) {
-        return repository.findAllByRoleIgnoreCase(role).stream()
-                .map(entity -> mapper.map(entity, UserDto.class))
-                .toList();
+    public Optional<UserDto> findByFullName(String firstname, String lastName) {
+        return repository.findByFirstNameAndLastNameIgnoreCase(firstname, lastName)
+                .map(entity -> mapper.map(entity, UserDto.class));
     }
 
     @Override
@@ -63,77 +56,34 @@ public class UserService implements UserLookup {
                 .map(entity -> mapper.map(entity, UserDto.class));
     }
 
+    /**
+     * Checks that each employee in set has unique role. Starts by converting id -> UserDto in order to see if user exists.
+     * Continues with mapping each user to their role.
+     * @param employeesId
+     * @return true if each user has unique role
+     */
     @Override
-    public boolean validateUserRole(Long id, Role role) {
-        UserDto user = findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-        return user.getRole() == role;
-    }
+    public boolean validateUniqueRoles(Set<Long> employeesId) {
+        List<Role> foundRoles = employeesId.stream()
+                .map(id -> findById(id).orElseThrow(() -> new UserNotFoundException(id)))
+                .map(UserDto::role)
+                .toList();
 
-    // ─────────────────────────────────────────
-    // WRITE OPERATIONS
-    // ─────────────────────────────────────────
-
-    @Override
-    public UserDto createUser(CreateUserRequestDTO request) {
-
-        // Check email is not already taken
-        if (repository.existsByEmail(request.getEmail())) {
-            throw new EmailAlreadyExistsException("Email already in use: "
-                    + request.getEmail());
-        }
-
-        String tempPassword = generateTempPassword();
-
-        User user = new User(
-                request.getFirstName(),
-                request.getLastName(),
-                request.getEmail(),
-                request.getRole(),
-                passwordEncoder.encode(tempPassword)
-        );
-        user.setActive(true);
-        user.setPasswordResetRequired(true);
-
-        User saved = repository.save(user);
-
-        // Send welcome email — don't fail if email fails
-        try {
-            emailService.sendWelcomeEmail(
-                    saved.getEmail(),
-                    saved.getFirstName(),
-                    tempPassword  // plain text — only moment it exists!
-            );
-        } catch (Exception e) {
-            System.err.println("Failed to send welcome email: " + e.getMessage());
-        }
-
-        return mapper.map(saved, UserDto.class);
+        List<Role> requiredRoles = List.of(Role.PRODUCER, Role.DIRECTOR, Role.EDITOR, Role.RECRUITER);
+        return new HashSet<>(foundRoles).containsAll(requiredRoles);
     }
 
     @Override
-    public UserDto updateRole(Long id, Role newRole) {
-        User user = repository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-
-        user.setRole(newRole);
-        return mapper.map(repository.save(user), UserDto.class);
+    public List<UserDto> findAll() {
+        return repository.findAll().stream()
+                .map(entity -> mapper.map(entity, UserDto.class))
+                .toList();
     }
 
     @Override
-    public void deactivateUser(Long id) {
-        User user = repository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-
-        user.setActive(false);
-        repository.save(user);
-    }
-
-    // ─────────────────────────────────────────
-    // PRIVATE HELPERS
-    // ─────────────────────────────────────────
-
-    private String generateTempPassword() {
-        return UUID.randomUUID().toString().substring(0, 8);
+    public List<UserDto> findByRole(Role role) {
+        return repository.findAllByRoleIgnoreCase(role).stream()
+                .map(entity -> mapper.map(entity, UserDto.class))
+                .toList();
     }
 }

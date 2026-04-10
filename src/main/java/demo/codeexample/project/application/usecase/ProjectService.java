@@ -2,7 +2,6 @@ package demo.codeexample.project.application.usecase;
 
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
-import demo.codeexample.exceptions.UserAuthorizationException;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.UserPort;
@@ -10,6 +9,7 @@ import demo.codeexample.project.domain.Project;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public class ProjectService implements ProjectUseCase {
 
@@ -37,12 +37,12 @@ public class ProjectService implements ProjectUseCase {
     }
 
     @Override
-    public Project createProject(String title, String description, LocalDate releaseDate, Long producerId,
+    public Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
                                  Category category, Genre genre, String imageURL) {
-        if(!userPort.validateProducer(producerId))
-            throw new UserAuthorizationException(producerId);
 
-        Project newProject = Project.createNew(title, description, releaseDate, producerId,
+        userPort.validateEmployees(employeesId);
+
+        Project newProject = Project.createNew(title, description, releaseDate, employeesId,
                 category, genre, imageURL);
         return repository.save(newProject);
     }

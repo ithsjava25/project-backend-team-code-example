@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @Entity
-public class CommentEntity {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class CommentEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public CommentEntity(String content  ) {
+    public Comment(String content  ) {
         this.content = content;
         //.writerId = writerId;
     }

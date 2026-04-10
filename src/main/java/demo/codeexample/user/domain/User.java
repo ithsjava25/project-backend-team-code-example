@@ -1,12 +1,13 @@
 package demo.codeexample.user.domain;
 
+import demo.codeexample.shared.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
-import java.time.LocalDateTime;
+
 import java.util.Objects;
 
 
@@ -30,26 +31,12 @@ public class User {
     private String lastName;
 
     @Column(unique = true, nullable = false)
-    private String email; // this is the login identifier (work email)
+    private String email;
 
-    @Column(nullable = false)
-    private String password; // will be BCrypt hashed - never plain text
-
-    @Enumerated(EnumType.STRING) // Stores "ADMIN" not "0" in DB - readable
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role; // Enum PRODUCER, DIRECTOR, RECRUITER, EDITOR, VISITOR
 
-    @Column(nullable = false)
-    private boolean active = true;              // Can be deactivated by admin
-
-    @Column(nullable = false)
-    private boolean passwordResetRequired = true; // Force change on first login
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private String password;
 
     public User(String firstName, String lastName, String email, Role role, String password) {
         this.firstName = firstName;
@@ -74,4 +61,10 @@ public class User {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
+
+//    //Relationships
+//    @OneToMany(mappedBy = "assignedEmployees")
+//    private List<TaskEntity> tasks;
+
 }
