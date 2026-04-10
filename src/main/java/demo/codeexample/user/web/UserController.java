@@ -25,20 +25,20 @@ public class UserController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequestDTO request) {
-        UserResponse created = userService.createUser(request);
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserRequestDTO request) {
+        UserDto created = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR')")
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR') or #id == authentication.principal")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
@@ -48,8 +48,8 @@ public class UserController {
 
     @PatchMapping("/{id}/role")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> updateRole(@PathVariable Long id,
-                                                   @RequestBody Role newRole) {
+    public ResponseEntity<UserDto> updateRole(@PathVariable Long id,
+                                              @RequestBody Role newRole) {
         return ResponseEntity.ok(userService.updateRole(id, newRole));
     }
 

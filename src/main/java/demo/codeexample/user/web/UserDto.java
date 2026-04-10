@@ -11,7 +11,7 @@ Critically — no password, not even the hash. */
 
 
 @Data
-public class UserResponse {
+public class UserDto {
 
     private Long id;
     private String firstName;
@@ -23,15 +23,15 @@ public class UserResponse {
 
 
     /* Why a static factory method fromEntity()?
-    It keeps the mapping logic inside UserResponse itself —
+    It keeps the mapping logic inside UserDto itself —
     the class knows how to build itself from an entity.
     Clean and easy to find.
     The alternative is writing this mapping in the service, which clutters it.*/
 
 
     // Constructor mapping from entity
-    public static UserResponse fromEntity(User user) {
-        UserResponse response = new UserResponse();
+    public static UserDto fromEntity(User user) {
+        UserDto response = new UserDto();
         response.id = user.getId();
         response.firstName = user.getFirstName();
         response.lastName = user.getLastName();

@@ -7,7 +7,7 @@ import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
 import demo.codeexample.user.web.CreateUserRequestDTO;
-import demo.codeexample.user.web.UserResponse;
+import demo.codeexample.user.web.UserDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class UserService {
         this.emailService = emailService;
     }
 
-    public UserResponse createUser(CreateUserRequestDTO request) {
+    public UserDto createUser(CreateUserRequestDTO request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException("Email already in use");
@@ -72,28 +72,28 @@ public class UserService {
             System.err.println("Failed to send welcome email: " + e.getMessage());
         }
 
-        return UserResponse.fromEntity(saved);
+        return UserDto.fromEntity(saved);
 
     }
 
-    public UserResponse getUserById(Long id) {
+    public UserDto getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
-        return UserResponse.fromEntity(user);
+        return UserDto.fromEntity(user);
     }
 
-    public List<UserResponse> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(UserResponse::fromEntity) // applies fromEntity to each user
+                .map(UserDto::fromEntity) // applies fromEntity to each user
                 .toList();
     }
 
-    public UserResponse updateRole(Long id, Role newRole) {
+    public UserDto updateRole(Long id, Role newRole) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found: " + id));
         user.setRole(newRole);
-        return UserResponse.fromEntity(userRepository.save(user));
+        return UserDto.fromEntity(userRepository.save(user));
     }
 
     public void deactivateUser(Long id) {
