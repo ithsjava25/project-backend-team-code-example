@@ -20,12 +20,10 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserRepository userRepository;
 
-    public JwtAuthenticationFilter(JwtService jwtService,
-                                   UserRepository userRepository) {
+
+    public JwtAuthenticationFilter(JwtService jwtService) {
         this.jwtService = jwtService;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -39,7 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            // No token — let it pass, Spring Security will handle it
             filterChain.doFilter(request, response);
             return;
         }
@@ -54,7 +51,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // 4. Extract email and load user
-        String email = jwtService.extractEmail(token);
         String role = jwtService.extractRole(token);
         Long userId = jwtService.extractUserId(token);
 
@@ -66,8 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         List.of(new SimpleGrantedAuthority("ROLE_" + role))
                 );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        // SecurityContext = Spring's memory of "who is currently logged in"
+        SecurityContextHolder.getContext().setAuthentication(authentication); // SecurityContext = Spring's memory of "who is currently logged in"
 
         // 6. Continue to the actual endpoint
         filterChain.doFilter(request, response);

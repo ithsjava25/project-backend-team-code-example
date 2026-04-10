@@ -45,7 +45,6 @@ public class UserController {
                 userService.findById(id)
                         .orElseThrow(() -> new UserNotFoundException(id))
         );
-        // ↑ was getUserById() — now findById() returns Optional, unwrap with orElseThrow
     }
 
     @PatchMapping("/{id}/role")
