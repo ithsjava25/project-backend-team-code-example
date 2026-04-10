@@ -1,14 +1,11 @@
 package demo.codeexample.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
-
-
-
     public UserNotFoundException(Long id) {
-        super("User with id " + id + " does not exist in database");
+        super("User not found with id: " + id);
     }
 
-    // Keep for flexibility
+    // Keep your string version too for flexibility
     public UserNotFoundException(String message) {
         super(message);
     }
