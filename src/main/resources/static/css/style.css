@@ -1,0 +1,129 @@
+/* style.css */
+:root {
+    --bg-color: #0a0510;
+    --nav-bg: #1a0b2e;
+    --accent-color: #d4af37;
+    --primary-purple: #6a1b9a;
+    --text-color: #f4f4f4;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Navigation Bar */
+nav {
+    background-color: var(--nav-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 5%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid var(--primary-purple);
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: var(--accent-color);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #ccc;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
+}
+
+.btn-login {
+    background: linear-gradient(45deg, var(--primary-purple), #9c27b0);
+    color: white !important;
+    padding: 10px 24px;
+    border-radius: 50px;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
+}
+
+/* Hero Section */
+.hero {
+    height: 500px;
+    background: linear-gradient(to right, rgba(10, 5, 16, 0.9), rgba(10, 5, 16, 0.2)),
+    url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2025&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 5%;
+}
+
+/* Row & Cards */
+.content-section {
+    padding: 3rem 5%;
+}
+
+.row-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--accent-color);
+    padding-left: 15px;
+}
+
+.movie-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 20px 0;
+    scrollbar-width: none;
+}
+
+.movie-row::-webkit-scrollbar {
+    display: none;
+}
+
+.movie-card {
+    min-width: 220px;
+    height: 330px;
+    background-color: #1a0b2e;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.movie-card:hover {
+    transform: scale(1.08);
+    z-index: 10;
+    border-color: var(--accent-color);
+}
+
+.movie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
