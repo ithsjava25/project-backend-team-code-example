@@ -32,6 +32,10 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    public Long extractUserId(String token) {
+        return parseClaims(token).get("userId", Long.class);
+    }
+
     // Called after successful login — creates the token
     public String generateToken(User user) {
         return Jwts.builder()

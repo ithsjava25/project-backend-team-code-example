@@ -4,6 +4,8 @@ import demo.codeexample.exceptions.UnauthorizedException;
 import demo.codeexample.security.JwtService;
 import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,13 +30,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new UnauthorizedException("Invalid password");
+            throw new UnauthorizedException("Invalid credentials");
             // ↑ now the global handler catches this and returns ErrorResponse
         }
 

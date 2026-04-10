@@ -15,6 +15,7 @@ public class EmailService {
 
     public void sendWelcomeEmail(String toEmail, String firstName, String tempPassword) {
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply@filmstudio.com");
         message.setTo(toEmail);
         message.setSubject("Welcome to FilmStudio - Your Account Details");
         message.setText("""
