@@ -136,6 +136,13 @@ public class UserService implements UserLookup {
     @Override
     public UserDto createOAuthUser(String email, String firstName, String lastName) {
 
+        //Guard againt race conditions in concurrent OAuth2 logins
+        if (repository.existsByEmail(email)) {
+            return repository.findByEmail(email)
+                    .map(entity -> mapper.map(entity, UserDto.class))
+                    .orElseThrow();
+        }
+
         User newUser = new User();
         newUser.setEmail(email);
         newUser.setFirstName(firstName != null ? firstName : "Unknown");

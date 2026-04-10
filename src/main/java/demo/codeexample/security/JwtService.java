@@ -2,11 +2,12 @@ package demo.codeexample.security;
 
 import demo.codeexample.user.Role;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.oauth2.jwt.JwtException;
+
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -54,7 +55,7 @@ public class JwtService {
         try {
             parseClaims(token);
             return true;
-        } catch (JwtException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }

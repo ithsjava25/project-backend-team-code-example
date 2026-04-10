@@ -49,6 +49,9 @@ public class AuthService {
     public void changePassword(ChangePasswordRequest request, String authHeader) {
 
         // Extract email from token
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new UnauthorizedException("Invalid authorization header");
+        }
         String token = authHeader.substring(7);
         String email = jwtService.extractEmail(token);
 
