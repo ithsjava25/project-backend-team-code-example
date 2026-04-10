@@ -1,6 +1,6 @@
 package demo.codeexample.security;
 
-import demo.codeexample.user.domain.Role;
+import demo.codeexample.user.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

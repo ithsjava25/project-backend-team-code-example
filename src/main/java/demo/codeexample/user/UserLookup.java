@@ -1,7 +1,5 @@
 package demo.codeexample.user;
 
-import demo.codeexample.user.domain.Role;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +32,8 @@ public interface UserLookup {
     // ─────────────────────────────────────────
     // AUTH OPERATIONS — only for auth module!
     // ─────────────────────────────────────────
+
+    UserDto createOAuthUser(String email, String firstName, String lastName);
 
     Optional<UserAuthDto> findAuthByEmail(String email);
     // ↑ returns password hash — ONLY auth module should call this!

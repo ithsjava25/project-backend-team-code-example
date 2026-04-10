@@ -5,7 +5,7 @@ import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.user.CreateUserRequestDTO;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
-import demo.codeexample.user.domain.Role;
+import demo.codeexample.user.Role;
 import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
@@ -132,6 +132,22 @@ public class UserService implements UserLookup {
     // ─────────────────────────────────────────
     // AUTH OPERATIONS
     // ─────────────────────────────────────────
+
+    @Override
+    public UserDto createOAuthUser(String email, String firstName, String lastName) {
+
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setFirstName(firstName != null ? firstName : "Unknown");
+        newUser.setLastName(lastName != null ? lastName : "Unknown");
+        newUser.setPassword("OAUTH2_USER_NO_PASSWORD");
+        newUser.setRole(Role.VISITOR);
+        newUser.setActive(true);
+        newUser.setPasswordResetRequired(false);
+
+        return mapper.map(repository.save(newUser), UserDto.class);
+    }
+
 
     @Override
     public Optional<UserAuthDto> findAuthByEmail(String email) {

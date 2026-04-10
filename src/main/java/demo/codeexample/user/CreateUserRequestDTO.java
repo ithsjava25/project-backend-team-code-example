@@ -1,6 +1,5 @@
 package demo.codeexample.user;
 
-import demo.codeexample.user.domain.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
