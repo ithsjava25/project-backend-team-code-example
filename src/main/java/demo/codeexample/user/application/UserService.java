@@ -1,4 +1,4 @@
-ackage demo.codeexample.user.application;
+package demo.codeexample.user.application;
 
 import demo.codeexample.exceptions.EmailAlreadyExistsException;
 import demo.codeexample.exceptions.UserNotFoundException;
