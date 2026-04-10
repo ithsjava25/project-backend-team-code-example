@@ -1,6 +1,6 @@
 package demo.codeexample.user.application;
 
-import demo.codeexample.user.domain.Role;
+import demo.codeexample.shared.Role;
 import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.user.UserLookup;
 import demo.codeexample.user.domain.UserRepository;
@@ -8,8 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -37,12 +39,21 @@ public class UserService implements UserLookup {
     }
 
 
+    /**
+     * Checks that each employee in set has unique role. Starts by converting id -> UserDto in order to see if user exists.
+     * Continues with mapping each user to their role.
+     * @param employeesId
+     * @return true if each user has unique role
+     */
     @Override
-    public boolean validateUserRole(Long id, Role role) {
-        UserDto user = findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+    public boolean validateUniqueRoles(Set<Long> employeesId) {
+        List<Role> foundRoles = employeesId.stream()
+                .map(id -> findById(id).orElseThrow(() -> new UserNotFoundException(id)))
+                .map(UserDto::role)
+                .toList();
 
-        return user.role() == role;
+        List<Role> requiredRoles = List.of(Role.PRODUCER, Role.DIRECTOR, Role.EDITOR, Role.RECRUITER);
+        return new HashSet<>(foundRoles).containsAll(requiredRoles);
     }
 
     @Override

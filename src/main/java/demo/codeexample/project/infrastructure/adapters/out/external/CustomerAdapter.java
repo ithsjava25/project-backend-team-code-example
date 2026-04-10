@@ -1,14 +1,15 @@
 package demo.codeexample.project.infrastructure.adapters.out.external;
 
-import demo.codeexample.user.domain.Role;
+import demo.codeexample.shared.Role;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.user.UserLookup;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import static demo.codeexample.user.domain.Role.PRODUCER;
+import static demo.codeexample.shared.Role.PRODUCER;
 
 @Component
 public class CustomerAdapter implements UserPort {
@@ -33,9 +34,10 @@ public class CustomerAdapter implements UserPort {
     }
 
     @Override
-    public boolean validateProducer(Long id) {
-        return userLookup.validateUserRole(id, PRODUCER);
+    public boolean validateEmployees(Set<Long> employeesId) {
+        return userLookup.validateUniqueRoles(employeesId);
     }
+
 
     @Override
     public List<UserLookup.UserDto> findAll() {

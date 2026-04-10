@@ -1,5 +1,6 @@
 package demo.codeexample.user.domain;
 
+import demo.codeexample.shared.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -7,7 +8,6 @@ import org.hibernate.proxy.HibernateProxy;
 import java.util.Objects;
 
 
-//How user looks in database
 @Entity
 @Getter
 @Setter
@@ -54,10 +54,5 @@ public class User {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-
-
-//    //Relationships
-//    @OneToMany(mappedBy = "assignedEmployees")
-//    private List<TaskEntity> tasks;
 
 }
