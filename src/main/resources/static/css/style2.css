@@ -1,0 +1,92 @@
+/* style2.css */
+:root {
+    --bg-dark: #050208;         /* Djupare än din color-1 */
+    --accent-soft: #b77bb4;     /* Din color-4 */
+    --mid-lila: #794b8b;        /* Din color-3 */
+    --glass: rgba(74, 42, 106, 0.2); /* Din color-2 med transparens */
+    --text-main: #ffffff;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Playfair Display', serif; /* För en lyxig filmkänsla */
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Minimalist Navigation */
+.nav-minimal {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 5%;
+    align-items: center;
+    border-bottom: 1px solid rgba(183, 123, 180, 0.2);
+}
+
+.nav-minimal a {
+    color: var(--text-main);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    transition: color 0.4s;
+}
+
+.nav-minimal a:hover {
+    color: var(--accent-soft);
+}
+
+/* Split Hero Section */
+.hero-split {
+    display: flex;
+    height: 80vh;
+    border-bottom: 1px solid var(--mid-lila);
+}
+
+.hero-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 5%;
+    background: linear-gradient(45deg, #2e1a47, #050208);
+}
+
+.hero-content h1 {
+    font-size: 5rem;
+    line-height: 0.9;
+    margin: 0;
+    font-style: italic;
+}
+
+.hero-image {
+    flex: 1;
+    background: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2071&auto=format&fit=crop') center/cover;
+    filter: sepia(50%) hue-rotate(250deg); /* Ger bilden en lila ton */
+}
+
+/* Editorial Grid */
+.editorial-section {
+    padding: 100px 5%;
+}
+
+.editorial-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+}
+
+.featured-box {
+    background: var(--glass);
+    padding: 40px;
+    border-radius: 2px;
+    border-left: 5px solid var(--accent-soft);
+}
+
+.featured-box h2 {
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: var(--accent-soft);
+}
