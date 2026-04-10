@@ -28,7 +28,7 @@ public class UserService implements UserLookup {
     private final EmailService emailService;
 
     // ─────────────────────────────────────────
-    // READ OPERATIONS (team's code)
+    // READ OPERATIONS
     // ─────────────────────────────────────────
 
     @Override
@@ -71,7 +71,7 @@ public class UserService implements UserLookup {
     }
 
     // ─────────────────────────────────────────
-    // WRITE OPERATIONS (your code)
+    // WRITE OPERATIONS
     // ─────────────────────────────────────────
 
     @Override
