@@ -70,14 +70,53 @@
         const body = document.getElementById('fileTableBody');
         body.innerHTML = '';
         files.forEach(file => {
+            if (!file || typeof file !== 'string') return;
+
             const tr = document.createElement('tr');
-            tr.innerHTML = `
-                    <td>${file}</td>
-                    <td>
-                        <button onclick="downloadFile('${file}')" class="button">Download</button>
-                        <button onclick="deleteFile('${file}')" class="button">Delete</button>
-                    </td>
-                `;
+
+            // File name cell
+            const tdName = document.createElement('td');
+            tdName.textContent = file; // Safe: prevents XSS
+
+            // Actions cell
+            const tdActions = document.createElement('td');
+
+            // Download button
+            const downloadBtn = document.createElement('button');
+            downloadBtn.textContent = 'Download';
+            downloadBtn.className = 'button';
+            downloadBtn.style.marginRight = '8px';
+            downloadBtn.addEventListener('click', async () => {
+                downloadBtn.disabled = true;
+                try {
+                    await downloadFile(file);
+                } finally {
+                    downloadBtn.disabled = false;
+                }
+            });
+
+            // Delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.className = 'button';
+            deleteBtn.addEventListener('click', async () => {
+                const confirmed = confirm(`Delete "${file}"?`);
+                if (!confirmed) return;
+
+                deleteBtn.disabled = true;
+                try {
+                    await deleteFile(file);
+                } finally {
+                    deleteBtn.disabled = false;
+                }
+            });
+
+            // Assemble row
+            tdActions.appendChild(downloadBtn);
+            tdActions.appendChild(deleteBtn);
+            tr.appendChild(tdName);
+            tr.appendChild(tdActions);
+
             body.appendChild(tr);
         });
     }

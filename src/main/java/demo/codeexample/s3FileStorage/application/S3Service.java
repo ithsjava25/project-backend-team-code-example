@@ -1,6 +1,7 @@
 package demo.codeexample.s3FileStorage.application;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
@@ -20,6 +21,9 @@ public class S3Service {
     private final S3Presigner s3Presigner;
     private static final String BUCKET_NAME = "my-bucket";
 
+    @Value("${app.cors.allowed-origin:http://localhost:8080}")
+    private String allowedOrigin;
+
     public S3Service(S3Client s3Client, S3Presigner s3Presigner) {
         this.s3Client = s3Client;
         this.s3Presigner = s3Presigner;
@@ -32,7 +36,7 @@ public class S3Service {
                     .bucket(BUCKET_NAME)
                     .corsConfiguration(conf -> conf
                             .corsRules(CORSRule.builder()
-                                    .allowedOrigins("http://localhost:8080")
+                                    .allowedOrigins(allowedOrigin)
                                     .allowedMethods("GET", "PUT", "POST", "DELETE", "HEAD")
                                     .allowedHeaders("*")
                                     .build())
@@ -43,11 +47,9 @@ public class S3Service {
         }
     }
     public List<String> listFiles() {
-        ListObjectsV2Request listObjectsV2Request = ListObjectsV2Request.builder()
-                .bucket(BUCKET_NAME)
-                .build();
-        ListObjectsV2Response listObjectsV2Response = s3Client.listObjectsV2(listObjectsV2Request);
-        return listObjectsV2Response.contents().stream()
+        return s3Client.listObjectsV2Paginator(req -> req.bucket(BUCKET_NAME))
+                .contents()
+                .stream()
                 .map(S3Object::key)
                 .toList();
     }
@@ -63,7 +65,7 @@ public class S3Service {
     public String generatePresignedUploadUrl(String fileName, String contentType) {
         PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
                 .signatureDuration(Duration.ofMinutes(10))
-                .putObjectRequest(objectRequst -> objectRequst
+                .putObjectRequest(objectRequest -> objectRequest
                         .bucket(BUCKET_NAME)
                         .key(fileName)
                         .contentType(contentType)
