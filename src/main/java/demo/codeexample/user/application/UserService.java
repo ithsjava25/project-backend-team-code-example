@@ -6,8 +6,8 @@ import demo.codeexample.exceptions.EmailAlreadyExistsException;
 import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
-import demo.codeexample.user.web.CreateUserRequestDTO;
-import demo.codeexample.user.web.UserDto;
+import demo.codeexample.user.CreateUserRequestDTO;
+import demo.codeexample.user.UserDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

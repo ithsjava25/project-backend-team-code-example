@@ -1,5 +1,7 @@
 package demo.codeexample.user.web;
 
+import demo.codeexample.user.CreateUserRequestDTO;
+import demo.codeexample.user.UserDto;
 import demo.codeexample.user.application.UserService;
 import demo.codeexample.user.domain.Role;
 import jakarta.validation.Valid;

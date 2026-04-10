@@ -65,8 +65,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 "{\"token\": \"" + token + "\", \"role\": \"" + user.getRole() + "\"}"
         );
 
-
-
     }
 
     private User createNewOAuthUser(String email, String firstName, String lastName) {
@@ -87,8 +85,4 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         return userRepository.save(newUser);
 
     }
-
-
-
-
 }
