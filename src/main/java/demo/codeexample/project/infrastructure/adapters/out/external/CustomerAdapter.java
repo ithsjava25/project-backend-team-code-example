@@ -2,6 +2,7 @@ package demo.codeexample.project.infrastructure.adapters.out.external;
 
 import demo.codeexample.shared.Role;
 import demo.codeexample.project.application.out.UserPort;
+import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +24,13 @@ public class CustomerAdapter implements UserPort {
     @Override
     public Optional<UserInfo> findById(Long id) {
         return userLookup.findById(id)
-                .map(dto -> new UserInfo(dto.id(), dto.firstName(), dto.lastName(), dto.role()));
+                .map(dto -> new UserInfo(dto.getId(), dto.getFirstName(), dto.getLastName(), dto.getRole()));
     }
 
     @Override
     public List<UserInfo> findByRole(Role role) {
         return userLookup.findByRole(role).stream()
-                .map(dto -> new UserInfo(dto.id(), dto.firstName(), dto.lastName(), dto.role()))
+                .map(dto -> new UserInfo(dto.getId(), dto.getFirstName(), dto.getLastName(), dto.getRole()))
                 .toList();
     }
 
@@ -40,7 +41,7 @@ public class CustomerAdapter implements UserPort {
 
 
     @Override
-    public List<UserLookup.UserDto> findAll() {
+    public List<UserDto> findAll() {
         return userLookup.findAll();
     }
 

@@ -20,6 +20,5 @@ public interface UserLookup {
 
     boolean validateUniqueRoles(Set<Long> employeesId);
 
-    record UserDto(Long id, String firstName, String lastName, String email, Role role){}
 }
 

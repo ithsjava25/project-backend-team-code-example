@@ -2,6 +2,7 @@ package demo.codeexample.user.application;
 
 import demo.codeexample.shared.Role;
 import demo.codeexample.exceptions.UserNotFoundException;
+import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
 import demo.codeexample.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,7 @@ public class UserService implements UserLookup {
     public boolean validateUniqueRoles(Set<Long> employeesId) {
         List<Role> foundRoles = employeesId.stream()
                 .map(id -> findById(id).orElseThrow(() -> new UserNotFoundException(id)))
-                .map(UserDto::role)
+                .map(UserDto::getRole)
                 .toList();
 
         List<Role> requiredRoles = List.of(Role.PRODUCER, Role.DIRECTOR, Role.EDITOR, Role.RECRUITER);
