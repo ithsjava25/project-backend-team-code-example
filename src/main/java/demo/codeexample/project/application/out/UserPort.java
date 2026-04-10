@@ -1,7 +1,7 @@
 package demo.codeexample.project.application.out;
 
 import demo.codeexample.shared.Role;
-import demo.codeexample.user.UserLookup;
+import demo.codeexample.user.UserDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +15,7 @@ public interface UserPort {
 
     boolean validateEmployees(Set<Long> employeesId);
 
-    List<UserLookup.UserDto> findAll();
+    List<UserDto> findAll();
 
     record UserInfo(Long id, String firstname, String lastname, Role role){}
 }

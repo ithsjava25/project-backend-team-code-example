@@ -1,9 +1,7 @@
 package demo.codeexample.user.application;
 
-import demo.codeexample.user.domain.Role;
+import demo.codeexample.shared.Role;
 import demo.codeexample.exceptions.UserNotFoundException;
-import demo.codeexample.user.CreateUserRequestDTO;
-import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
 import demo.codeexample.user.domain.Role;
 import demo.codeexample.user.domain.User;
@@ -17,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
