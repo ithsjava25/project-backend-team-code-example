@@ -130,6 +130,33 @@ public class UserService implements UserLookup {
     }
 
     // ─────────────────────────────────────────
+    // AUTH OPERATIONS
+    // ─────────────────────────────────────────
+
+    @Override
+    public Optional<UserAuthDto> findAuthByEmail(String email) {
+        return repository.findByEmail(email)
+                .map(user -> new UserAuthDto(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getPassword(),        // ← only time password leaves user module
+                        user.getRole(),
+                        user.isActive(),
+                        user.isPasswordResetRequired()
+                ));
+    }
+
+    @Override
+    public void updatePassword(String email, String newEncodedPassword) {
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+
+        user.setPassword(newEncodedPassword);
+        user.setPasswordResetRequired(false);  // ← reset flag cleared automatically
+        repository.save(user);
+    }
+
+    // ─────────────────────────────────────────
     // PRIVATE HELPERS
     // ─────────────────────────────────────────
 
