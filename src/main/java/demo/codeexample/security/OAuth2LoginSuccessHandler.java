@@ -49,7 +49,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         }
 
         // 4. Issue YOUR JWT token — same as normal login!
-        String token = jwtService.generateToken(user);
+        String token = jwtService.generateToken(
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
 
         // 5. Return token to frontend
         // For a REST API, redirect with token as query parameter
