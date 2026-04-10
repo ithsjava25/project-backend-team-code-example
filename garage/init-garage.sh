@@ -18,6 +18,10 @@ done
 
 echo "--- 🆔 Hämtar Node ID ---"
 NODE_ID=$(garage node id | grep -oE '[0-9a-f]{64}' | head -n 1 | cut -c1-16)
+if [ -z "$NODE_ID" ]; then
+    echo "❌ Failed to extract Node ID"
+    exit 1
+fi
 echo "✅ Rent Node ID: $NODE_ID"
 
 echo "--- 🔍 Kontrollerar Layout-status ---"
