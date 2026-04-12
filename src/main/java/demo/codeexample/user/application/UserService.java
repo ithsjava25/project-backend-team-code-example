@@ -5,7 +5,7 @@ import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.user.CreateUserRequestDTO;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
-import demo.codeexample.user.domain.Role;
+import demo.codeexample.user.Role;
 import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
@@ -126,6 +126,56 @@ public class UserService implements UserLookup {
                 .orElseThrow(() -> new UserNotFoundException(id));
 
         user.setActive(false);
+        repository.save(user);
+    }
+
+    // ─────────────────────────────────────────
+    // AUTH OPERATIONS
+    // ─────────────────────────────────────────
+
+    @Override
+    public UserDto createOAuthUser(String email, String firstName, String lastName) {
+
+        //Guard againt race conditions in concurrent OAuth2 logins
+        if (repository.existsByEmail(email)) {
+            return repository.findByEmail(email)
+                    .map(entity -> mapper.map(entity, UserDto.class))
+                    .orElseThrow();
+        }
+
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setFirstName(firstName != null ? firstName : "Unknown");
+        newUser.setLastName(lastName != null ? lastName : "Unknown");
+        newUser.setPassword("OAUTH2_USER_NO_PASSWORD");
+        newUser.setRole(Role.VISITOR);
+        newUser.setActive(true);
+        newUser.setPasswordResetRequired(false);
+
+        return mapper.map(repository.save(newUser), UserDto.class);
+    }
+
+
+    @Override
+    public Optional<UserAuthDto> findAuthByEmail(String email) {
+        return repository.findByEmail(email)
+                .map(user -> new UserAuthDto(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getPassword(),        // ← only time password leaves user module
+                        user.getRole(),
+                        user.isActive(),
+                        user.isPasswordResetRequired()
+                ));
+    }
+
+    @Override
+    public void updatePassword(String email, String newEncodedPassword) {
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+
+        user.setPassword(newEncodedPassword);
+        user.setPasswordResetRequired(false);  // ← reset flag cleared automatically
         repository.save(user);
     }
 

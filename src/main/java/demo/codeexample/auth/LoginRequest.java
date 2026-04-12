@@ -1,7 +1,5 @@
 package demo.codeexample.auth;
 
-// LoginRequest.java — what frontend sends
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

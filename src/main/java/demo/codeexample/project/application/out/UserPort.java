@@ -2,7 +2,7 @@ package demo.codeexample.project.application.out;
 
 
 
-import demo.codeexample.user.domain.Role;
+import demo.codeexample.user.Role;
 
 import java.util.List;
 import java.util.Optional;
