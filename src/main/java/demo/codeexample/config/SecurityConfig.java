@@ -26,15 +26,6 @@ public class SecurityConfig {
         this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
     }
 
-    /*Why SessionCreationPolicy.STATELESS? Tells Spring never to create an HttpSession.
-    With JWT, every request is self-contained — no server memory of previous requests.
-    This is what makes JWT scalable.*/
-
-    /*Why csrf.disable()? CSRF attacks exploit browser cookies and sessions.
-    Since we use JWT in the Authorization header (not cookies), CSRF attacks don't apply.
-    Disabling it removes unnecessary overhead.*/
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -47,12 +38,15 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/api/auth/**").permitAll()
-                                // login is public
+
+                                .requestMatchers("/web/login").permitAll()  // login is public
+                                .requestMatchers("/web/login").permitAll()  // allow public page. Fredriks page!
+
+                                .requestMatchers("/oauth2/**").permitAll()
                                 .requestMatchers("/login/oauth2/**").permitAll()
                                 // ↑ OAuth2 callback must be public!
-                                .requestMatchers("/oauth2/**").permitAll()
 
-                                //.requestMatchers("/api/users/**").authenticated()
+                                .requestMatchers("/api/users/**").authenticated()
                                 // only admins can manage users
 
                                 .anyRequest().authenticated()

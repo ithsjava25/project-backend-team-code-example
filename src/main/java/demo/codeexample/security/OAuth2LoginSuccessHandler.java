@@ -56,10 +56,12 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 5. Store in cookie + redirect based on role
         Cookie cookie = new Cookie("jwt", token);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);     //Only send this over HTTPS
-        cookie.setAttribute("Samesite", "Strict");      //CSRF protection
         cookie.setPath("/");
         cookie.setMaxAge(86400);
+        cookie.setSecure(true);     //Only send this over HTTPS
+        cookie.setAttribute("Samesite", "Strict");      //CSRF protection
+
+
         response.addCookie(cookie);
 
         // 6. Redirect based on role
