@@ -1,5 +1,6 @@
 package demo.codeexample.user.domain;
 
+import demo.codeexample.user.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;

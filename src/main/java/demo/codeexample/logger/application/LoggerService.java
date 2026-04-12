@@ -1,7 +1,7 @@
 package demo.codeexample.logger.application;
 
 import demo.codeexample.logger.LoggerPort;
-import demo.codeexample.logger.domain.LoggerAction;
+import demo.codeexample.logger.LoggerAction;
 import demo.codeexample.logger.domain.LoggerEntity;
 import demo.codeexample.logger.domain.LoggerRepository;
 import lombok.RequiredArgsConstructor;
