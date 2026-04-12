@@ -6,7 +6,6 @@ import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.user.CreateUserRequestDTO;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
-import demo.codeexample.user.domain.Role;
 import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
