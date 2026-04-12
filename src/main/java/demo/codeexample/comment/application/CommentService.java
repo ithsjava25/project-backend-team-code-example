@@ -1,5 +1,6 @@
 package demo.codeexample.comment.application;
 import demo.codeexample.comment.CommentDto;
+import demo.codeexample.comment.CommentFacade;
 import demo.codeexample.comment.domain.CommentRepository;
 import demo.codeexample.comment.CreateCommentDto;
 import demo.codeexample.comment.domain.Comment;
@@ -12,10 +13,9 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class CommentService {
+public class CommentService implements CommentFacade {
 
     private final CommentRepository commentRepository;
-    //private final TaskRepository taskRepository;
     private final ModelMapper modelMapper;
     //private final "Some kind of Authorization service" with saved user
 
@@ -29,6 +29,19 @@ public class CommentService {
         commentRepository.save(commentEntity);
 
         return modelMapper.map(commentEntity, CommentDto.class);
+    }
+
+    @Override // Implementing the method from your Facade
+    public List<CommentDto> getCommentsForTask(long taskId) {
+        // Use a repository method to find comments by Task ID
+        return commentRepository.findAllByTaskIdOrderByCreatedAtDesc(taskId).stream()
+                .map(entity -> modelMapper.map(entity, CommentDto.class))
+                .toList();
+    }
+
+    @Override // Implementing the method from your Facade
+    public void deleteComment(long commentId) {
+        commentRepository.deleteById(commentId);
     }
 
     public List<CommentDto> getAllComments() {
