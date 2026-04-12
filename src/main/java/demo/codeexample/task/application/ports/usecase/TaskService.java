@@ -1,6 +1,6 @@
 package demo.codeexample.task.application.ports.usecase;
 
-import demo.codeexample.logger.domain.LoggerAction;
+import demo.codeexample.logger.LoggerAction;
 import demo.codeexample.task.domain.TaskStatus;
 import demo.codeexample.logger.LoggerPort;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
@@ -43,7 +43,7 @@ public class TaskService implements TaskUseCase {
         Task task = Task.createNew  (title, description, status, deadline, projectId, userId);
 
         Task savedTask = taskRepository.save(task);
-        logger.log(LoggerAction.TASK_CREATED, userId, "TASK", savedTask.getTaskId());
+        logger.log(LoggerAction.TASK_CREATED, userId, "TASK", savedTask.getId());
         return savedTask;
 
     }

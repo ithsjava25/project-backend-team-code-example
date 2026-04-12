@@ -1,5 +1,6 @@
 package demo.codeexample.project.infrastructure.adapters.out.external;
 
+import demo.codeexample.user.Role;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.domain.Role;
 import demo.codeexample.project.application.out.UserPort;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
-import static demo.codeexample.user.domain.Role.PRODUCER;
+import static demo.codeexample.user.Role.PRODUCER;
 
 @Component
 public class CustomerAdapter implements UserPort {

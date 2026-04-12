@@ -1,5 +1,6 @@
 package demo.codeexample.user.application;
 
+import demo.codeexample.user.Role;
 import demo.codeexample.exceptions.EmailAlreadyExistsException;
 import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.user.CreateUserRequestDTO;
