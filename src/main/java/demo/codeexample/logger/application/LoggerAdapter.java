@@ -1,6 +1,6 @@
 package demo.codeexample.logger.application;
 
-import demo.codeexample.logger.domain.LoggerAction;
+import demo.codeexample.logger.LoggerAction;
 import demo.codeexample.logger.LoggerLookup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Primary
 @Component
 @RequiredArgsConstructor
-public class LoggerAdapter implements LoggerLookup {
+public class LoggerAdapter implements LoggerPort {
 
     private final LoggerService loggerService;
 

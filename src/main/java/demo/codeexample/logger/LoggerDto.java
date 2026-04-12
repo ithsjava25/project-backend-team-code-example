@@ -1,6 +1,5 @@
 package demo.codeexample.logger;
 
-import demo.codeexample.logger.domain.LoggerAction;
 import lombok.Data;
 
 import java.time.LocalDateTime;

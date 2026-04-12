@@ -22,6 +22,9 @@ public class Comment {
     @Column(nullable = false, length = 300)
     private String content;
 
+    @Column
+    private Long TaskId;
+
 //    @Column(nullable = false)
 //    private Long writerId;
 
