@@ -11,7 +11,6 @@ import org.hibernate.proxy.HibernateProxy;
 import java.util.Objects;
 
 
-//How user looks in database
 @Entity
 @Getter
 @Setter
@@ -34,7 +33,7 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // Enum PRODUCER, DIRECTOR, RECRUITER, EDITOR, VISITOR
+    private Role role;
 
     private String password;
 

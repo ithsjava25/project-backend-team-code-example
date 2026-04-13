@@ -3,7 +3,7 @@ package demo.codeexample.user.application;
 import demo.codeexample.exceptions.EmailAlreadyExistsException;
 import demo.codeexample.shared.Role;
 import demo.codeexample.exceptions.UserNotFoundException;
-import demo.codeexample.user.CreateUserDTO;
+import demo.codeexample.user.CreateUserDto;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
 import demo.codeexample.user.domain.User;
@@ -14,10 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -79,9 +76,8 @@ public class UserService implements UserLookup {
     }
 
     @Override
-    public UserDto createUser(CreateUserDTO request) {
+    public UserDto createUser(CreateUserDto request) {
 
-        // Check email is not already taken
         if (repository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException("Email already in use: "
                     + request.getEmail());
@@ -96,8 +92,8 @@ public class UserService implements UserLookup {
                 request.getRole(),
                 passwordEncoder.encode(tempPassword)
         );
-        user.setActive(true);
-        user.setPasswordResetRequired(true);
+        //user.setActive(true);
+        //user.setPasswordResetRequired(true);
 
         User saved = repository.save(user);
 
@@ -129,13 +125,10 @@ public class UserService implements UserLookup {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 
-        user.setActive(false);
+        //user.setActive(false);
         repository.save(user);
     }
 
-// ─────────────────────────────────────────
-// PRIVATE HELPERS
-// ─────────────────────────────────────────
 
     private String generateTempPassword() {
         return UUID.randomUUID().toString().substring(0, 8);

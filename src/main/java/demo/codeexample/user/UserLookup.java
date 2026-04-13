@@ -20,7 +20,7 @@ public interface UserLookup {
 
     boolean validateUniqueRoles(Set<Long> employeesId);
 
-    UserDto createUser(CreateUserDTO request);
+    UserDto createUser(CreateUserDto request);
 
     UserDto updateRole(Long id, Role newRole);
 
