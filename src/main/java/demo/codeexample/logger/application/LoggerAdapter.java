@@ -1,6 +1,6 @@
 package demo.codeexample.logger.application;
 
-import demo.codeexample.logger.LoggerAction;
+import demo.codeexample.shared.LoggerAction;
 import demo.codeexample.logger.LoggerLookup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
