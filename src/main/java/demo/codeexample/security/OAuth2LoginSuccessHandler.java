@@ -44,6 +44,12 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String firstName = oAuth2User.getAttribute("given_name");
         String lastName  = oAuth2User.getAttribute("family_name");
 
+        if (email == null || email.isBlank()) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                "OAuth2 provider did not supply an email");
+            return;
+        }
+
         // Read via UserLookup, create via UserAuthPort
         UserDto user = userLookup.findByEmail(email)
                 .orElseGet(() -> userAuthPort.createOAuthUser(
