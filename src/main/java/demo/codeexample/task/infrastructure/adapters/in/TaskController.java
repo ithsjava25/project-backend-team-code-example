@@ -26,14 +26,11 @@ public class TaskController {
 
     @GetMapping("/{taskId}/view")
     public String viewTask(@PathVariable Long taskId, Model model) {
-        // 1. Get Domain Entity
         Task task = taskUseCase.findById(taskId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        // 2. Map core fields (ModelMapper matches names automatically)
         TaskResponseDto dto = modelMapper.map(task, TaskResponseDto.class);
 
-        // 3. Manually attach the comments from the other module
         dto.setComments(commentLookup.getCommentsForTask(taskId));
 
         model.addAttribute("task", dto);
