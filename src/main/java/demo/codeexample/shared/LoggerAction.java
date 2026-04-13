@@ -1,4 +1,4 @@
-package demo.codeexample.logger.domain;
+package demo.codeexample.shared;
 
 public enum LoggerAction {
     PROJECT_CREATED,
