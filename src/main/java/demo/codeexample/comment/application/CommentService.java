@@ -1,6 +1,5 @@
 package demo.codeexample.comment.application;
 import demo.codeexample.comment.CommentDto;
-import demo.codeexample.comment.CommentFacade;
 import demo.codeexample.comment.CommentLookup;
 import demo.codeexample.comment.domain.CommentRepository;
 import demo.codeexample.comment.CreateCommentDto;
