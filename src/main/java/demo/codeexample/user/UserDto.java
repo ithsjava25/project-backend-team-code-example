@@ -1,5 +1,6 @@
 package demo.codeexample.user;
 
+import demo.codeexample.shared.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

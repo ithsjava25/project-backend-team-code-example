@@ -1,6 +1,6 @@
 package demo.codeexample.security;
 
-import demo.codeexample.user.Role;
+import demo.codeexample.shared.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

@@ -1,7 +1,10 @@
 package demo.codeexample.user;
 
+import demo.codeexample.shared.Role;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserLookup {
 
@@ -18,6 +21,8 @@ public interface UserLookup {
     Optional<UserDto> findByEmail(String email);
 
     Optional<UserDto> findById(Long id);
+
+    boolean validateUniqueRoles(Set<Long> employeesId);
 
     boolean validateUserRole(Long id, Role role);
 

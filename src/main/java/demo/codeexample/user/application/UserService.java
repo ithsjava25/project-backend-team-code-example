@@ -2,13 +2,13 @@ package demo.codeexample.user.application;
 
 import demo.codeexample.exceptions.EmailAlreadyExistsException;
 import demo.codeexample.exceptions.UserNotFoundException;
+import demo.codeexample.shared.Role;
 import demo.codeexample.user.*;
 import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

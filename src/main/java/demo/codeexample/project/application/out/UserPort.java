@@ -1,11 +1,10 @@
 package demo.codeexample.project.application.out;
 
-
-
-import demo.codeexample.user.Role;
+import demo.codeexample.shared.Role;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserPort {
 
@@ -13,7 +12,7 @@ public interface UserPort {
 
     List<UserInfo> findByRole(Role role);
 
-    boolean validateProducer(Long id);
+    boolean validateEmployees(Set<Long> employeesId);
 
     List<UserInfo> findAll();
 

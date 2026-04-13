@@ -1,4 +1,4 @@
-package demo.codeexample.user;
+package demo.codeexample.shared;
 
 public enum Role {
     PRODUCER,

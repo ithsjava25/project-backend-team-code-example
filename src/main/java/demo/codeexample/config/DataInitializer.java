@@ -1,7 +1,7 @@
 package demo.codeexample.config;
 
 import demo.codeexample.user.CreateUserRequestDTO;
-import demo.codeexample.user.Role;
+import demo.codeexample.shared.Role;
 import demo.codeexample.user.UserLookup;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

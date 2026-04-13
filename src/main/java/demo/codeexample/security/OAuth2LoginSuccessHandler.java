@@ -3,13 +3,10 @@ package demo.codeexample.security;
 import demo.codeexample.user.UserAuthPort;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
-import demo.codeexample.user.Role;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
