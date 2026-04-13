@@ -1,6 +1,7 @@
 package demo.codeexample.config;
 
-import demo.codeexample.user.CreateUserRequestDTO;
+import demo.codeexample.user.CreateUserDto;
+import demo.codeexample.user.CreateUserDto;
 import demo.codeexample.shared.Role;
 import demo.codeexample.user.UserLookup;
 import org.springframework.boot.CommandLineRunner;
@@ -24,7 +25,7 @@ public class DataInitializer implements CommandLineRunner {
             return; // admin already exists — do nothing
         }
 
-        CreateUserRequestDTO adminRequest = new CreateUserRequestDTO();
+        CreateUserDto adminRequest = new CreateUserDto();
         adminRequest.setFirstName("Admin");
         adminRequest.setLastName("System");
         adminRequest.setEmail("admin@filmstudio.com");

@@ -34,9 +34,19 @@ public class CustomerAdapter implements UserPort {
                 .toList();
     }
 
+//    @Override
+//    public boolean validateEmployees(Set<Long> employeesId) {
+//        return userLookup.validateUniqueRoles(employeesId);
+//    }
+
     @Override
     public boolean validateEmployees(Set<Long> employeesId) {
-        return userLookup.validateUniqueRoles(employeesId);
+        try {
+            userLookup.validateUniqueRoles(employeesId);
+            return true;    // no exception = all roles valid ✅
+        } catch (Exception e) {
+            return false;   // TeamValidationException = invalid ✅
+        }
     }
 
 

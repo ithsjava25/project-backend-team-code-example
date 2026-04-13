@@ -30,7 +30,7 @@ public interface UserLookup {
     // WRITE OPERATIONS
     // ─────────────────────────────────────────
 
-    UserDto createUser(CreateUserRequestDTO request);
+    UserDto createUser(CreateUserDto request);
     UserDto updateRole(Long id, Role newRole);
     void deactivateUser(Long id);
 
