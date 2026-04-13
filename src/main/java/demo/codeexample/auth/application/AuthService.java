@@ -53,6 +53,9 @@ public class AuthService {
             throw new UnauthorizedException("Invalid authorization header");
         }
         String token = authHeader.substring(7);
+        if (!jwtService.isTokenValid(token)) {
+            throw new UnauthorizedException("Invalid or expired token");
+        }
         String email = jwtService.extractEmail(token);
 
         // Find user via UserLookup

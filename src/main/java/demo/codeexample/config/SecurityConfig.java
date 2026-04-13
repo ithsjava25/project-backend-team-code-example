@@ -34,7 +34,9 @@ public class SecurityConfig {
 
         if (!securityEnabled) {
             // Development mode — allow everything
-            http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+            http
+                    .csrf(csrf -> csrf.disable())
+                    .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
             return http.build();
         }
 
@@ -51,7 +53,6 @@ public class SecurityConfig {
                                 .requestMatchers("/api/auth/**").permitAll()
 
                                 .requestMatchers("/web/login").permitAll()  // login is public
-                                .requestMatchers("/web/login").permitAll()  // allow public page. Fredriks page!
 
                                 .requestMatchers("/oauth2/**").permitAll()
                                 .requestMatchers("/login/oauth2/**").permitAll()

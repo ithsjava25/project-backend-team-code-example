@@ -25,7 +25,7 @@ public class AuthController {
     @PostMapping("/change-password")
     public ResponseEntity<String> changePassword(
             @Valid @RequestBody ChangePasswordRequest request,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
         authService.changePassword(request, authHeader);
         return ResponseEntity.ok("Password changed successfully");
     }

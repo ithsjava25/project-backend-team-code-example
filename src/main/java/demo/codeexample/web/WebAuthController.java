@@ -27,7 +27,7 @@ public class WebAuthController {
     private final TemplateEngine templateEngine;
 
     // Show login page
-    @GetMapping("/login")
+    @GetMapping(value = "/login", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String loginPage(@RequestParam(required = false) String error) {
         var output = new StringOutput();

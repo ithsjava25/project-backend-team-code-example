@@ -11,6 +11,7 @@ import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -136,23 +137,38 @@ public class UserService implements UserLookup {
     @Override
     public UserDto createOAuthUser(String email, String firstName, String lastName) {
 
-        //Guard againt race conditions in concurrent OAuth2 logins
-        if (repository.existsByEmail(email)) {
-            return repository.findByEmail(email)
-                    .map(entity -> mapper.map(entity, UserDto.class))
-                    .orElseThrow();
+//        //Guard againt race conditions in concurrent OAuth2 logins
+//        if (repository.existsByEmail(email)) {
+//            return repository.findByEmail(email)
+//                    .map(entity -> mapper.map(entity, UserDto.class))
+//                    .orElseThrow();
+//        }
+
+        Optional<UserDto> existing = repository.findByEmail(email)
+                .map(entity -> mapper.map(entity, UserDto.class));
+        if (existing.isPresent()) {
+            return existing.get();
         }
+
 
         User newUser = new User();
         newUser.setEmail(email);
         newUser.setFirstName(firstName != null ? firstName : "Unknown");
         newUser.setLastName(lastName != null ? lastName : "Unknown");
-        newUser.setPassword("OAUTH2_USER_NO_PASSWORD");
+       //newUser.setPassword("OAUTH2_USER_NO_PASSWORD");
+        newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString())); //coderabbit recommendation
         newUser.setRole(Role.VISITOR);
         newUser.setActive(true);
         newUser.setPasswordResetRequired(false);
 
-        return mapper.map(repository.save(newUser), UserDto.class);
+        // return mapper.map(repository.save(newUser), UserDto.class);
+        try {
+            return mapper.map(repository.save(newUser), UserDto.class);
+        } catch (DataIntegrityViolationException ex) {
+            return repository.findByEmail(email)
+                    .map(entity -> mapper.map(entity, UserDto.class))
+                    .orElseThrow(() -> ex);
+        }
     }
 
 
