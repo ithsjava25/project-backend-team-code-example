@@ -2,6 +2,7 @@ package demo.codeexample.user.domain;
 
 import demo.codeexample.shared.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,7 +24,7 @@ public class User {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String firstName;
 
     @Column(nullable = false)
@@ -33,9 +34,12 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
+    @Column(nullable = false)
     private String password;
+
 
     public User(String firstName, String lastName, String email, Role role, String password) {
         this.firstName = firstName;

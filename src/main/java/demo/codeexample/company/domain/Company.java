@@ -34,16 +34,17 @@ public class Company {
     @Email
     private String email;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "company_projects", joinColumns = @JoinColumn(name = "company_id"))
+    @Column(name = "project_id")
     Set<Long> projectsId = new HashSet<>();
-    Set<Long> employeesId = new HashSet<>();
 
 
-    public Company(String companyName, Address address, String email, Set<Long> projectsId, Set<Long> employeesId){
+    public Company(String companyName, Address address, String email, Set<Long> projectsId){
         this.companyName = companyName;
         this.address = address;
         this.email = email;
         this.projectsId = projectsId;
-        this.employeesId = employeesId;
     }
 
     @Override

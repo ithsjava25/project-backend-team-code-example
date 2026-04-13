@@ -32,11 +32,8 @@ public class ProjectEntity {
 
     private LocalDate releaseDate;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "project_employee",
-            joinColumns = @JoinColumn(name = "project_id")
-    )
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "project_employees", joinColumns = @JoinColumn(name = "project_id"))
     @Column(name = "employee_id")
     private Set<Long> employeesId = new HashSet<>();
 
