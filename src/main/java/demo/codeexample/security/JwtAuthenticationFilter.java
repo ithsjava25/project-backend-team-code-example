@@ -14,8 +14,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-/* Guards Every Request. This runs on every single HTTP request before it reaches your controller:*/
-
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 

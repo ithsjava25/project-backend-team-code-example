@@ -16,9 +16,6 @@ import java.util.Date;
 @Service
 public class JwtService {
 
- /*Why @Value("${jwt.secret}")? Injects the value from application.properties at runtime.
-    The class doesn't hardcode secrets — it reads them from configuration.*/
-
     @Value("${jwt.secret}")
     private String secretKey;
 
