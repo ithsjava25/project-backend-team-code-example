@@ -1,7 +1,5 @@
 package demo.codeexample.task.infrastructure.adapters.in;
-
-import demo.codeexample.comment.CommentDto;
-import demo.codeexample.comment.CommentFacade;
+import demo.codeexample.comment.CommentLookup;
 import demo.codeexample.task.TaskResponseDto;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.domain.Task;
@@ -13,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -23,7 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class TaskController {
     private final TaskUseCase taskUseCase;
-    private final CommentFacade commentFacade;
+    private final CommentLookup commentLookup;
     private final ModelMapper modelMapper;
 
 
@@ -37,7 +34,7 @@ public class TaskController {
         TaskResponseDto dto = modelMapper.map(task, TaskResponseDto.class);
 
         // 3. Manually attach the comments from the other module
-        dto.setComments(commentFacade.getCommentsForTask(taskId));
+        dto.setComments(commentLookup.getCommentsForTask(taskId));
 
         model.addAttribute("task", dto);
         return "task-detail";
