@@ -45,8 +45,9 @@ public class UserService implements UserLookup {
     }
 
     /**
-     * Checks that each employee in set has unique role. Starts by converting id -> UserDto in order to see if user exists.
+     * Checks that each unique role is present. Starts by converting id -> UserDto in order to see if user exists.
      * Continues with mapping each user to their role.
+     * Is possible to have more than one employee with each role.
      * @param employeesId
      * @return true if each user has unique role
      */
