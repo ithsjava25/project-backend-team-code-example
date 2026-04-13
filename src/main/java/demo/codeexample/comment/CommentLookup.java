@@ -2,7 +2,7 @@ package demo.codeexample.comment;
 
 import java.util.List;
 
-public interface CommentFacade {
+public interface CommentLookup {
 
     CommentDto createComment(CreateCommentDto dto);
 
