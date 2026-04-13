@@ -1,6 +1,7 @@
 package demo.codeexample.comment.application;
 import demo.codeexample.comment.CommentDto;
 import demo.codeexample.comment.CommentFacade;
+import demo.codeexample.comment.CommentLookup;
 import demo.codeexample.comment.domain.CommentRepository;
 import demo.codeexample.comment.CreateCommentDto;
 import demo.codeexample.comment.domain.Comment;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class CommentService implements CommentFacade {
+public class CommentService implements CommentLookup {
 
     private final CommentRepository commentRepository;
     private final ModelMapper modelMapper;
