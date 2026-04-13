@@ -1,6 +1,6 @@
 package demo.codeexample.logger.domain;
 
-import demo.codeexample.logger.LoggerAction;
+import demo.codeexample.shared.LoggerAction;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

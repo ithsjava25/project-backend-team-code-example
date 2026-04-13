@@ -1,11 +1,10 @@
 package demo.codeexample.logger.application;
 
 import demo.codeexample.logger.LoggerLookup;
-import demo.codeexample.logger.LoggerAction;
+import demo.codeexample.shared.LoggerAction;
 import demo.codeexample.logger.domain.LoggerEntity;
 import demo.codeexample.logger.domain.LoggerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package demo.codeexample.task.application.ports.usecase;
 
-import demo.codeexample.logger.LoggerAction;
+import demo.codeexample.shared.LoggerAction;
 import demo.codeexample.task.domain.TaskStatus;
 import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
