@@ -1,5 +1,6 @@
 package demo.codeexample.security;
 
+import demo.codeexample.user.UserAuthPort;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
 import demo.codeexample.user.Role;
@@ -20,16 +21,20 @@ import java.io.IOException;
 @Component
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final UserLookup userLookup;
+    private final UserLookup userLookup;  // for findByEmail (read)
+    private final UserAuthPort userAuthPort;  // for createOAuthUser (auth)
     private final JwtService jwtService;
 
     @Value("${cookie.secure:true}")
     private boolean cookieSecure;
 
+
     public OAuth2LoginSuccessHandler(UserLookup userLookup,
+                                     UserAuthPort userAuthPort,
                                      JwtService jwtService) {
-        this.userLookup = userLookup;
-        this.jwtService = jwtService;
+        this.userLookup   = userLookup;
+        this.userAuthPort = userAuthPort;
+        this.jwtService   = jwtService;
     }
 
     @Override
@@ -43,8 +48,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String firstName = oAuth2User.getAttribute("given_name");
         String lastName  = oAuth2User.getAttribute("family_name");
 
+        // Read via UserLookup, create via UserAuthPort
         UserDto user = userLookup.findByEmail(email)
-                .orElseGet(() -> userLookup.createOAuthUser(
+                .orElseGet(() -> userAuthPort.createOAuthUser(
                         email, firstName, lastName
                 ));
 
@@ -60,7 +66,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 user.getRole()
         );
 
-        // ← REPLACE old cookie code with this:
         String cookieValue = "jwt=" + token
                 + "; HttpOnly"
                 + "; Path=/"

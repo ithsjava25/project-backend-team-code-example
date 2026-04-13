@@ -2,10 +2,7 @@ package demo.codeexample.user.application;
 
 import demo.codeexample.exceptions.EmailAlreadyExistsException;
 import demo.codeexample.exceptions.UserNotFoundException;
-import demo.codeexample.user.CreateUserRequestDTO;
-import demo.codeexample.user.UserDto;
-import demo.codeexample.user.UserLookup;
-import demo.codeexample.user.Role;
+import demo.codeexample.user.*;
 import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
@@ -21,7 +18,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserLookup {
+public class UserService implements UserLookup, UserAuthPort {
 
     private final UserRepository repository;
     private final ModelMapper mapper;
@@ -135,50 +132,12 @@ public class UserService implements UserLookup {
     // ─────────────────────────────────────────
 
     @Override
-    public UserDto createOAuthUser(String email, String firstName, String lastName) {
-
-//        //Guard againt race conditions in concurrent OAuth2 logins
-//        if (repository.existsByEmail(email)) {
-//            return repository.findByEmail(email)
-//                    .map(entity -> mapper.map(entity, UserDto.class))
-//                    .orElseThrow();
-//        }
-
-        Optional<UserDto> existing = repository.findByEmail(email)
-                .map(entity -> mapper.map(entity, UserDto.class));
-        if (existing.isPresent()) {
-            return existing.get();
-        }
-
-
-        User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setFirstName(firstName != null ? firstName : "Unknown");
-        newUser.setLastName(lastName != null ? lastName : "Unknown");
-       //newUser.setPassword("OAUTH2_USER_NO_PASSWORD");
-        newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString())); //coderabbit recommendation
-        newUser.setRole(Role.VISITOR);
-        newUser.setActive(true);
-        newUser.setPasswordResetRequired(false);
-
-        // return mapper.map(repository.save(newUser), UserDto.class);
-        try {
-            return mapper.map(repository.save(newUser), UserDto.class);
-        } catch (DataIntegrityViolationException ex) {
-            return repository.findByEmail(email)
-                    .map(entity -> mapper.map(entity, UserDto.class))
-                    .orElseThrow(() -> ex);
-        }
-    }
-
-
-    @Override
     public Optional<UserAuthDto> findAuthByEmail(String email) {
         return repository.findByEmail(email)
                 .map(user -> new UserAuthDto(
                         user.getId(),
                         user.getEmail(),
-                        user.getPassword(),        // ← only time password leaves user module
+                        user.getPassword(),
                         user.getRole(),
                         user.isActive(),
                         user.isPasswordResetRequired()
@@ -189,10 +148,24 @@ public class UserService implements UserLookup {
     public void updatePassword(String email, String newEncodedPassword) {
         User user = repository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
-
         user.setPassword(newEncodedPassword);
-        user.setPasswordResetRequired(false);  // ← reset flag cleared automatically
+        user.setPasswordResetRequired(false);
         repository.save(user);
+    }
+
+    @Override
+    public UserDto createOAuthUser(String email,
+                                   String firstName,
+                                   String lastName) {
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setFirstName(firstName != null ? firstName : "Unknown");
+        newUser.setLastName(lastName   != null ? lastName  : "Unknown");
+        newUser.setPassword("OAUTH2_USER_NO_PASSWORD");
+        newUser.setRole(Role.VISITOR);
+        newUser.setActive(true);
+        newUser.setPasswordResetRequired(false);
+        return mapper.map(repository.save(newUser), UserDto.class);
     }
 
     // ─────────────────────────────────────────
