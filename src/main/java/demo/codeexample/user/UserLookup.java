@@ -20,10 +20,11 @@ public interface UserLookup {
 
     boolean validateUniqueRoles(Set<Long> employeesId);
 
-    UserDto createUser(CreateUserRequestDTO request);
+    UserDto createUser(CreateUserDTO request);
+
     UserDto updateRole(Long id, Role newRole);
+
     void deactivateUser(Long id);
 
-//    record UserDto(Long id, String firstName, String lastName, String email, Role role){}
 }
 
