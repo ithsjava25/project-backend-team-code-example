@@ -83,5 +83,4 @@ public class GlobalExceptionHandler {
                         "Something went wrong. Please try again later."
                 ));
     }
-
 }

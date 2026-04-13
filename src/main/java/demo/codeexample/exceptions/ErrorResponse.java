@@ -20,11 +20,4 @@ public class ErrorResponse {
         this.message = message;
         this.timestamp = LocalDateTime.now();
     }
-
-    // getters
-
-    /*Why a dedicated class instead of a Map?
-    A class gives you a guaranteed, consistent structure.
-    A Map can have any keys — different methods might return different keys,
-    making the frontend's job harder.*/
 }
