@@ -2,7 +2,7 @@ package demo.codeexample.comment.application;
 import demo.codeexample.comment.CommentDto;
 import demo.codeexample.comment.domain.CommentRepository;
 import demo.codeexample.comment.CreateCommentDto;
-import demo.codeexample.comment.domain.CommentEntity;
+import demo.codeexample.comment.domain.Comment;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class CommentService {
 
         // Long creatorId = Any AuthService
 
-        CommentEntity commentEntity = modelMapper.map(createCommentDto, CommentEntity.class);
+        Comment commentEntity = modelMapper.map(createCommentDto, Comment.class);
         // commentEntity.setCreatorId(creatorId)
         commentRepository.save(commentEntity);
 
@@ -32,10 +32,10 @@ public class CommentService {
     }
 
     public List<CommentDto> getAllComments() {
-        List<CommentEntity> commentEntities = commentRepository.findAll();
+        List<Comment> commentEntities = commentRepository.findAll();
         final List<CommentDto> commentDtos = new ArrayList<>();
 
-        for (CommentEntity commentEntity : commentEntities) {
+        for (Comment commentEntity : commentEntities) {
             commentDtos.add(modelMapper.map(commentEntity, CommentDto.class));
         }
         return commentDtos;
