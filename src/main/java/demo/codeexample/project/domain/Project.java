@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -34,8 +35,8 @@ public class Project {
         this.imageURL = imageURL;
     }
 
-    public static Project createNew(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
-                                    Category category, Genre genre, String imageURL){
+    public static Project createNew(String title, String description, LocalDate releaseDate,
+                                    Set<Long> employeesId, Category category, Genre genre, String imageURL){
         return new Project(null, title, description, releaseDate, employeesId, category, genre, imageURL);
     }
 }

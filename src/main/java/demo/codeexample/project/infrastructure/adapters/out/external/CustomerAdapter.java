@@ -24,8 +24,7 @@ public class CustomerAdapter implements UserPort {
     @Override
     public Optional<UserInfo> findById(Long id) {
         return userLookup.findById(id)
-                .map(dto -> new UserInfo(
-                        dto.getId(), dto.getFirstName(), dto.getLastName(), dto.getRole()));
+                .map(dto -> new UserInfo(dto.getId(), dto.getFirstName(), dto.getLastName(), dto.getRole()));
     }
 
     @Override
@@ -40,21 +39,10 @@ public class CustomerAdapter implements UserPort {
         return userLookup.validateUniqueRoles(employeesId);
     }
 
-//    @Override
-//    public List<UserDto> findAll() {
-//        return userLookup.findAll();
-//    }
 
     @Override
-    public List<UserInfo> findAll() {
-        return userLookup.findAll().stream()
-                .map(dto -> new UserInfo(
-                        dto.getId(),
-                        dto.getFirstName(),
-                        dto.getLastName(),
-                        dto.getRole()
-                ))
-                .toList();
+    public List<UserDto> findAll() {
+        return userLookup.findAll();
     }
 
 }

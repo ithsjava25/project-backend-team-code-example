@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -59,6 +60,26 @@ public class UserService implements UserLookup, UserAuthPort {
     public Optional<UserDto> findByFullName(String firstname, String lastName) {
         return repository.findByFirstNameAndLastNameIgnoreCase(firstname, lastName)
                 .map(entity -> mapper.map(entity, UserDto.class));
+    }
+
+    /**
+     * Checks that each unique role is present. Starts by converting id -> UserDto in order to see if user exists.
+     * Continues with mapping each user to their role.
+     * Is possible to have more than one employee with each role.
+     * @param employeesId
+     * @return true if each user has unique role
+     */
+
+    @Override
+    public void validateUniqueRoles(Set<Long> employeesId) {
+        List<Role> foundRoles = employeesId.stream()
+                .map(id -> findById(id).orElseThrow(() -> new UserNotFoundException(id)))
+                .map(UserDto::getRole)
+                .toList();
+
+        List<Role> requiredRoles = List.of(Role.PRODUCER, Role.DIRECTOR, Role.EDITOR, Role.RECRUITER);
+        if(!foundRoles.containsAll(requiredRoles))
+            throw new TeamValidationException();
     }
 
     @Override
