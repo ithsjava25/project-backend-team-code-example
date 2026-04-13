@@ -2,7 +2,7 @@ package demo.codeexample.logger;
 
 import demo.codeexample.logger.domain.LoggerAction;
 
-public interface LoggerPort {
+public interface LoggerLookup {
     void log(LoggerAction action,
              Long userId,
              String entityType,
