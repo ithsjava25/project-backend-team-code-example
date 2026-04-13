@@ -1,6 +1,6 @@
 package demo.codeexample.user;
 
-import demo.codeexample.user.domain.Role;
+import demo.codeexample.shared.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +8,7 @@ import lombok.Data;
 
 
 @Data
-public class CreateUserRequestDTO {
+public class CreateUserDto {
 
     @NotBlank(message = "First name is required")
     private String firstName;

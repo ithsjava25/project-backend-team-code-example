@@ -1,11 +1,12 @@
 package demo.codeexample.user.application;
 
 import demo.codeexample.exceptions.EmailAlreadyExistsException;
+import demo.codeexample.exceptions.TeamValidationException;
+import demo.codeexample.shared.Role;
 import demo.codeexample.exceptions.UserNotFoundException;
-import demo.codeexample.user.CreateUserRequestDTO;
+import demo.codeexample.user.CreateUserDto;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
-import demo.codeexample.user.domain.Role;
 import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
@@ -14,9 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,23 +26,6 @@ public class UserService implements UserLookup {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
-    // ─────────────────────────────────────────
-    // READ OPERATIONS
-    // ─────────────────────────────────────────
-
-    @Override
-    public List<UserDto> findAll() {
-        return repository.findAll().stream()
-                .map(entity -> mapper.map(entity, UserDto.class))
-                .toList();
-    }
-
-    @Override
-    public List<UserDto> findByRole(Role role) {
-        return repository.findAllByRoleIgnoreCase(role).stream()
-                .map(entity -> mapper.map(entity, UserDto.class))
-                .toList();
-    }
 
     @Override
     public Optional<UserDto> findByEmail(String email) {
@@ -63,21 +45,42 @@ public class UserService implements UserLookup {
                 .map(entity -> mapper.map(entity, UserDto.class));
     }
 
+    /**
+     * Checks that each unique role is present. Starts by converting id -> UserDto in order to see if user exists.
+     * Continues with mapping each user to their role.
+     * Is possible to have more than one employee with each role.
+     * @param employeesId
+     * @return true if each user has unique role
+     */
     @Override
-    public boolean validateUserRole(Long id, Role role) {
-        UserDto user = findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-        return user.getRole() == role;
+    public void validateUniqueRoles(Set<Long> employeesId) {
+        List<Role> foundRoles = employeesId.stream()
+                .map(id -> findById(id).orElseThrow(() -> new UserNotFoundException(id)))
+                .map(UserDto::getRole)
+                .toList();
+
+        List<Role> requiredRoles = List.of(Role.PRODUCER, Role.DIRECTOR, Role.EDITOR, Role.RECRUITER);
+        if(!foundRoles.containsAll(requiredRoles))
+            throw new TeamValidationException();
     }
 
-    // ─────────────────────────────────────────
-    // WRITE OPERATIONS
-    // ─────────────────────────────────────────
+    @Override
+    public List<UserDto> findAll() {
+        return repository.findAll().stream()
+                .map(entity -> mapper.map(entity, UserDto.class))
+                .toList();
+    }
 
     @Override
-    public UserDto createUser(CreateUserRequestDTO request) {
+    public List<UserDto> findByRole(Role role) {
+        return repository.findAllByRoleIgnoreCase(role).stream()
+                .map(entity -> mapper.map(entity, UserDto.class))
+                .toList();
+    }
 
-        // Check email is not already taken
+    @Override
+    public UserDto createUser(CreateUserDto request) {
+
         if (repository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException("Email already in use: "
                     + request.getEmail());
@@ -92,8 +95,8 @@ public class UserService implements UserLookup {
                 request.getRole(),
                 passwordEncoder.encode(tempPassword)
         );
-        user.setActive(true);
-        user.setPasswordResetRequired(true);
+        //user.setActive(true);
+        //user.setPasswordResetRequired(true);
 
         User saved = repository.save(user);
 
@@ -125,13 +128,10 @@ public class UserService implements UserLookup {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 
-        user.setActive(false);
+        //user.setActive(false);
         repository.save(user);
     }
 
-    // ─────────────────────────────────────────
-    // PRIVATE HELPERS
-    // ─────────────────────────────────────────
 
     private String generateTempPassword() {
         return UUID.randomUUID().toString().substring(0, 8);

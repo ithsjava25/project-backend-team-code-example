@@ -3,11 +3,14 @@ package demo.codeexample.project.infrastructure.adapters.out.persistence;
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -29,8 +32,10 @@ public class ProjectEntity {
 
     private LocalDate releaseDate;
 
-    @Column(nullable = false)
-    private Long producerId;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "project_employees", joinColumns = @JoinColumn(name = "project_id"))
+    @Column(name = "employee_id")
+    private Set<Long> employeesId = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -40,10 +45,11 @@ public class ProjectEntity {
 
     private String imageURL;
 
-    public ProjectEntity(String title, LocalDate releaseDate, Long producerId, Category category, Genre genre, String imageURL){
+    public ProjectEntity(String title, String description, LocalDate releaseDate, Set<Long> employeesId, Category category, Genre genre, String imageURL){
         this.title = title;
+        this.description = description;
         this.releaseDate = releaseDate;
-        this.producerId = producerId;
+        this.employeesId = employeesId;
         this.category = category;
         this.genre = genre;
         this.imageURL = imageURL;

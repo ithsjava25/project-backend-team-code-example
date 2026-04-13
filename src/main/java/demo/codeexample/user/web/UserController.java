@@ -1,10 +1,10 @@
 package demo.codeexample.user.web;
 
 import demo.codeexample.exceptions.UserNotFoundException;
-import demo.codeexample.user.CreateUserRequestDTO;
+import demo.codeexample.shared.Role;
+import demo.codeexample.user.CreateUserDto;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.application.UserService;
-import demo.codeexample.user.domain.Role;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class UserController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> createUser(
-            @Valid @RequestBody CreateUserRequestDTO request) {
+            @Valid @RequestBody CreateUserDto request) {
         UserDto created = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }

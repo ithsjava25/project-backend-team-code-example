@@ -1,9 +1,10 @@
 package demo.codeexample.user;
 
-import demo.codeexample.user.domain.Role;
+import demo.codeexample.shared.Role;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserLookup {
 
@@ -17,12 +18,13 @@ public interface UserLookup {
 
     Optional<UserDto> findById(Long id);
 
-    boolean validateUserRole(Long id, Role role);
+    boolean validateUniqueRoles(Set<Long> employeesId);
 
-    UserDto createUser(CreateUserRequestDTO request);
+    UserDto createUser(CreateUserDto request);
+
     UserDto updateRole(Long id, Role newRole);
+
     void deactivateUser(Long id);
 
-//    record UserDto(Long id, String firstName, String lastName, String email, Role role){}
 }
 

@@ -1,6 +1,6 @@
 package demo.codeexample.logger.application;
 
-import demo.codeexample.logger.LoggerPort;
+import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.logger.domain.LoggerAction;
 import demo.codeexample.logger.domain.LoggerEntity;
 import demo.codeexample.logger.domain.LoggerRepository;
@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Primary
-public class LoggerService implements LoggerPort{
+public class LoggerService implements LoggerLookup {
 
     private final LoggerRepository loggerRepository;
 

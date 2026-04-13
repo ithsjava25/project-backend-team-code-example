@@ -2,7 +2,7 @@ package demo.codeexample.task.application.ports.usecase;
 
 import demo.codeexample.logger.domain.LoggerAction;
 import demo.codeexample.task.domain.TaskStatus;
-import demo.codeexample.logger.LoggerPort;
+import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.domain.Task;
@@ -14,11 +14,11 @@ import java.util.Optional;
 public class TaskService implements TaskUseCase {
 
     private final TaskRepositoryPort taskRepository;
-    private final LoggerPort logger;
+    private final LoggerLookup logger;
 
 
 
-    public TaskService(TaskRepositoryPort taskRepository, LoggerPort logger) {
+    public TaskService(TaskRepositoryPort taskRepository, LoggerLookup logger) {
         this.taskRepository = taskRepository;
         this.logger = logger;
     }
@@ -43,7 +43,7 @@ public class TaskService implements TaskUseCase {
         Task task = Task.createNew  (title, description, status, deadline, projectId, userId);
 
         Task savedTask = taskRepository.save(task);
-        logger.log(LoggerAction.TASK_CREATED, userId, "TASK", savedTask.getTaskId());
+        logger.log(LoggerAction.TASK_CREATED, userId, "TASK", savedTask.getId());
         return savedTask;
 
     }

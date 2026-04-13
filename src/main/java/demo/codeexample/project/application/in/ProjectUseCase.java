@@ -6,6 +6,7 @@ import demo.codeexample.project.domain.Project;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public interface ProjectUseCase {
 
@@ -17,7 +18,7 @@ public interface ProjectUseCase {
 
     List<Project> findProjectContainingTitle(String title);
 
-    Project createProject(String title, String description, LocalDate releaseDate, Long producerId,
+    Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
                           Category category, Genre genre, String imageURL);
 
     ProjectDetails getProjectDetails(Long projectId);
