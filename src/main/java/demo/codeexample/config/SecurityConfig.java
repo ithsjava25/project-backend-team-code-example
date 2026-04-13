@@ -3,6 +3,7 @@ package demo.codeexample.config;
 import demo.codeexample.security.JwtAuthenticationFilter;
 import demo.codeexample.security.OAuth2LoginSuccessHandler;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,10 +28,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                    @Value("${app.security.enabled:true}") boolean securityEnabled)
+                    throws Exception {
+
+        if (!securityEnabled) {
+            // Development mode — allow everything
+            http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+            return http.build();
+        }
+
+
         http
                 .csrf(csrf -> csrf.disable())
-                // CSRF protection is for browser sessions — we use JWT, so disable it
+                // CSRF protection is for browser sessions — we use JWT, so it is disable
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
