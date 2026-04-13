@@ -1,6 +1,5 @@
 package demo.codeexample.security;
 
-import demo.codeexample.user.domain.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -91,6 +90,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         return null;
     }
-
-
 }

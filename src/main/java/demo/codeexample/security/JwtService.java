@@ -16,12 +16,16 @@ import java.util.Date;
 @Service
 public class JwtService {
 
+ /*Why @Value("${jwt.secret}")? Injects the value from application.properties at runtime.
+    The class doesn't hardcode secrets — it reads them from configuration.*/
+
     @Value("${jwt.secret}")
     private String secretKey;
 
     @Value("${jwt.expiration}")
     private long expirationMs;
 
+    //Builds the signing key from our secret string
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
