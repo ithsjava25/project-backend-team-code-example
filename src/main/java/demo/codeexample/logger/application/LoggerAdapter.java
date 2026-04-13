@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Primary
 @Component
 @RequiredArgsConstructor
-public class LoggerAdapter implements LoggerPort {
+public class LoggerAdapter implements LoggerLookup {
 
     private final LoggerService loggerService;
 

@@ -1,6 +1,6 @@
 package demo.codeexample.logger;
 
-import demo.codeexample.logger.domain.LoggerAction;
+import demo.codeexample.logger.LoggerAction;
 
 public interface LoggerLookup {
     void log(LoggerAction action,
