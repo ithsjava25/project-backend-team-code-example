@@ -1,7 +1,7 @@
 @param String welcomeMessage = "Neon Nights"
 
 @template.layout(
-title = "Hem",
+title = "Home",
 content = @`
     <header class="hero">
         <h1>${welcomeMessage}</h1>
@@ -22,6 +22,11 @@ content = @`
             </div>
             <div class="movie-card">
                 <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&h=600&fit=crop" alt="Film 4">
+            </div>
+            <div class="movie-card">
+                <img src="https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=400&h=600&fit=crop" alt="Film 5">
+            </div>
+            <div class="movie-card">
             </div>
         </div>
     </div>

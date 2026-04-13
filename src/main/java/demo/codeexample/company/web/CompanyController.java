@@ -16,23 +16,16 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
-    @GetMapping("/")
+    @GetMapping({"","/","index"})
     public String index(Model model) {
         model.addAttribute("welcomeMessage", "Neon Nights");
         model.addAttribute("companyName", "Hexagonal Film Productions");
         return "home";
     }
 
-    @GetMapping("home2")
+    @GetMapping("/aboutUs")
     public String home2() {
-        return "home2";
+        return "aboutUs";
     }
-    @GetMapping("home3")
-    public String home3() {
-        return "home3";
-    }
-    @GetMapping("home4")
-    public String home4() {
-        return "home4";
-    }
+
 }
