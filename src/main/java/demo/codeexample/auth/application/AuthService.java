@@ -86,8 +86,10 @@ public class AuthService implements AuthLookup {
 
     @Override
     public LoginResponse getLoginResponse(LoginRequest request){
-        request.setEmail(request.getEmail());
-        request.setPassword(request.getPassword());
+//        request.setEmail(request.getEmail());
+//        request.setPassword(request.getPassword());
+
+        request.setEmail(request.getEmail().trim().toLowerCase());
 
         return login(request);
     }

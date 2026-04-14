@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Controller
@@ -39,7 +41,7 @@ public class WebAuthController {
 
     @PostMapping(value = "/login",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String handleLogin(@RequestParam @Valid LoginRequest request,
+    public String handleLogin(@Valid @ModelAttribute LoginRequest request,
                               HttpServletResponse response) {
         try {
             LoginResponse loginResponse = authLookup.getLoginResponse(request);
@@ -52,7 +54,7 @@ public class WebAuthController {
                     + "; SameSite=Strict"
                     + (cookieSecure ? "; Secure" : ""); // ← environment-aware!
 
-            response.setHeader("Set-Cookie", cookieValue);
+            response.addHeader("Set-Cookie", cookieValue);
 
             // Check password reset before role redirect
             if (loginResponse.isPasswordResetRequired()) {
@@ -101,7 +103,8 @@ public class WebAuthController {
 
         // Check passwords match
         if (!newPassword.equals(confirmPassword)) {
-            return "redirect:/web/change-password?error=Passwords do not match";
+            return "redirect:/web/change-password?error=" +
+                    URLEncoder.encode("Passwords do not match", StandardCharsets.UTF_8);
         }
 
         try {
