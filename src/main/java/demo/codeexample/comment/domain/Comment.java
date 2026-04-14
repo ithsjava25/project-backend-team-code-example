@@ -23,7 +23,7 @@ public class Comment {
     private String content;
 
     @Column
-    private Long TaskId;
+    private Long taskId;
 
 //    @Column(nullable = false)
 //    private Long writerId;

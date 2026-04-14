@@ -1,7 +1,6 @@
 package demo.codeexample.config;
 
 import demo.codeexample.user.CreateUserDto;
-import demo.codeexample.user.CreateUserDto;
 import demo.codeexample.shared.Role;
 import demo.codeexample.user.UserLookup;
 import org.springframework.boot.CommandLineRunner;
