@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Primary
-public class LoggerService implements LoggerPort{
+public class LoggerService implements LoggerLookup{
 
     private final LoggerRepository loggerRepository;
 
