@@ -1,5 +1,6 @@
 package demo.codeexample.auth.application;
 
+import demo.codeexample.auth.AuthLookup;
 import demo.codeexample.auth.ChangePasswordRequest;
 import demo.codeexample.auth.LoginRequest;
 import demo.codeexample.auth.LoginResponse;
@@ -14,13 +15,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthService implements AuthLookup {
 
     private final UserAuthPort userAuthPort;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public LoginResponse login(LoginRequest request) {
+    private LoginResponse login(LoginRequest request) {
 
         UserAuthDto user = userAuthPort
                 .findAuthByEmail(request.getEmail())
@@ -30,23 +31,24 @@ public class AuthService {
             throw new UnauthorizedException("Invalid credentials");
         }
 
-        if (!user.isActive()) {                        // ← isActive() not active()
+        if (!user.isActive()) {
             throw new UnauthorizedException("Account is deactivated");
         }
 
         String token = jwtService.generateToken(
-                user.getId(),                          // ← getId() not id()
-                user.getEmail(),                       // ← getEmail() not email()
-                user.getRole()                         // ← getRole() not role()
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
         );
 
         return new LoginResponse(
                 token,
-                user.getRole(),                        // ← getRole()
-                user.isPasswordResetRequired()         // ← isPasswordResetRequired()
+                user.getRole(),
+                user.isPasswordResetRequired()
         );
     }
 
+    @Override
     public void changePassword(ChangePasswordRequest request, String authHeader) {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -61,13 +63,13 @@ public class AuthService {
 
         String email = jwtService.extractEmail(token);
 
-        UserAuthDto user = userAuthPort                // ← UserAuthDto not UserAuthPort.UserAuthDto
+        UserAuthDto user = userAuthPort
                 .findAuthByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
 
         if (!passwordEncoder.matches(
                 request.getCurrentPassword(),
-                user.getPassword())) {                 // ← getPassword() not password()
+                user.getPassword())) {
             throw new UnauthorizedException("Current password is incorrect");
         }
 
@@ -80,5 +82,13 @@ public class AuthService {
                 email,
                 passwordEncoder.encode(request.getNewPassword())
         );
+    }
+
+    @Override
+    public LoginResponse getLoginResponse(LoginRequest request){
+        request.setEmail(request.getEmail());
+        request.setPassword(request.getPassword());
+
+        return login(request);
     }
 }

@@ -54,6 +54,9 @@ public class SecurityConfig {
 
                                 .requestMatchers("/web/login").permitAll()  // login is public
 
+                                .requestMatchers("/web/change-password").permitAll()
+                                // ↑ must be accessible — user has token in cookie but might
+
                                 .requestMatchers("/oauth2/**").permitAll()
                                 .requestMatchers("/login/oauth2/**").permitAll()
                                 // ↑ OAuth2 callback must be public!
