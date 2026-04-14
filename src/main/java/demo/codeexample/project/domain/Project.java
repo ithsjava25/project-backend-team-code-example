@@ -39,5 +39,4 @@ public class Project {
                                     Set<Long> employeesId, Category category, Genre genre, String imageURL){
         return new Project(null, title, description, releaseDate, employeesId, category, genre, imageURL);
     }
-
 }

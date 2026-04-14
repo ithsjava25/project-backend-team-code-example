@@ -1,10 +1,10 @@
 package demo.codeexample.user.web;
 
 import demo.codeexample.exceptions.UserNotFoundException;
-import demo.codeexample.shared.Role;
 import demo.codeexample.user.CreateUserDto;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.application.UserService;
+import demo.codeexample.shared.Role;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

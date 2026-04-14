@@ -69,6 +69,4 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     private Project toDomain(ProjectEntity entity){
         return mapper.map(entity, Project.class);
     }
-
-
 }

@@ -3,6 +3,7 @@ package demo.codeexample.config;
 import demo.codeexample.security.JwtAuthenticationFilter;
 import demo.codeexample.security.OAuth2LoginSuccessHandler;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,20 +27,23 @@ public class SecurityConfig {
         this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
     }
 
-    /*Why SessionCreationPolicy.STATELESS? Tells Spring never to create an HttpSession.
-    With JWT, every request is self-contained — no server memory of previous requests.
-    This is what makes JWT scalable.*/
-
-    /*Why csrf.disable()? CSRF attacks exploit browser cookies and sessions.
-    Since we use JWT in the Authorization header (not cookies), CSRF attacks don't apply.
-    Disabling it removes unnecessary overhead.*/
-
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                    @Value("${app.security.enabled:true}") boolean securityEnabled)
+                    throws Exception {
+
+        if (!securityEnabled) {
+            // Development mode — allow everything
+            http
+                    .csrf(csrf -> csrf.disable())
+                    .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+            return http.build();
+        }
+
+
         http
                 .csrf(csrf -> csrf.disable())
-                // CSRF protection is for browser sessions — we use JWT, so disable it
+                // CSRF protection is for browser sessions — we use JWT, so it is disable
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -47,12 +51,17 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/api/auth/**").permitAll()
-                                // login is public
+
+                                .requestMatchers("/web/login").permitAll()  // login is public
+
+                                .requestMatchers("/web/change-password").permitAll()
+                                // ↑ must be accessible — user has token in cookie but might
+
+                                .requestMatchers("/oauth2/**").permitAll()
                                 .requestMatchers("/login/oauth2/**").permitAll()
                                 // ↑ OAuth2 callback must be public!
-                                .requestMatchers("/oauth2/**").permitAll()
 
-                                //.requestMatchers("/api/users/**").authenticated()
+                                .requestMatchers("/api/users/**").authenticated()
                                 // only admins can manage users
 
                                 .anyRequest().authenticated()

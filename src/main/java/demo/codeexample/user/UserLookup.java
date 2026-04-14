@@ -8,6 +8,10 @@ import java.util.Set;
 
 public interface UserLookup {
 
+    // ─────────────────────────────────────────
+    // READ OPERATIONS
+    // ─────────────────────────────────────────
+
     List<UserDto> findAll();
 
     List<UserDto> findByRole(Role role);
@@ -20,11 +24,14 @@ public interface UserLookup {
 
     boolean validateUniqueRoles(Set<Long> employeesId);
 
+    boolean validateUserRole(Long id, Role role);
+
+    // ─────────────────────────────────────────
+    // WRITE OPERATIONS
+    // ─────────────────────────────────────────
+
     UserDto createUser(CreateUserDto request);
-
     UserDto updateRole(Long id, Role newRole);
-
     void deactivateUser(Long id);
 
 }
-

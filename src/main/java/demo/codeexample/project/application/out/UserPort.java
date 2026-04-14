@@ -15,6 +15,8 @@ public interface UserPort {
 
     boolean validateEmployees(Set<Long> employeesId);
 
+//    List<UserInfo> findAll();
+
     List<UserDto> findAll();
 
     record UserInfo(Long id, String firstname, String lastname, Role role){}

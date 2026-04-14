@@ -1,8 +1,8 @@
 package demo.codeexample.security;
 
-import demo.codeexample.user.domain.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,8 +13,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
-
-/* Guards Every Request. This runs on every single HTTP request before it reaches your controller:*/
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -32,29 +30,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        // 1. Try Authorization header first (API calls from Insomnia/frontend)
+        String token = extractFromHeader(request);
 
-        // 1. Look for the Authorization header
-        String authHeader = request.getHeader("Authorization");
+        // 2. If no header, try cookie (web browser after OAuth2/form login)
+        if (token == null) {
+            token = extractFromCookie(request);
+        }
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        // 3. If no token found anywhere — pass through unauthenticated
+        if (token == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 2. Extract the token (remove "Bearer " prefix)
-        String token = authHeader.substring(7);
-
-        // 3. Validate the token
+        // 4. Validate token
         if (!jwtService.isTokenValid(token)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 4. Extract email and load user
-        String role = jwtService.extractRole(token);
-        Long userId = jwtService.extractUserId(token);
+        // 5. Extract claims
+        String role   = jwtService.extractRole(token);
+        Long   userId = jwtService.extractUserId(token);
 
-        // 5. Tell Spring Security "this user is authenticated"
+        // 6. Set authentication in Spring Security context
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
                         userId,
@@ -62,10 +62,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         List.of(new SimpleGrantedAuthority("ROLE_" + role))
                 );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication); // SecurityContext = Spring's memory of "who is currently logged in"
-
-        // 6. Continue to the actual endpoint
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
+    }
 
+    // ─────────────────────────────────────────
+    // PRIVATE HELPERS
+    // ─────────────────────────────────────────
+
+    private String extractFromHeader(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+        return null;
+    }
+
+    private String extractFromCookie(HttpServletRequest request) {
+        if (request.getCookies() == null) return null;
+
+        for (Cookie cookie : request.getCookies()) {
+            if ("jwt".equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+        return null;
     }
 }
