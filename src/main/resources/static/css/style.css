@@ -12,7 +12,7 @@ body {
     color: var(--text-color);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 0 20px;
     overflow-x: hidden;
 }
 
@@ -62,10 +62,27 @@ nav {
 .btn-login {
     background: linear-gradient(45deg, var(--primary-purple), #9c27b0);
     color: white !important;
-    padding: 10px 24px;
+    padding: 8px 20px;
     border-radius: 50px;
     border: 1px solid var(--accent-color);
     box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.btn-login:hover {
+    /* Lyfter knappen 2 pixlar */
+    transform: translateY(-2px);
+
+    /* Gör skuggan lite större och tydligare när knappen "lyfter" */
+    box-shadow: 0 6px 20px rgba(106, 27, 154, 0.6);
+
+    /* Gör knappen lite ljusare/mer mättad */
+    filter: brightness(1.1);
+}
+
+.btn-login:active {
+    /* Trycker ner knappen igen när man faktiskt klickar */
+    transform: translateY(0);
 }
 
 /* Hero Section */
@@ -126,4 +143,33 @@ nav {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+/* Själva behållaren som lägger bild och text bredvid varandra */
+.profile-container {
+    display: flex;          /* Aktiverar flexbox */
+    align-items: center;    /* Centrerar bild och text vertikalt */
+    gap: 30px;              /* Skapar ett snyggt mellanrum mellan bild och text */
+    margin-bottom: 40px;    /* Avstånd till nästa sektion */
+}
+
+/* Här bestämmer vi storleken på bilden */
+.profile-image img {
+    width: 140px;           /* Ändra detta för att justera storleken */
+    height: 200px;          /* Samma som width för att hålla den kvadratisk */
+    object-fit: contain;
+    object-position: center;
+    border-radius: 15px;    /* Rundade hörn (eller 50% för helt rund) */
+    border: 3px solid var(--primary-purple); /* Snygg ram som matchar dina knappar */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    background-color: transparent;
+}
+
+/* Textens stil */
+.profile-text {
+    flex: 1;                /* Låter texten ta upp resten av bredden */
+}
+.image-wrapper img {
+    display: flex;
+    align-items: center;
+    width: 500px;
 }
