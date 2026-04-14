@@ -34,3 +34,4 @@ build/
 
 ### jte ###
 /jte-classes/
+/.env
