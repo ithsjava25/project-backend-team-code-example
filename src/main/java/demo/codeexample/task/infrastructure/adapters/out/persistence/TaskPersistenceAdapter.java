@@ -39,8 +39,8 @@ public class TaskPersistenceAdapter implements TaskRepositoryPort {
 
     private Task toDomain(TaskEntity entity) {
         return new Task(
-                entity.getTaskId(),
-                entity.getTitle(),
+                entity.getId(),
+                entity.getTaskType(),
                 entity.getDescription(),
                 entity.getStatus(),
                 entity.getDeadline(),
@@ -51,7 +51,7 @@ public class TaskPersistenceAdapter implements TaskRepositoryPort {
 
     private TaskEntity toEntity(Task task) {
         return new TaskEntity(
-                task.getTitle(),
+                task.getTaskType(),
                 task.getDescription(),
                 task.getStatus(),
                 task.getDeadline(),

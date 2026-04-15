@@ -2,6 +2,7 @@ package demo.codeexample.task.application.ports.in;
 
 import demo.codeexample.task.domain.TaskStatus;
 import demo.codeexample.task.domain.Task;
+import demo.codeexample.task.domain.TaskType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,11 +15,7 @@ public interface TaskUseCase {
     List<Task> findAll();
     Optional<Task> findById(Long id);
 
-    Task createTask(String title,
-                      String description,
-                      TaskStatus status,
-                      LocalDateTime deadline,
-                    Long projectId,
-                      Long userId);
+    Task createTask(TaskType taskType, String description, TaskStatus status,
+                    LocalDateTime deadline, Long projectId, Long userId);
 
 }

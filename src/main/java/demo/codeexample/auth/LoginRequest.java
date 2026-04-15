@@ -10,6 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 public class LoginRequest {
 
+    // public DTO
+
     @Email
     @NotBlank
     private String email;

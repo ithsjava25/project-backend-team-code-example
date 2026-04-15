@@ -82,7 +82,7 @@ public class UserService implements UserLookup, UserAuthPort {
         List<Role> requiredRoles = List.of(
                 Role.PRODUCER, Role.DIRECTOR, Role.EDITOR, Role.RECRUITER
         );
-        return foundRoles.containsAll(requiredRoles);  // ← return boolean instead of throw
+        return foundRoles.containsAll(requiredRoles);
     }
 
     @Override

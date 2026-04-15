@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;  // ← only dependency now!
+    private final AuthService authLookup;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
             @Valid @RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.getLoginResponse(request));
+        return ResponseEntity.ok(authLookup.getLoginResponse(request));
     }
 
     @PostMapping("/change-password")
     public ResponseEntity<String> changePassword(
             @Valid @RequestBody ChangePasswordRequest request,
             @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        authService.changePassword(request, authHeader);
+        authLookup.changePassword(request, authHeader);
         return ResponseEntity.ok("Password changed successfully");
     }
 }

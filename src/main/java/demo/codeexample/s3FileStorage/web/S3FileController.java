@@ -1,6 +1,6 @@
 package demo.codeexample.s3FileStorage.web;
 
-import demo.codeexample.s3FileStorage.application.S3Service;
+import demo.codeexample.s3FileStorage.application.S3FileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class FileController {
+public class S3FileController {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(FileController.class);
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(S3FileController.class);
 
-    private final S3Service s3Service;
+    private final S3FileService s3Service;
 
-    public FileController(S3Service s3Service) {
+    public S3FileController(S3FileService s3Service) {
         this.s3Service = s3Service;
     }
 

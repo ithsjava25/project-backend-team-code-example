@@ -43,16 +43,22 @@ public class ProjectEntity {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    private String imageURL;
+    private Long fileId;
 
-    public ProjectEntity(String title, String description, LocalDate releaseDate, Set<Long> employeesId, Category category, Genre genre, String imageURL){
+    @Column(nullable = false)
+    private Long companyId;
+
+    public ProjectEntity(String title, String description, LocalDate releaseDate,
+                         Set<Long> employeesId, Category category, Genre genre,
+                         Long fileId, Long companyId){
         this.title = title;
         this.description = description;
         this.releaseDate = releaseDate;
         this.employeesId = employeesId;
         this.category = category;
         this.genre = genre;
-        this.imageURL = imageURL;
+        this.fileId = fileId;
+        this.companyId = companyId;
     }
 
     @Override
@@ -70,6 +76,5 @@ public class ProjectEntity {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-
 
 }
