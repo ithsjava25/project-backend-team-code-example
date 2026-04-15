@@ -5,11 +5,12 @@ import demo.codeexample.shared.LoggerAction;
 import demo.codeexample.logger.domain.LoggerEntity;
 import demo.codeexample.logger.domain.LoggerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LoggerService implements LoggerLookup {
+public class LoggerService implements LoggerLookup{
 
     private final LoggerRepository loggerRepository;
 
@@ -17,11 +18,6 @@ public class LoggerService implements LoggerLookup {
     public void log(LoggerAction action, Long userId, String entityType, Long entityId) {
         LoggerEntity log = new LoggerEntity();
         log.setAction(action);
-        log.setUserId(userId);
-        log.setEntityType(entityType);
-        log.setEntityId(entityId);
-
-        loggerRepository.save(log);
     }
 
 }
