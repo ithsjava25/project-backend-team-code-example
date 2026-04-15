@@ -21,6 +21,7 @@ public class TaskEntity {
     @Column(name = "Task_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TaskType taskType;
 
