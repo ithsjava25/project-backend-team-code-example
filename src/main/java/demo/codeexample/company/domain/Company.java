@@ -28,23 +28,18 @@ public class Company {
     @NotBlank
     private String companyName;
 
+    @Embedded
     @NotNull
     private Address address;
 
     @Email
     private String email;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "company_projects", joinColumns = @JoinColumn(name = "company_id"))
-    @Column(name = "project_id")
-    Set<Long> projectsId = new HashSet<>();
 
-
-    public Company(String companyName, Address address, String email, Set<Long> projectsId){
+    public Company(String companyName, Address address, String email){
         this.companyName = companyName;
         this.address = address;
         this.email = email;
-        this.projectsId = projectsId;
     }
 
     @Override

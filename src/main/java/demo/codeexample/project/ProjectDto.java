@@ -2,6 +2,7 @@ package demo.codeexample.project;
 
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -15,4 +16,7 @@ public class ProjectDto {
         Category category;
         Genre genre;
         String imageURL;
+
+        @NotNull
+        Long companyId;
 }

@@ -21,26 +21,63 @@ public class AuthService implements AuthLookup {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    private LoginResponse login(LoginRequest request) {
 
+    // ─────────────────────────────────────────
+    // PUBLIC API (AuthLookup implementation)
+    // ─────────────────────────────────────────
+
+
+    @Override
+    public LoginResponse getLoginResponse(LoginRequest request) {
+        String normalizedEmail = normalizeEmail(request.getEmail());
+        UserAuthDto user       = findAndValidateUser(normalizedEmail,
+                request.getPassword());
+        String token           = generateToken(user);
+        return buildLoginResponse(token, user);
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest request,
+                               String authHeader) {
+        String email = extractEmailFromHeader(authHeader);
+        UserAuthDto user = findUserByEmail(email);
+        validatePasswordChange(request, user);
+        saveNewPassword(email, request.getNewPassword());
+    }
+
+    // ─────────────────────────────────────────
+    // PRIVATE HELPERS — each does ONE thing
+    // ─────────────────────────────────────────
+
+    private String normalizeEmail(String email) {
+        return email.trim().toLowerCase();
+    }
+
+    private UserAuthDto findAndValidateUser(String email, String password) {
         UserAuthDto user = userAuthPort
-                .findAuthByEmail(request.getEmail())
+                .findAuthByEmail(email)
                 .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
-
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new UnauthorizedException("Invalid credentials");
-        }
 
         if (!user.isActive()) {
             throw new UnauthorizedException("Account is deactivated");
         }
 
-        String token = jwtService.generateToken(
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new UnauthorizedException("Invalid credentials");
+        }
+
+        return user;
+    }
+
+    private String generateToken(UserAuthDto user) {
+        return jwtService.generateToken(
                 user.getId(),
                 user.getEmail(),
                 user.getRole()
         );
+    }
 
+    private LoginResponse buildLoginResponse(String token, UserAuthDto user) {
         return new LoginResponse(
                 token,
                 user.getRole(),
@@ -48,49 +85,39 @@ public class AuthService implements AuthLookup {
         );
     }
 
-    @Override
-    public void changePassword(ChangePasswordRequest request, String authHeader) {
-
+    private String extractEmailFromHeader(String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new UnauthorizedException("Invalid authorization header");
         }
-
         String token = authHeader.substring(7);
-
         if (!jwtService.isTokenValid(token)) {
             throw new UnauthorizedException("Invalid or expired token");
         }
+        return jwtService.extractEmail(token);
+    }
 
-        String email = jwtService.extractEmail(token);
-
-        UserAuthDto user = userAuthPort
+    private UserAuthDto findUserByEmail(String email) {
+        return userAuthPort
                 .findAuthByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
+    }
 
-        if (!passwordEncoder.matches(
-                request.getCurrentPassword(),
+    private void validatePasswordChange(ChangePasswordRequest request,
+                                        UserAuthDto user) {
+        if (!passwordEncoder.matches(request.getCurrentPassword(),
                 user.getPassword())) {
             throw new UnauthorizedException("Current password is incorrect");
         }
-
         if (request.getCurrentPassword().equals(request.getNewPassword())) {
             throw new UnauthorizedException(
                     "New password must be different from current password");
         }
-
-        userAuthPort.updatePassword(
-                email,
-                passwordEncoder.encode(request.getNewPassword())
-        );
     }
 
-    @Override
-    public LoginResponse getLoginResponse(LoginRequest request){
-//        request.setEmail(request.getEmail());
-//        request.setPassword(request.getPassword());
-
-        request.setEmail(request.getEmail().trim().toLowerCase());
-
-        return login(request);
+    private void saveNewPassword(String email, String newPassword) {
+        userAuthPort.updatePassword(
+                email,
+                passwordEncoder.encode(newPassword)
+        );
     }
 }
