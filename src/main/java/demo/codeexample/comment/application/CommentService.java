@@ -6,6 +6,8 @@ import demo.codeexample.comment.CreateCommentDto;
 import demo.codeexample.comment.domain.Comment;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,11 +23,11 @@ public class CommentService implements CommentLookup {
 
     //Add
     public CommentDto createComment(CreateCommentDto createCommentDto) {
-
-        // Long creatorId = Any AuthService
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long creatorId = Long.parseLong(authentication.getName());
 
         Comment commentEntity = modelMapper.map(createCommentDto, Comment.class);
-        // commentEntity.setCreatorId(creatorId)
+        commentEntity.setUserId(creatorId);
         commentRepository.save(commentEntity);
 
         return modelMapper.map(commentEntity, CommentDto.class);
