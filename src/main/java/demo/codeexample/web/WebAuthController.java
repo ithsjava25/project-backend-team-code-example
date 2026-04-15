@@ -39,15 +39,11 @@ public class WebAuthController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String handleLogin(@ModelAttribute LoginRequest request,
                               HttpServletResponse response) {
-        try {
-            LoginResponse loginResponse = webAuthService.login(request);
-            response.addHeader("Set-Cookie",
-                    webAuthService.buildJwtCookie(loginResponse.getToken()));
-            return webAuthService.resolveRedirectAfterLogin(loginResponse);
-
-        } catch (Exception e) {
-            return "redirect:/web/login?error=true";
+        WebAuthService.LoginResult result = webAuthService.handleLogin(request);
+        if (result.success()) {
+            response.addHeader("Set-Cookie", result.cookie());
         }
+        return result.redirect();
     }
 
     // ─────────────────────────────────────────
@@ -72,23 +68,9 @@ public class WebAuthController {
             @RequestParam String newPassword,
             @RequestParam String confirmPassword,
             @CookieValue(name = "jwt", required = false) String jwtToken) {
-
-        if (webAuthService.isTokenMissing(jwtToken)) {
-            return "redirect:/web/login";
-        }
-
-        if (!webAuthService.passwordsMatch(newPassword, confirmPassword)) {
-            return redirectWithError("/web/change-password",
-                    "Passwords do not match");
-        }
-
-        try {
-            webAuthService.changePassword(currentPassword, newPassword, jwtToken);
-            return "redirect:/web/change-password?success=Password+changed+successfully!";
-
-        } catch (Exception e) {
-            return redirectWithError("/web/change-password", e.getMessage());
-        }
+        return webAuthService.handleChangePassword(
+                currentPassword, newPassword, confirmPassword, jwtToken
+        );
     }
 
     // ─────────────────────────────────────────
@@ -99,13 +81,5 @@ public class WebAuthController {
         var output = new StringOutput();
         templateEngine.render(template, params, output);
         return output.toString();
-    }
-
-    private String redirectWithError(String path, String message) {
-        String encoded = URLEncoder.encode(
-                message != null ? message : "Something went wrong",
-                StandardCharsets.UTF_8
-        );
-        return "redirect:" + path + "?error=" + encoded;
     }
 }
