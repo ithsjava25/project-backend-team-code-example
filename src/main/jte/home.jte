@@ -30,5 +30,30 @@ content = @`
             </div>
         </div>
     </div>
+    <div class="movie-container">
+        <button class="nav-btn left-btn" onclick="scrollGrid(-1)">&#10094;</button>
+
+        <div class="movie-row" id="movieRow">
+            <div class="movie-card"></div>
+            <div class="movie-card"></div>
+            <div class="movie-card"></div>
+            <div class="movie-card"></div>
+            <div class="movie-card"></div>
+            <div class="movie-card"></div>
+        </div>
+
+        <button class="nav-btn right-btn" onclick="scrollGrid(1)">&#10095;</button>
+    </div>
+    <script>
+        function scrollGrid(direction) {
+            const row = document.getElementById('movieRow');
+            const scrollAmount = 400; // Hur många pixlar den ska rulla per klick
+
+            row.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 `
 )
