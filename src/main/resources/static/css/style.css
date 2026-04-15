@@ -116,6 +116,9 @@ nav {
     gap: 20px;
     padding: 20px 0;
     scrollbar-width: none;
+
+    /* Dölj scrollbar för IE, Edge och Firefox */
+    -ms-overflow-style: none;
 }
 
 .movie-row::-webkit-scrollbar {
@@ -179,48 +182,35 @@ nav {
     align-items: center;
 }
 
-.movie-row {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-behavior: smooth; /* Gör att rullningen blir mjuk */
-
-    /* Dölj scrollbar för Chrome, Safari och Opera */
-    &::-webkit-scrollbar {
-        display: none;
-    }
-
-    /* Dölj scrollbar för IE, Edge och Firefox */
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
 /* Pilarnas grundstil */
 .nav-btn {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 50px;
+    width: 60px;
     background: rgba(0, 0, 0, 0.5);
-    color: white;
+    color: rgba(255, 255, 255, 0.7);
     border: none;
     cursor: pointer;
     z-index: 10;
     opacity: 0; /* Osynliga som standard */
-    transition: opacity 0.3s ease;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+.nav-btn:hover {
+    color: white;
+    transform: scaleX(1.2);
 }
 
-.left-btn { left: 0; }
-.right-btn { right: 0; }
+.left-btn { left: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, transparent 100%);}
+.right-btn { right: 0;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.8) 0%, transparent 100%);}
 
 /* Visa pilarna när man hovrar över containern */
 .movie-container:hover .nav-btn {
     opacity: 1;
-}
-
-.movie-card {
-    min-width: 200px;
-    height: 300px;
-    background: #333;
-    border-radius: 8px;
 }
