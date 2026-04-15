@@ -6,6 +6,7 @@ import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.domain.Task;
+import demo.codeexample.task.domain.TaskType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,13 +35,10 @@ public class TaskService implements TaskUseCase {
     }
 
     @Override
-    public Task createTask(String title,
-                String description,
-                TaskStatus status,
-                LocalDateTime deadline,
-                Long projectId,
-                Long userId){
-        Task task = Task.createNew  (title, description, status, deadline, projectId, userId);
+    public Task createTask(TaskType taskType, String description, TaskStatus status,
+                           LocalDateTime deadline, Long projectId, Long userId){
+
+        Task task = new Task(null, taskType, description, status, deadline, projectId, userId);
 
         Task savedTask = taskRepository.save(task);
         logger.log(LoggerAction.TASK_CREATED, userId, "TASK", savedTask.getId());

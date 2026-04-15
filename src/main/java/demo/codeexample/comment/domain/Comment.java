@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,23 +23,23 @@ public class Comment {
     @Column(nullable = false, length = 300)
     private String content;
 
-    @Column
+    @Column(nullable = false)
     private Long taskId;
 
-//    @Column(nullable = false)
-//    private Long writerId;
+    @Column(nullable = false)
+    private Long userId;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    public Comment(String content  ) {
+    public Comment(String content, Long userId) {
         this.content = content;
-        //.writerId = writerId;
+        this.userId = userId;
     }
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = Instant.now();
     }
 
 

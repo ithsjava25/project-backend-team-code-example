@@ -10,8 +10,6 @@ import org.hibernate.proxy.HibernateProxy;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
-//How user looks in database
 @Entity
 @Getter
 @Setter
@@ -36,12 +34,12 @@ public class User {
     @Column(nullable = false)
     private String password; // will be BCrypt hashed - never plain text
 
-    @Enumerated(EnumType.STRING) // Stores "ADMIN" not "0" in DB - readable
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role; // Enum PRODUCER, DIRECTOR, RECRUITER, EDITOR, VISITOR
+    private Role role;
 
     @Column(nullable = false)
-    private boolean active = true;              // Can be deactivated by admin
+    private boolean active = true;                // Can be deactivated by admin
 
     @Column(nullable = false)
     private boolean passwordResetRequired = true; // Force change on first login

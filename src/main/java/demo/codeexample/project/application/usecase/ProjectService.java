@@ -9,6 +9,8 @@ import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.domain.Project;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.internal.bytebuddy.utility.nullability.NeverNull;
+import org.springframework.context.event.EventListener;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -43,12 +45,21 @@ public class ProjectService implements ProjectUseCase {
 
     @Override
     public Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
-                                 Category category, Genre genre, String imageURL) {
+                                 Category category, Genre genre, Long fileId, Long companyId) {
 
         userPort.validateEmployees(employeesId);
 
-        Project newProject = Project.createNew(title, description, releaseDate, employeesId,
-                category, genre, imageURL);
+        Project newProject = Project.builder()
+                .id(null)
+                .title(title)
+                .description(description)
+                .releaseDate(releaseDate)
+                .employeesId(employeesId)
+                .category(category)
+                .genre(genre)
+                .fileId(fileId)
+                .companyId(companyId)
+                .build();
         return repository.save(newProject);
     }
 

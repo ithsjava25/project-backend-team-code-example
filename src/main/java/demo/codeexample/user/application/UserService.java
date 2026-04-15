@@ -1,7 +1,6 @@
 package demo.codeexample.user.application;
 
 import demo.codeexample.exceptions.EmailAlreadyExistsException;
-import demo.codeexample.exceptions.TeamValidationException;
 import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.shared.Role;
 import demo.codeexample.user.*;
@@ -71,17 +70,6 @@ public class UserService implements UserLookup, UserAuthPort {
      * @return true if each user has unique role
      */
 
-//    @Override
-//    public void validateUniqueRoles(Set<Long> employeesId) {
-//        List<Role> foundRoles = employeesId.stream()
-//                .map(id -> findById(id).orElseThrow(() -> new UserNotFoundException(id)))
-//                .map(UserDto::getRole)
-//                .toList();
-//
-//        List<Role> requiredRoles = List.of(Role.PRODUCER, Role.DIRECTOR, Role.EDITOR, Role.RECRUITER);
-//        if(!foundRoles.containsAll(requiredRoles))
-//            throw new TeamValidationException();
-//    }
 
     @Override
     public boolean validateUniqueRoles(Set<Long> employeesId) {
@@ -94,7 +82,7 @@ public class UserService implements UserLookup, UserAuthPort {
         List<Role> requiredRoles = List.of(
                 Role.PRODUCER, Role.DIRECTOR, Role.EDITOR, Role.RECRUITER
         );
-        return foundRoles.containsAll(requiredRoles);  // ← return boolean instead of throw
+        return foundRoles.containsAll(requiredRoles);
     }
 
     @Override

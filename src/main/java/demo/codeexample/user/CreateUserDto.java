@@ -23,4 +23,7 @@ public class CreateUserDto {
     @NotNull(message = "Role is required")
     private Role role;
 
+    @NotNull(message = "")
+    private Long companyId;
+
 }

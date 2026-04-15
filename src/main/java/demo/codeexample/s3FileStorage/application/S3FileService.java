@@ -15,7 +15,7 @@ import java.time.Duration;
 import java.util.List;
 
 @Service
-public class S3Service {
+public class S3FileService {
 
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
@@ -24,7 +24,7 @@ public class S3Service {
     @Value("${app.cors.allowed-origin:http://localhost:8080}")
     private String allowedOrigin;
 
-    public S3Service(S3Client s3Client, S3Presigner s3Presigner) {
+    public S3FileService(S3Client s3Client, S3Presigner s3Presigner) {
         this.s3Client = s3Client;
         this.s3Presigner = s3Presigner;
     }
