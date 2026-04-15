@@ -1,7 +1,7 @@
-package demo.codeexample.web;
+package demo.codeexample.web.web;
 
 import demo.codeexample.auth.LoginRequest;
-import demo.codeexample.auth.LoginResponse;
+import demo.codeexample.web.application.WebAuthService;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,8 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Controller

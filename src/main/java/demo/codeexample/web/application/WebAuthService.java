@@ -1,4 +1,4 @@
-package demo.codeexample.web;
+package demo.codeexample.web.application;
 
 import demo.codeexample.auth.AuthLookup;
 import demo.codeexample.auth.ChangePasswordRequest;
