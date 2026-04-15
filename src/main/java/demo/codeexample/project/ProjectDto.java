@@ -9,10 +9,10 @@ import java.time.LocalDate;
 @Data
 public class ProjectDto {
         Long id;
-        String name;
+        String title;
         String description;
         LocalDate releaseDate;
         Category category;
         Genre genre;
-        String imageUrl;
+        String imageURL;
 }
