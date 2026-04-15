@@ -57,7 +57,7 @@ public class WebAuthService {
                     "?success=Password+changed+successfully!";
 
         } catch (Exception e) {
-            return encodeRedirect("/web/change-password", e.getMessage());
+            return encodeRedirect("/web/change-password", "Could not change password");
         }
     }
 
