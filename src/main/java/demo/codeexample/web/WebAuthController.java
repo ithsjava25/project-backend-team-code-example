@@ -1,15 +1,11 @@
 package demo.codeexample.web;
 
-import demo.codeexample.auth.AuthLookup;
-import demo.codeexample.auth.ChangePasswordRequest;
 import demo.codeexample.auth.LoginRequest;
 import demo.codeexample.auth.LoginResponse;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,71 +19,52 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class WebAuthController {
 
-    private final AuthLookup authLookup;
+    private final WebAuthService webAuthService;   // ← only service needed!
     private final TemplateEngine templateEngine;
 
-    @Value("${cookie.secure:true}")  // ← true by default, false in local
-    private boolean cookieSecure;
+    // ─────────────────────────────────────────
+    // LOGIN
+    // ─────────────────────────────────────────
 
     @GetMapping("/login")
     @ResponseBody
-    public String loginPage(@RequestParam(required = false) String error) {
-        var output = new StringOutput();
-        templateEngine.render("auth/login.jte", Map.of(
+    public String loginPage(
+            @RequestParam(required = false) String error) {
+        return render("auth/login.jte", Map.of(
                 "error", error != null ? "Invalid email or password" : ""
-        ), output);
-        return output.toString();
+        ));
     }
 
     @PostMapping(value = "/login",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String handleLogin(@Valid @ModelAttribute LoginRequest request,
+    public String handleLogin(@ModelAttribute LoginRequest request,
                               HttpServletResponse response) {
         try {
-            LoginResponse loginResponse = authLookup.getLoginResponse(request);
-
-                // Build cookie string — Secure flag controlled by environment
-            String cookieValue = "jwt=" + loginResponse.getToken()
-                    + "; HttpOnly"
-                    + "; Path=/"
-                    + "; Max-Age=86400"
-                    + "; SameSite=Strict"
-                    + (cookieSecure ? "; Secure" : ""); // ← environment-aware!
-
-            response.addHeader("Set-Cookie", cookieValue);
-
-            // Check password reset before role redirect
-            if (loginResponse.isPasswordResetRequired()) {
-                return "redirect:/web/change-password";
-            }
-
-            return switch (loginResponse.getRole()) {
-                case ADMIN, DIRECTOR             -> "redirect:/web/dashboard";
-                case PRODUCER, RECRUITER, EDITOR -> "redirect:/web/projects";
-                default                          -> "redirect:/web/home";
-            };
+            LoginResponse loginResponse = webAuthService.login(request);
+            response.addHeader("Set-Cookie",
+                    webAuthService.buildJwtCookie(loginResponse.getToken()));
+            return webAuthService.resolveRedirectAfterLogin(loginResponse);
 
         } catch (Exception e) {
             return "redirect:/web/login?error=true";
         }
     }
 
-    // Show change-password page
+    // ─────────────────────────────────────────
+    // CHANGE PASSWORD
+    // ─────────────────────────────────────────
+
     @GetMapping("/change-password")
     @ResponseBody
     public String changePasswordPage(
             @RequestParam(required = false) String error,
             @RequestParam(required = false) String success) {
-
-        var output = new StringOutput();
-        templateEngine.render("auth/change-password.jte", Map.of(
+        return render("auth/change-password.jte", Map.of(
                 "error",   error   != null ? error   : "",
                 "success", success != null ? success : ""
-        ), output);
-        return output.toString();
+        ));
     }
 
-    // Handle change-password form submission
     @PostMapping(value = "/change-password",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String handleChangePassword(
@@ -96,30 +73,39 @@ public class WebAuthController {
             @RequestParam String confirmPassword,
             @CookieValue(name = "jwt", required = false) String jwtToken) {
 
-        // Check token exists — if not, redirect to login
-        if (jwtToken == null) {
+        if (webAuthService.isTokenMissing(jwtToken)) {
             return "redirect:/web/login";
         }
 
-        // Check passwords match
-        if (!newPassword.equals(confirmPassword)) {
-            return "redirect:/web/change-password?error=" +
-                    URLEncoder.encode("Passwords do not match", StandardCharsets.UTF_8);
+        if (!webAuthService.passwordsMatch(newPassword, confirmPassword)) {
+            return redirectWithError("/web/change-password",
+                    "Passwords do not match");
         }
 
         try {
-            // Build request and delegate to AuthLookup
-            ChangePasswordRequest request = new ChangePasswordRequest();
-            request.setCurrentPassword(currentPassword);
-            request.setNewPassword(newPassword);
-
-            authLookup.changePassword(request, "Bearer " + jwtToken);
-
-            return "redirect:/web/change-password?success=Password changed successfully!";
+            webAuthService.changePassword(currentPassword, newPassword, jwtToken);
+            return "redirect:/web/change-password?success=Password+changed+successfully!";
 
         } catch (Exception e) {
-            return "redirect:/web/change-password?error=" + e.getMessage();
+            return redirectWithError("/web/change-password", e.getMessage());
         }
     }
 
+    // ─────────────────────────────────────────
+    // PRIVATE HELPERS
+    // ─────────────────────────────────────────
+
+    private String render(String template, Map<String, Object> params) {
+        var output = new StringOutput();
+        templateEngine.render(template, params, output);
+        return output.toString();
+    }
+
+    private String redirectWithError(String path, String message) {
+        String encoded = URLEncoder.encode(
+                message != null ? message : "Something went wrong",
+                StandardCharsets.UTF_8
+        );
+        return "redirect:" + path + "?error=" + encoded;
+    }
 }
