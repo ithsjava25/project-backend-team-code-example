@@ -43,21 +43,17 @@ public class ProjectEntity {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
-    private Long fileId;
-
     @Column(nullable = false)
     private Long companyId;
 
     public ProjectEntity(String title, String description, LocalDate releaseDate,
-                         Set<Long> employeesId, Category category, Genre genre,
-                         Long fileId, Long companyId){
+                         Set<Long> employeesId, Category category, Genre genre, Long companyId){
         this.title = title;
         this.description = description;
         this.releaseDate = releaseDate;
         this.employeesId = employeesId;
         this.category = category;
         this.genre = genre;
-        this.fileId = fileId;
         this.companyId = companyId;
     }
 

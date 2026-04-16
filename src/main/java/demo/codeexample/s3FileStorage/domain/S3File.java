@@ -15,12 +15,12 @@ public class S3File {
     private Long id;
 
     @Column(nullable = false)
+    private Long companyId;
+
+    @Column(nullable = false, unique = true)
     private String fileKey;
 
     @Column(nullable = false)
-    private String url;
-
-    @Column(nullable = false)
-    private String type;
+    private String contentType;
 
 }

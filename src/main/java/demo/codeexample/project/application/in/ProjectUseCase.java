@@ -20,7 +20,7 @@ public interface ProjectUseCase {
     List<Project> findProjectContainingTitle(String title);
 
     Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
-                          Category category, Genre genre, Long fileId, Long companyId);
+                          Category category, Genre genre, Long companyId);
 
     ProjectDto getProjectDetails(Long projectId);
 }

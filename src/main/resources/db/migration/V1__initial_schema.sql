@@ -11,6 +11,13 @@ CREATE TABLE users(
     updated_at TIMESTAMP
 );
 
+CREATE TABLE s3(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    project_id BIGINT NOT NULL,
+    file_key VARCHAR(100) NOT NULL,
+    content_type VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE project(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
@@ -18,7 +25,6 @@ CREATE TABLE project(
     release_date DATE,
     category VARCHAR(10) NOT NULL,
     genre VARCHAR(50) NOT NULL,
-    file_id BIGINT,
     company_id BIGINT NOT NULL
 );
 
@@ -70,9 +76,3 @@ CREATE TABLE logger(
     entity_id BIGINT NOT NULL
 );
 
-CREATE TABLE s3(
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    file_key VARCHAR(100) NOT NULL,
-    url VARCHAR(100) NOT NULL,
-    type VARCHAR(50) NOT NULL
-);
