@@ -50,6 +50,9 @@ public class AuthService implements AuthLookup {
     // ─────────────────────────────────────────
 
     private String normalizeEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new UnauthorizedException("Invalid credentials");
+        }
         return email.trim().toLowerCase();
     }
 
@@ -104,6 +107,12 @@ public class AuthService implements AuthLookup {
 
     private void validatePasswordChange(ChangePasswordRequest request,
                                         UserAuthDto user) {
+        if (request.getCurrentPassword() ==null || request.getCurrentPassword().isBlank()) {
+            throw new UnauthorizedException("Current password is required");
+        }
+        if (request.getNewPassword() ==null || request.getNewPassword().isBlank()) {
+            throw new UnauthorizedException("New password cannot be blank");
+        }
         if (!passwordEncoder.matches(request.getCurrentPassword(),
                 user.getPassword())) {
             throw new UnauthorizedException("Current password is incorrect");
