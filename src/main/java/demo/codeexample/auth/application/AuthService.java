@@ -51,7 +51,7 @@ public class AuthService implements AuthLookup {
 
     private String normalizeEmail(String email) {
         if (email == null || email.isBlank()) {
-            throw new UserNotFoundException("Email address not found");
+            throw new UserNotFoundException("Invalid credentials");
         }
         return email.trim().toLowerCase();
     }
