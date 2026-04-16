@@ -24,6 +24,7 @@ public class CommentService implements CommentLookup {
     //Add
     public CommentDto createComment(CreateCommentDto createCommentDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        assert authentication != null;
         Long creatorId = Long.parseLong(authentication.getName());
 
         Comment commentEntity = modelMapper.map(createCommentDto, Comment.class);
