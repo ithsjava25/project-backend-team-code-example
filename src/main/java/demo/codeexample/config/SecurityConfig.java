@@ -12,8 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/* This replaces Spring's default login page with your own setup:*/
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity // enables @PreAuthorize on controllers later
@@ -50,6 +48,8 @@ public class SecurityConfig {
                 // Don't create server-side sessions — JWT is stateless
 
                 .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/").permitAll()
+
                                 .requestMatchers("/api/auth/**").permitAll()
 
                                 .requestMatchers("/web/login").permitAll()  // login is public
