@@ -1,16 +1,15 @@
 @import demo.codeexample.project.ProjectDto
 @import java.util.List
 
-@param String username
 @param List<ProjectDto> projects
 
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Producer Dashboard | CodeExample Productions</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style2.css">
 </head>
 <body>
 
