@@ -3,10 +3,10 @@ INSERT INTO company VALUES
     (null, 'chihuahua', 'stockholm','trekantsvägen', 1, 11743, 'info@rebase.com');
 
 INSERT INTO project VALUES
-    (null, 'The Prestige', 'Two friends and fellow magicians become bitter enemies after a sudden tragedy. As they devote themselves to this rivalry, they make sacrifices that bring them fame but, with terrible consequences.','2006-10-20', 'FILM', 'SCI-FI', 1),
+    (null, 'The Prestige', 'Two friends and fellow magicians become bitter enemies after a sudden tragedy. As they devote themselves to this rivalry, they make sacrifices that bring them fame but, with terrible consequences.','2006-10-20', 'FILM', 'SCI_FI', 1),
     (null, 'The Illusionist', 'When two lovers are separated owing to their class differences, the boy decides to become a magician. He must use his powers to free his lady from the royal residence.', '2006-08-18', 'FILM', 'ROMANCE', 1),
     (null, 'Zootopia', 'When Judy Hopps, a rookie officer in the Zootopia Police Department, sniffs out a sinister plot, she enlists the help of a con artist to solve the case in order to prove her abilities to Chief Bogo.','2016-03-16', 'FILM', 'KIDS', 1),
-    (null, 'Star Wars: The Last Jedi', 'Concerned about how strong she is, Luke Skywalker guides Rey as she trains and develops her powers in hopes of assisting the Resistance in their fight against the First Order.', '2017-12-17', 'FILM', 'SCI-FI', 1),
+    (null, 'Star Wars: The Last Jedi', 'Concerned about how strong she is, Luke Skywalker guides Rey as she trains and develops her powers in hopes of assisting the Resistance in their fight against the First Order.', '2017-12-17', 'FILM', 'SCI_FI', 1),
     (null, 'Me Before You', 'Louisa Clark accepts the job of being a caretaker of Will Traynor, a rigid man who has paralysis. However, her life transforms as the two, gradually, form a bond and later fall in love.', '2016-06-03', 'FILM', 'ROMANCE', 1),
     (null, 'Wreck It Ralph', 'Ralph is tired of playing the role of a bad guy and embarks on a journey to become a video game hero. But Ralph accidentally lets loose a deadly enemy that threatens the entire arcade.', '2002-11-02', 'FILM', 'KIDS', 1),
     (null, 'Pokemon', 'A Pokemon master, along with his small group of friends, travels around the world to capture as many pocket monsters as he can.', '1997-04-01', 'SERIES', 'KIDS', 1),
