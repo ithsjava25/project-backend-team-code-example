@@ -20,7 +20,6 @@ public class Project {
     private final Set<Long> employeesId;
     private final Category category;
     private Genre genre;
-    private Long fileId;  //<-- contains image(front cover), video (trailer), pdf
     private Long companyId;
 
 }

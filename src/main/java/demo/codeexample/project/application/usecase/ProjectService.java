@@ -45,7 +45,7 @@ public class ProjectService implements ProjectUseCase {
 
     @Override
     public Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
-                                 Category category, Genre genre, Long fileId, Long companyId) {
+                                 Category category, Genre genre, Long companyId) {
 
         userPort.validateEmployees(employeesId);
 
@@ -57,7 +57,6 @@ public class ProjectService implements ProjectUseCase {
                 .employeesId(employeesId)
                 .category(category)
                 .genre(genre)
-                .fileId(fileId)
                 .companyId(companyId)
                 .build();
         return repository.save(newProject);
