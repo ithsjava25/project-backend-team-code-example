@@ -33,7 +33,7 @@ content = @`
         </div>
     </div>
     <div class="movie-container">
-        <button class="nav-btn left-btn" onclick="scrollGrid(-1)">&#10094;</button>
+        <button type="button" class="nav-btn left-btn" onclick="scrollGrid(-1)">&#10094;</button>
 
         <div class="movie-row" id="movieRow">
             <div class="movie-card"></div>
@@ -44,7 +44,7 @@ content = @`
             <div class="movie-card"></div>
         </div>
 
-        <button class="nav-btn right-btn" onclick="scrollGrid(1)">&#10095;</button>
+        <button type="button" class="nav-btn right-btn" onclick="scrollGrid(1)">&#10095;</button>
     </div>
     <script>
         function scrollGrid(direction) {

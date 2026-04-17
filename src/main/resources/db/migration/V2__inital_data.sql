@@ -19,14 +19,15 @@ INSERT INTO project VALUES
     (null, 'The Office', 'The show documents the exploits of a paper supply company in Scranton, Pennsylvania. With an office including the likes of various peers, this series takes a look at the lives of its co-workers.', '2004-03-24', 'SERIES', 'COMEDY', 1);
 
 INSERT INTO users VALUES
-    (null, 'Anna', 'Ziafar', 'anna.ziafar@hexagonal.com', 'aziafar123', 'PRODUCER', true, false, '2026-01-01 01:00:00', null  ),
-    (null, 'Fredrik', 'Mohlen', 'fredrik.Mohlen@hexagonal.com', 'fmohlen123', 'RECRUITER', true, false, '2026-01-01 01:00:00', null  ),
-    (null, 'Stelle', 'Simonlatser', 'stelle.simonlatser@hexagonal.com', 'ssimonlatser123', 'EDITOR', true, false, '2026-01-01 01:00:00', null  ),
-    (null, 'Mikhalis', 'Dragoutas', 'mikhalis.dragoutas@hexagonal.com', 'mdragoutas123', 'RECORDER', true, false, '2026-01-01 01:00:00', null  ),
-    (null, 'Eric', 'Phu', 'eric.phu@chihuahua.com', 'ephu123', 'PRODUCER', true, false, '2026-01-01 01:00:00', null  ),
-    (null, 'Bob', 'Brown', 'bob.brown@chihuahua.com', 'bbrown123', 'EDITOR', true, false, '2026-01-01 01:00:00', null  ),
-    (null, 'Joe', 'Doe', 'joe.doe@chihuahua.com', 'jdoe123', 'RECORDER', true, false, '2026-01-01 01:00:00', null  ),
-    (null, 'Jane', 'Smith', 'jane.smith@hexagonal.com', 'jsmith123', 'RECRUITER', true, false, '2026-01-01 01:00:00', null  );
+    (null, 'Admin', 'System', 'admin', '$2a$12$3UjYpLZtkxLTRTmfzKaq4u9FLA253tB3t1K2XHeCyyjxRV/jcBHO.', 'ADMIN', true, false, '2026-01-01 01:00:00', null  ),
+    (null, 'Anna', 'Ziafar', 'anna.ziafar@hexagonal.com', '$2a$12$xx3CDLetuKz.s5YY4uj.ueyFOqID0soxE6kA6QNyB8BPsPzTZGZ66', 'PRODUCER', true, false, '2026-01-01 01:00:00', null  ),
+    (null, 'Fredrik', 'Mohlen', 'fredrik.Mohlen@hexagonal.com', '$2a$12$YzLw10lFBu6v1BFYmShlTOuoHoTnPJsh8MNcxOtOovXrT0eXEhC.W', 'RECRUITER', true, false, '2026-01-01 01:00:00', null  ),
+    (null, 'Stelle', 'Simonlatser', 'stelle.simonlatser@hexagonal.com', '$2a$12$V59/QnBo9umJdfOZEtKkOuIzJyo5U4D5Qsgwhdw6pdLWyMyXfakIu', 'EDITOR', true, false, '2026-01-01 01:00:00', null  ),
+    (null, 'Mikhalis', 'Dragoutas', 'mikhalis.dragoutas@hexagonal.com', '$2a$12$M1VqLXiIBktYao5I.Q/eVeHXlGFXMp0wO4OUBm7DCAA8beQ01ucRi', 'DIRECTOR', true, false, '2026-01-01 01:00:00', null  ),
+    (null, 'Eric', 'Phu', 'eric.phu@chihuahua.com', '$2a$12$gbWSoduEuHEFLootTi3DXub1sdDjTB4HQmLvhIYPabL/lUnAzV6mq', 'PRODUCER', true, false, '2026-01-01 01:00:00', null  ),
+    (null, 'Bob', 'Brown', 'bob.brown@chihuahua.com', '$2a$12$kXkzk2UvS9I0HItnaeq/quMz/YnwxhOkG/vAp.E6Z8Ts8cGimHpni', 'EDITOR', true, false, '2026-01-01 01:00:00', null  ),
+    (null, 'Joe', 'Doe', 'joe.doe@chihuahua.com', '$2a$12$uLLNFxtrWI2y18qqS5ZpSeNGCwpIvmkQHvkRvprhdRXtEdO8s6a5O', 'RECRUITER', true, false, '2026-01-01 01:00:00', null  ),
+    (null, 'Jane', 'Smith', 'jane.smith@hexagonal.com', '$2a$12$L7VEd848NY3qwd7wM2Slze4mhQy5sD6ULs966pKisn4ISsY8FJsfe', 'DIRECTOR', true, false, '2026-01-01 01:00:00', null  );
 
 INSERT INTO task VALUES
     (null, 'RECRUITING', 'RECRUIT PEOPLE', '2026-01-01 12:00:00', 'CREATED', 1, 2),

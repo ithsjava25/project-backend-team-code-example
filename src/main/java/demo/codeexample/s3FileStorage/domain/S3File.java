@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "s3")
 public class S3File {
 
     @Id
