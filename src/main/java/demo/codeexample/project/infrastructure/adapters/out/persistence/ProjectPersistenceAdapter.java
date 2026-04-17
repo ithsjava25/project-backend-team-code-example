@@ -1,5 +1,6 @@
 package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
+import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
@@ -22,42 +23,42 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     @Override
-    public List<Project> findAll() {
+    public List<ProjectDto> findAll() {
         return jpaRepository.findAll().stream()
                 .map(this::toDomain)
                 .toList();
     }
 
     @Override
-    public List<Project> findProjectByCategory(Category category) {
+    public List<ProjectDto> findProjectByCategory(Category category) {
         return jpaRepository.findByCategory(category).stream()
                 .map(this::toDomain)
                 .toList();
     }
 
     @Override
-    public List<Project> findProjectByGenre(Genre genre) {
+    public List<ProjectDto> findProjectByGenre(Genre genre) {
         return jpaRepository.findByGenre(genre).stream()
                 .map(this::toDomain)
                 .toList();
     }
 
     @Override
-    public List<Project> findProjectContainingTitle(String title) {
+    public List<ProjectDto> findProjectContainingTitle(String title) {
         return jpaRepository.findByTitleContainingIgnoreCase(title).stream()
                 .map(this::toDomain)
                 .toList();
     }
 
     @Override
-    public Project save(Project project) {
+    public ProjectDto save(Project project) {
         ProjectEntity entity = toEntity(project);
         ProjectEntity saved = jpaRepository.save(entity);
         return toDomain(saved);
     }
 
     @Override
-    public Optional<Project> findById(Long id) {
+    public Optional<ProjectDto> findById(Long id) {
         return jpaRepository.findById(id)
                 .map(this::toDomain);
     }
@@ -66,7 +67,7 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
         return mapper.map(project, ProjectEntity.class);
     }
 
-    private Project toDomain(ProjectEntity entity){
-        return mapper.map(entity, Project.class);
+    private ProjectDto toDomain(ProjectEntity entity){
+        return mapper.map(entity, ProjectDto.class);
     }
 }

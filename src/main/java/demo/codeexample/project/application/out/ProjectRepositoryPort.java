@@ -1,5 +1,6 @@
 package demo.codeexample.project.application.out;
 
+import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.domain.Project;
@@ -9,15 +10,15 @@ import java.util.Optional;
 
 public interface ProjectRepositoryPort {
 
-    List<Project> findAll();
+    List<ProjectDto> findAll();
 
-    List<Project> findProjectByCategory(Category category);
+    List<ProjectDto> findProjectByCategory(Category category);
 
-    List<Project> findProjectByGenre(Genre genre);
+    List<ProjectDto> findProjectByGenre(Genre genre);
 
-    List<Project> findProjectContainingTitle(String title);
+    List<ProjectDto> findProjectContainingTitle(String title);
 
-    Project save(Project project);
+    ProjectDto save(Project project);
 
-    Optional<Project> findById(Long id);
+    Optional<ProjectDto> findById(Long id);
 }

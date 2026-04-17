@@ -26,8 +26,8 @@
         </a>
 
         <div class="nav-links">
-            <a href="/web/producer/dashboard" class="active-tab">Producer</a>
-            <a href="/web/producer/projects/new" class="login-button">New Project</a>
+            <a href="/dashboard" class="active-tab">Producer</a>
+            <a href="/projects/new" class="login-button">New Project</a>
             <a href="/logout">Logout</a>
         </div>
     </div>
@@ -54,7 +54,7 @@
                 @if(projects == null || projects.isEmpty())
                     <tr>
                         <td colspan="5" style="text-align: center; padding: 3rem; color: #94a3b8;">
-                            No projects found. <a href="/web/producer/projects/new" style="color: #6366f1;">Create your first film!</a>
+                            No projects found. <a href="/projects/new" style="color: #6366f1;">Create your first film!</a>
                         </td>
                     </tr>
                 @else
@@ -73,7 +73,7 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="/web/producer/projects/${project.getId()}" class="btn-details" style="text-decoration: none; color: #6366f1;">Details</a>
+                                <a href="/projects/${project.getId()}" class="btn-details" style="text-decoration: none; color: #6366f1;">Details</a>
                             </td>
                         </tr>
                     @endfor

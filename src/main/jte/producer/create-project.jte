@@ -28,8 +28,8 @@
         </a>
 
         <div class="nav-links">
-            <a href="/web/producer/dashboard">Dashboard</a>
-            <a href="/web/producer/projects/new" class="active-tab">New Project</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/projects/new" class="active-tab">New Project</a>
             <a href="/logout">Logout</a>
         </div>
     </div>
@@ -40,7 +40,7 @@
     <p class="subtitle">Start a new film production by filling in the details below.</p>
 
     <div class="form-card">
-        <form action="/web/producer/projects" method="post">
+        <form action="/projects" method="post">
 
             <label class="form-label">Project Title</label>
             <input type="text" name="title" class="form-input" required>
