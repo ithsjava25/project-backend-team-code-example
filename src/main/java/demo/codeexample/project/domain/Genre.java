@@ -7,6 +7,7 @@ public enum Genre {
     DRAMA,
     FANTASY,
     HORROR,
+    KIDS,
     ROMANCE,
     SCI_FI
 }
