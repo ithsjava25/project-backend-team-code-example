@@ -10,7 +10,7 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
     padding: 0 20px;
     overflow-x: hidden;
@@ -36,10 +36,6 @@ nav {
     text-transform: uppercase;
     letter-spacing: 2px;
 }
-
-/*.logo span {*/
-/*    color: var(--accent-color);*/
-/*}*/
 
 .nav-links {
     list-style: none;
