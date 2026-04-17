@@ -5,12 +5,12 @@
 
 
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Project | Producer</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style2.css">
 </head>
 
 <body>
@@ -51,6 +51,13 @@
                     <option value="${c.name()}">${c.name()}</option>
                 @endfor
             </select>
+
+            <label class="form-label">Release Date</label>
+            <input type="date"
+                   name="releaseDate"
+                   class="form-input"
+                   min="${java.time.LocalDate.now().toString()}"
+                   required>
 
             <label class="form-label">Genre</label>
             <select name="genre" class="form-input" required>
