@@ -1,5 +1,6 @@
 package demo.codeexample.project.application.usecase;
 
+import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
@@ -8,6 +9,7 @@ import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.domain.Project;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 
 
@@ -43,6 +45,7 @@ public class ProjectService implements ProjectUseCase {
     }
 
     @Override
+    @Transactional
     public Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
                                  Category category, Genre genre, Long companyId) {
 
@@ -58,7 +61,16 @@ public class ProjectService implements ProjectUseCase {
                 .genre(genre)
                 .companyId(companyId)
                 .build();
-        return repository.save(newProject);
+        Project savedProject = repository.save(newProject);
+
+        ProjectCreatedEvent event = new ProjectCreatedEvent(
+                savedProject.getId(),
+                savedProject.getTitle(),
+                savedProject.getEmployeesId(),
+                savedProject.getReleaseDate(),
+                savedProject.getCompanyId()
+        );
+        return savedProject;
     }
 
     @Override
