@@ -46,7 +46,10 @@ public class ProjectController {
                 dto.employeesId() != null ? dto.employeesId() : Set.of(),
                 dto.category(),
                 dto.genre(),
-                dto.companyId()
+                dto.companyId(),
+                dto.recruitingDeadline(),
+                dto.recordingDeadline(),
+                dto.editingDeadline()
         );
 
         return "redirect:/web/producer/dashboard";

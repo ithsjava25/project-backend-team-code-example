@@ -1,8 +1,8 @@
 package demo.codeexample.task.application.ports.usecase;
 
 import demo.codeexample.project.ProjectCreatedEvent;
-import demo.codeexample.project.domain.Project;
 import demo.codeexample.shared.LoggerAction;
+import demo.codeexample.shared.Role;
 import demo.codeexample.task.domain.TaskStatus;
 import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
@@ -33,14 +33,14 @@ public class TaskService implements TaskUseCase {
 
     @ApplicationModuleListener
     public void on (ProjectCreatedEvent event) {
-        Long recruiterId = findByRole(event.employeeId(), "RECRUITER");
-        Long directorId = findByRole(event.employeeId(), "DIRECTOR");
-        Long editorId = findByRole(event.employeeId(), "EDITOR");
+        Long recruiterId = findByRole(event.employeesId(), Role.RECRUITER);
+        Long directorId = findByRole(event.employeesId(), Role.DIRECTOR);
+        Long editorId = findByRole(event.employeesId(), Role.EDITOR);
 
         Task RecruitingTask = createTask(TaskType.RECRUITING, "Recruit for " + event.title(), TaskStatus.ASSIGNED, )
     }
 
-    private Long findByRole(Set<Long> ids, String role) {
+    private Long findByRole(Set<Long> ids, Role role) {
         return ids.stream()
                 .filter(id -> userLookup.validateUserRole(id, role))
                 .findFirst()

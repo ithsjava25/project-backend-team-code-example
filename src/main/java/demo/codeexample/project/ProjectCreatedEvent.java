@@ -1,12 +1,16 @@
 package demo.codeexample.project;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public record ProjectCreatedEvent(
         Long projectId,
         String title,
-        Set<Long> employeeId,
-        LocalDate ,
-        Long companyId
+        Set<Long> employeesId,
+        LocalDate releaseDate,
+        Long companyId,
+        LocalDateTime recruitingDeadline,
+        LocalDateTime recordingDeadline,
+        LocalDateTime editingDeadline
 ) {}
