@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -51,7 +52,10 @@ public class ProjectService implements ProjectUseCase {
     @Override
     @Transactional
     public Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
-                                 Category category, Genre genre, Long companyId) {
+                                 Category category, Genre genre, Long companyId,
+                                 LocalDateTime recruitingDeadline,
+                                 LocalDateTime recordingDeadline,
+                                 LocalDateTime editingDeadline) {
 
         userPort.validateEmployees(employeesId);
 
@@ -72,7 +76,11 @@ public class ProjectService implements ProjectUseCase {
                 savedProject.getTitle(),
                 savedProject.getEmployeesId(),
                 savedProject.getReleaseDate(),
-                savedProject.getCompanyId()
+                savedProject.getCompanyId(),
+                recruitingDeadline,
+                recordingDeadline,
+                editingDeadline
+
         );
         return savedProject;
     }
