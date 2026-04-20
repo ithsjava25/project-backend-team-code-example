@@ -2,6 +2,7 @@ package demo.codeexample.project.application.usecase;
 
 import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.project.ProjectDto;
+import demo.codeexample.project.application.out.ProjectEventPort;
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.in.ProjectUseCase;
@@ -12,7 +13,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,11 +22,13 @@ public class ProjectService implements ProjectUseCase {
 
     private final ProjectRepositoryPort repository;
     private final UserPort userPort;
+    private final ProjectEventPort projectEventPort;
     private final ModelMapper mapper;
 
-    public ProjectService(ProjectRepositoryPort repository, UserPort userPort, ModelMapper mapper) {
+    public ProjectService(ProjectRepositoryPort repository, UserPort userPort, ProjectEventPort projectEventPort, ModelMapper mapper) {
         this.repository = repository;
         this.userPort = userPort;
+        this.projectEventPort = projectEventPort;
         this.mapper = mapper;
     }
 
@@ -46,7 +48,6 @@ public class ProjectService implements ProjectUseCase {
     }
 
     @Override
-    @Transactional
     public Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
                                  Category category, Genre genre, Long companyId,
                                  LocalDateTime recruitingDeadline,
@@ -75,9 +76,10 @@ public class ProjectService implements ProjectUseCase {
                 savedProject.getCompanyId(),
                 recruitingDeadline,
                 recordingDeadline,
-                editingDeadline
+                editingDeadline );
 
-        );
+        projectEventPort.publish(event);
+
         return savedProject;
     }
 

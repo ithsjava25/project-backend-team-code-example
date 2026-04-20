@@ -42,10 +42,12 @@
     <p class="subtitle">Start a new film production by filling in the details below.</p>
 
     <div class="form-card">
-        <form action="/projects" method="post">
+        <form action="/hexagonal/projects" method="post">
 
             <label class="form-label">Project Title</label>
             <input type="text" name="title" class="form-input" required>
+
+            <input type="hidden" name="companyId" value="1">
 
             <label class="form-label">Category</label>
             <select name="category" class="form-input" required>
@@ -75,7 +77,7 @@
                        placeholder="Search name..."
                        data-role="RECRUITER"
                        autocomplete="off">
-                <input type="hidden" name="recruitingWorkerId">
+                <input type="hidden" name="employeesId">
                 <div class="dropdown-suggestions" style="display: none;"></div>
             </div>
 
@@ -86,7 +88,7 @@
                        placeholder="Search name..."
                        data-role="DIRECTOR"
                        autocomplete="off">
-                <input type="hidden" name="recordingWorkerId">
+                <input type="hidden" name="employeesId">
                 <div class="dropdown-suggestions" style="display: none;"></div>
             </div>
 
@@ -97,18 +99,18 @@
                        placeholder="Search name..."
                        data-role="EDITOR"
                        autocomplete="off">
-                <input type="hidden" name="editingWorkerId">
+                <input type="hidden" name="employeesId">
                 <div class="dropdown-suggestions" style="display: none;"></div>
             </div>
 
             <label class="form-label">Deadline for Recruiting</label>
-            <input type="datetime-local" name="recruitDeadLine" class="form-input" required>
+            <input type="datetime-local" name="recruitingDeadline" class="form-input" required>
 
             <label class="form-label">Deadline for Recording</label>
-            <input type="datetime-local" name="recordingDeadLine" class="form-input" required>
+            <input type="datetime-local" name="recordingDeadline" class="form-input" required>
 
             <label class="form-label">Deadline for Editing</label>
-            <input type="datetime-local" name="editingDeadLine" class="form-input" required>
+            <input type="datetime-local" name="editingDeadline" class="form-input" required>
 
             <label class="form-label">Description</label>
             <textarea name="description" class="form-input" rows="5"></textarea>
@@ -119,7 +121,7 @@
 </main>
 
 <script>
-    // Vi skapar en JavaScript-lista från JTE-variabeln 'users'
+
     const allUsers = [
         @for(var u : users)
         { id: "${u.getId()}", name: "${u.getFirstName()} ${u.getLastName()}", role: "${u.getRole()}" },
@@ -141,13 +143,13 @@
                 return;
             }
 
-            // Filtrera på både namn OCH roll
+
             const matches = allUsers.filter(u =>
                 u.name.toLowerCase().includes(val) && u.role === targetRole
             );
 
             for (let i = 0; i < matches.length; i++) {
-                const matchObj = matches[i]; // JTE kommer garanterat inte tro att matchObj är Java
+                const matchObj = matches[i];
                 const div = document.createElement('div');
                 div.className = 'worker-item';
                 div.innerHTML = matchObj.name;
@@ -163,7 +165,7 @@
         });
     });
 
-    // Logik för att filtrera den stora team-listan
+
     document.getElementById('teamSearch').addEventListener('input', function() {
         const term = this.value.toLowerCase();
         document.querySelectorAll('.team-member-item').forEach(item => {
@@ -172,7 +174,6 @@
         });
     });
 
-    // Stäng dropdown om man klickar utanför
     document.addEventListener('click', e => {
         if (!e.target.classList.contains('worker-search')) {
             document.querySelectorAll('.dropdown-suggestions').forEach(d => d.style.display = 'none');

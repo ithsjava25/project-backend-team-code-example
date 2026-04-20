@@ -28,6 +28,7 @@ public class TaskPersistenceAdapter implements TaskRepositoryPort {
     public Task save(Task task) {
         TaskEntity entity = toEntity(task);
         TaskEntity saved = jpaTaskRepository.save(entity);
+        jpaTaskRepository.flush();
         return toDomain(saved);
     }
 
