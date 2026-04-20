@@ -15,16 +15,18 @@ public class CompanyController {
     private final CompanyService companyService;
     private final ProjectLookup projectLookup;
 
-    @GetMapping({"","/"})
+    @GetMapping({"", "/"})
     public String index(Model model) {
         String company = TenantContext.getTenant();
 
         model.addAttribute("company", company);
-        model.addAttribute("projects",projectLookup.findAllProjects());
-        //model.addAttribute("films",projectLookup.findProjectByCategory(FILM));
-        //model.addAttribute("series",projectLookup.findProjectByCategory(SERIES));
+        model.addAttribute("projects", projectLookup.findAllProjects());
+        //model.addAttribute("films",projectLookup.findProjectByCategory(Category.FILM));
+        //model.addAttribute("series",projectLookup.findProjectByCategory(Category.SERIES));
 
         return "home";
+
+
     }
 
     @GetMapping("/aboutUs")

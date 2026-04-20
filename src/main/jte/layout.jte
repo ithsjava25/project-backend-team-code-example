@@ -2,6 +2,7 @@
 @param String title
 @param Content content
 @param String company
+@param String bodyClass = ""
 
 <!DOCTYPE html>
 <html lang="sv">
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Oxanium:wght@400;700&family=Exo+2:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="${bodyClass}">
 
 <nav>
     <div class="logo">⬢ ${company}</div>
