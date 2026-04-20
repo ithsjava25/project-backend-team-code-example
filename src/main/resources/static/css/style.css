@@ -147,6 +147,8 @@ nav {
 .movie-card-wrapper:hover {
     transform: scale(1.08);
     z-index: 10;
+}
+.movie-card:hover {
     border-color: var(--accent-color);
 }
 
