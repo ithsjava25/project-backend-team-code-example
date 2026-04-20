@@ -1,4 +1,7 @@
-@param String welcomeMessage = "Neon Nights"
+@import demo.codeexample.project.ProjectDto
+@import java.util.List
+
+@param List<ProjectDto> projects
 @param String company
 
 @template.layout(
@@ -6,45 +9,72 @@ title = "Home",
 company = company,
 content = @`
     <header class="hero">
-        <h1>${welcomeMessage}</h1>
+        <h1>Neon Nights</h1>
         <p>A prize‑winning original production from Hexagonal Film. Experience the dark future in crystal clear 8K.</p>
     </header>
 
     <div class="content-section">
         <h2 class="row-title">Our Projects</h2>
-        <div class="movie-row">
-            <div class="movie-card">
-                <img src="https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=400&h=600&fit=crop" alt="Film 1">
+        <div class="movie-container">
+            <button type="button" class="nav-btn left-btn" onclick="scrollGrid(-1)">&#10094;</button>
+
+            <div class="movie-row" id="movieRow">
+                @for(ProjectDto project : projects)
+                    <div class="movie-card-wrapper">
+                        <div class="movie-card">
+                            <img class="card-image" src="${project.getFileId()}" alt="${project.getDescription()}" />
+                        </div>
+                        <div class="movie-info">
+                            <span class="project-title">${project.getTitle()} </span>
+                        </div>
+                    </div>
+                @endfor
             </div>
-            <div class="movie-card">
-                <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=600&fit=crop" alt="Film 2">
-            </div>
-            <div class="movie-card">
-                <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&h=600&fit=crop" alt="Film 3">
-            </div>
-            <div class="movie-card">
-                <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&h=600&fit=crop" alt="Film 4">
-            </div>
-            <div class="movie-card">
-                <img src="https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=400&h=600&fit=crop" alt="Film 5">
-            </div>
-            <div class="movie-card">
-            </div>
+
+            <button type="button" class="nav-btn right-btn" onclick="scrollGrid(1)">&#10095;</button>
         </div>
     </div>
-    <div class="movie-container">
-        <button type="button" class="nav-btn left-btn" onclick="scrollGrid(-1)">&#10094;</button>
+    <div class="content-section">
+        <h2 class="row-title">Films/Movies</h2>
+        <div class="movie-container">
+            <button type="button" class="nav-btn left-btn" onclick="scrollGrid(-1)">&#10094;</button>
 
-        <div class="movie-row" id="movieRow">
-            <div class="movie-card"></div>
-            <div class="movie-card"></div>
-            <div class="movie-card"></div>
-            <div class="movie-card"></div>
-            <div class="movie-card"></div>
-            <div class="movie-card"></div>
+            <div class="movie-row" id="movieRow">
+                @for(ProjectDto project : projects)
+                    <div class="movie-card-wrapper">
+                        <div class="movie-card">
+                            <img class="card-image" src="${project.getFileId()}" alt="${project.getDescription()}" />
+                        </div>
+                        <div class="movie-info">
+                            <span class="project-title">${project.getTitle()} </span>
+                        </div>
+                    </div>
+                @endfor
+            </div>
+
+            <button type="button" class="nav-btn right-btn" onclick="scrollGrid(1)">&#10095;</button>
         </div>
+    </div>
+    <div class="content-section">
+        <h2 class="row-title">Series</h2>
+        <div class="movie-container">
+            <button type="button" class="nav-btn left-btn" onclick="scrollGrid(-1)">&#10094;</button>
 
-        <button type="button" class="nav-btn right-btn" onclick="scrollGrid(1)">&#10095;</button>
+            <div class="movie-row" id="movieRow">
+                @for(ProjectDto project : projects)
+                    <div class="movie-card-wrapper">
+                        <div class="movie-card">
+                            <img class="card-image" src="${project.getFileId()}" alt="${project.getDescription()}" />
+                        </div>
+                        <div class="movie-info">
+                            <span class="project-title">${project.getTitle()} </span>
+                        </div>
+                    </div>
+                @endfor
+            </div>
+
+            <button type="button" class="nav-btn right-btn" onclick="scrollGrid(1)">&#10095;</button>
+        </div>
     </div>
     <script>
         function scrollGrid(direction) {
