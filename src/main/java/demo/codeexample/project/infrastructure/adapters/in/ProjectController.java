@@ -3,6 +3,8 @@ package demo.codeexample.project.infrastructure.adapters.in;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import gg.jte.TemplateEngine;
+import demo.codeexample.project.domain.Genre;
+import demo.codeexample.user.UserLookup;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ public class ProjectController {
 
     private final ProjectUseCase projectUseCase;
     private final TemplateEngine templateEngine;
+    private final UserLookup userLookup;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
@@ -27,7 +30,9 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/new")
-    public String createProjectPage() {
+    public String createProjectPage(Model model) {
+        var users = userLookup.findAll();
+        model.addAttribute("users", users);
         return "producer/create-project";
     }
 
