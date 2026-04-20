@@ -54,6 +54,7 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     public Project save(Project project) {
         ProjectEntity entity = toEntity(project);
         ProjectEntity saved = jpaRepository.save(entity);
+        jpaRepository.flush();
         return toDomain(saved);
     }
 
@@ -68,6 +69,15 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     private Project toDomain(ProjectEntity entity){
-        return mapper.map(entity, Project.class);
+        return Project.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .releaseDate(entity.getReleaseDate())
+                .employeesId(entity.getEmployeesId())
+                .category(entity.getCategory())
+                .genre(entity.getGenre())
+                .companyId(entity.getCompanyId())
+                .build();
     }
 }

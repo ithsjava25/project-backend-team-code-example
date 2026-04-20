@@ -1,6 +1,7 @@
 package demo.codeexample.project.infrastructure.adapters.in;
 
 import demo.codeexample.project.CreateProjectDto;
+import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
@@ -9,11 +10,13 @@ import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,12 +27,16 @@ public class ProjectController {
     private final ProjectUseCase projectUseCase;
     private final TemplateEngine templateEngine;
     private final UserLookup userLookup;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         var projects = projectUseCase.findAllProjects();
 
-        model.addAttribute("projects", projects);
+        List<ProjectDto> dtos = projects.stream()
+                .map(project -> modelMapper.map(project, ProjectDto.class))
+                .toList();
+        model.addAttribute("projects", dtos);
         return "producer/producer-dashboard";
     }
 
@@ -56,7 +63,7 @@ public class ProjectController {
                 dto.editingDeadline()
         );
 
-        return "redirect:/web/producer/dashboard";
+        return "redirect:/producer/dashboard";
     }
 }
 
