@@ -28,9 +28,13 @@ public class ProjectService implements ProjectUseCase {
     }
 
     @Override
-    public List<Project> findAllProjects() {
-        return repository.findAll();
+    public List<ProjectDto> findAllProjects() {
+        return repository.findAll().stream()
+                .map(project -> mapper.map(project, ProjectDto.class))
+                .toList();
     }
+
+
 
     @Override
     public List<Project> findProjectByCategory(Category category) {
