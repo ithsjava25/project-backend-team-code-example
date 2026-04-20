@@ -37,7 +37,11 @@ public class TaskService implements TaskUseCase {
         Long directorId = findByRole(event.employeesId(), Role.DIRECTOR);
         Long editorId = findByRole(event.employeesId(), Role.EDITOR);
 
-        Task RecruitingTask = createTask(TaskType.RECRUITING, "Recruit for " + event.title(), TaskStatus.ASSIGNED, )
+        Task RecruitingTask = createTask(TaskType.RECRUITING, "Recruit for " + event.title(), TaskStatus.ASSIGNED, event.recruitingDeadline(), event.projectId(), recruiterId );
+
+        Task RecordingTask = createTask(TaskType.RECORDING, "Record movie for " + event.title(), TaskStatus.ASSIGNED, event.recordingDeadline(), event.projectId(), directorId );
+
+        Task EditingTask = createTask(TaskType.EDITING, "Editing scenes for " + event.title(), TaskStatus.ASSIGNED, event.editingDeadline(), event.projectId(), editorId );
     }
 
     private Long findByRole(Set<Long> ids, Role role) {
