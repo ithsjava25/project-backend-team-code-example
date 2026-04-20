@@ -28,22 +28,22 @@ public class ProjectService implements ProjectUseCase {
     }
 
     @Override
-    public List<ProjectDto> findAllProjects() {
+    public List<Project> findAllProjects() {
         return repository.findAll();
     }
 
     @Override
-    public List<ProjectDto> findProjectByCategory(Category category) {
+    public List<Project> findProjectByCategory(Category category) {
         return repository.findProjectByCategory(category);
     }
 
     @Override
-    public List<ProjectDto> findProjectByGenre(Genre genre) {
+    public List<Project> findProjectByGenre(Genre genre) {
         return repository.findProjectByGenre(genre);
     }
 
     @Override
-    public ProjectDto createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
+    public Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
                                  Category category, Genre genre, Long companyId) {
 
         userPort.validateEmployees(employeesId);
@@ -62,7 +62,7 @@ public class ProjectService implements ProjectUseCase {
     }
 
     @Override
-    public List<ProjectDto> findProjectContainingTitle(String title) {
+    public List<Project> findProjectContainingTitle(String title) {
         return repository.findProjectContainingTitle(title);
     }
 

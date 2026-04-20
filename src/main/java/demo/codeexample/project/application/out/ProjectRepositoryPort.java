@@ -10,15 +10,15 @@ import java.util.Optional;
 
 public interface ProjectRepositoryPort {
 
-    List<ProjectDto> findAll();
+    List<Project> findAll();
 
-    List<ProjectDto> findProjectByCategory(Category category);
+    List<Project> findProjectByCategory(Category category);
 
-    List<ProjectDto> findProjectByGenre(Genre genre);
+    List<Project> findProjectByGenre(Genre genre);
 
-    List<ProjectDto> findProjectContainingTitle(String title);
+    List<Project> findProjectContainingTitle(String title);
 
-    ProjectDto save(Project project);
+    Project save(Project project);
 
-    Optional<ProjectDto> findById(Long id);
+    Optional<Project> findById(Long id);
 }

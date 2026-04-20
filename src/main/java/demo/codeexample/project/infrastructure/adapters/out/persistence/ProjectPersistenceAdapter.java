@@ -23,42 +23,42 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     @Override
-    public List<ProjectDto> findAll() {
+    public List<Project> findAll() {
         return jpaRepository.findAll().stream()
                 .map(this::toDomain)
                 .toList();
     }
 
     @Override
-    public List<ProjectDto> findProjectByCategory(Category category) {
+    public List<Project> findProjectByCategory(Category category) {
         return jpaRepository.findByCategory(category).stream()
                 .map(this::toDomain)
                 .toList();
     }
 
     @Override
-    public List<ProjectDto> findProjectByGenre(Genre genre) {
+    public List<Project> findProjectByGenre(Genre genre) {
         return jpaRepository.findByGenre(genre).stream()
                 .map(this::toDomain)
                 .toList();
     }
 
     @Override
-    public List<ProjectDto> findProjectContainingTitle(String title) {
+    public List<Project> findProjectContainingTitle(String title) {
         return jpaRepository.findByTitleContainingIgnoreCase(title).stream()
                 .map(this::toDomain)
                 .toList();
     }
 
     @Override
-    public ProjectDto save(Project project) {
+    public Project save(Project project) {
         ProjectEntity entity = toEntity(project);
         ProjectEntity saved = jpaRepository.save(entity);
         return toDomain(saved);
     }
 
     @Override
-    public Optional<ProjectDto> findById(Long id) {
+    public Optional<Project> findById(Long id) {
         return jpaRepository.findById(id)
                 .map(this::toDomain);
     }
@@ -67,7 +67,7 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
         return mapper.map(project, ProjectEntity.class);
     }
 
-    private ProjectDto toDomain(ProjectEntity entity){
-        return mapper.map(entity, ProjectDto.class);
+    private Project toDomain(ProjectEntity entity){
+        return mapper.map(entity, Project.class);
     }
 }
