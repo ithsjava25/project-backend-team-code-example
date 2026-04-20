@@ -3,7 +3,6 @@ package demo.codeexample.company.web;
 import demo.codeexample.company.TenantContext;
 import demo.codeexample.company.application.CompanyService;
 import demo.codeexample.project.ProjectLookup;
-import demo.codeexample.project.domain.Category;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +21,9 @@ public class CompanyController {
 
         model.addAttribute("company", company);
         model.addAttribute("projects",projectLookup.findAllProjects());
+        //model.addAttribute("films",projectLookup.findProjectByCategory(FILM));
+        //model.addAttribute("series",projectLookup.findProjectByCategory(SERIES));
+
         return "home";
     }
 

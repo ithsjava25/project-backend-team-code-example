@@ -29,7 +29,7 @@ public class ProjectService implements ProjectUseCase {
 
     @Override
     public List<ProjectDto> findAllProjects() {
-        return repository.findAll().stream()
+        return repository.findAllByOrderByTitleAsc().stream()
                 .map(project -> mapper.map(project, ProjectDto.class))
                 .toList();
     }
