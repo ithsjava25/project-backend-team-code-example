@@ -11,15 +11,15 @@ import java.util.Set;
 
 public interface ProjectUseCase {
 
-    List<ProjectDto> findAllProjects();
+    List<Project> findAllProjects();
 
-    List<ProjectDto> findProjectByCategory(Category category);
+    List<Project> findProjectByCategory(Category category);
 
-    List<ProjectDto> findProjectByGenre(Genre genre);
+    List<Project> findProjectByGenre(Genre genre);
 
-    List<ProjectDto> findProjectContainingTitle(String title);
+    List<Project> findProjectContainingTitle(String title);
 
-    ProjectDto createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
+    Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
                           Category category, Genre genre, Long companyId);
 
     ProjectDto getProjectDetails(Long projectId);
