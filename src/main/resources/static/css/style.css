@@ -32,9 +32,21 @@ nav {
 .logo {
     font-weight: 800;
     font-size: 1.6rem;
-    color: var(--text-color);
     text-transform: uppercase;
     letter-spacing: 2px;
+
+    background: linear-gradient(90deg, #ffffff, #d4af37, #ffffff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+    font-family: Orbitron, sans-serif;
+}
+
+@keyframes shine {
+    0% { background-position: 0 }
+    100% { background-position: 200% }
+
 }
 
 .nav-links {

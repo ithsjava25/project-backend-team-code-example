@@ -13,7 +13,7 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
-    @GetMapping("")
+    @GetMapping({"","/"})
     public String index(Model model) {
         String company = TenantContext.getTenant();
 
