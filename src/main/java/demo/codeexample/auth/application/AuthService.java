@@ -129,5 +129,4 @@ public class AuthService implements AuthLookup {
                 passwordEncoder.encode(newPassword)
         );
     }
-
 }
