@@ -9,6 +9,7 @@ import gg.jte.output.StringOutput;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -16,7 +17,6 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/web/producer")
 @RequiredArgsConstructor
 public class ProjectController {
 
@@ -24,20 +24,16 @@ public class ProjectController {
     private final TemplateEngine templateEngine;
 
     @GetMapping("/dashboard")
-    @ResponseBody
-    public String dashboard() {
+    public String dashboard(Model model) {
         var projects = projectUseCase.findAllProjects();
 
-        return render("producer/producer-dashboard.jte", Map.of(
-                "projects", projects
-        ));
+        model.addAttribute("projects", projects);
+        return "producer/producer-dashboard";
     }
 
     @GetMapping("/projects/new")
-    @ResponseBody
     public String createProjectPage() {
-        return render("producer/create-project.jte", Map.of(
-        ));
+        return "producer/create-project";
     }
 
     @PostMapping("/projects")
@@ -54,12 +50,6 @@ public class ProjectController {
         );
 
         return "redirect:/web/producer/dashboard";
-    }
-
-    private String render(String template, Map<String, Object> params) {
-        var output = new StringOutput();
-        templateEngine.render(template, params, output);
-        return output.toString();
     }
 }
 
