@@ -1,5 +1,6 @@
 package demo.codeexample.project.infrastructure;
 
+import demo.codeexample.project.application.out.ProjectEventPort;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.application.usecase.ProjectService;
@@ -11,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class ProjectConfig {
 
     @Bean
-    public ProjectService projectService(ProjectRepositoryPort projectRepositoryPort, UserPort userPort,  ModelMapper modelMapper) {
-        return new ProjectService(projectRepositoryPort, userPort, modelMapper);
+    public ProjectService projectService(ProjectRepositoryPort projectRepositoryPort, UserPort userPort, ProjectEventPort projectEventPort, ModelMapper modelMapper) {
+        return new ProjectService(projectRepositoryPort, userPort, projectEventPort, modelMapper);
     }
 
 }
