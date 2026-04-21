@@ -1,6 +1,6 @@
 package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
-import demo.codeexample.project.domain.Category;
+import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
 
