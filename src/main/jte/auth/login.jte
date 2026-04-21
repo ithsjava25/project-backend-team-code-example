@@ -2,7 +2,7 @@
 @param String company = ""
 
 @template.layout(
-title = "Home",
+title = "Log in",
 company = company,
 content = @`
 
