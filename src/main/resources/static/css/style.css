@@ -12,8 +12,16 @@ body {
     color: var(--text-color);
     font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
-    padding: 0 20px;
+    padding: 0;
     overflow-x: hidden;
+}
+body.about-page {
+    background-image:
+            linear-gradient(to bottom, rgba(10, 5, 16, 0.8), rgba(10, 5, 16, 0.8)),
+            url('https://images.unsplash.com/photo-1464802686167-b939a6910659?q=80&w=2000&auto=format&fit=crop');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
 }
 
 /* Navigation Bar */
@@ -32,9 +40,19 @@ nav {
 .logo {
     font-weight: 800;
     font-size: 1.6rem;
-    color: var(--text-color);
     text-transform: uppercase;
     letter-spacing: 2px;
+    background: linear-gradient(90deg, #ffffff, #d4af37, #ffffff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+    font-family: Orbitron, sans-serif;
+}
+
+@keyframes shine {
+    0% { background-position: 0 }
+    100% { background-position: 200% }
 }
 
 .nav-links {
@@ -93,6 +111,63 @@ nav {
     justify-content: center;
     padding: 0 5%;
 }
+.about-hero {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative; /* Viktigt för att kunna placera loggan bakom */
+    overflow: hidden;
+}
+
+/* Detta skapar loggan som ett eget lager bakom texten */
+.about-hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('/images/logo.png');
+    background-size: 500px auto; /* Justera storleken här */
+    background-repeat: no-repeat;
+    background-position: center;
+    /* Här styr vi loggans utseende utan att röra texten */
+    filter: sepia(100%) hue-rotate(250deg) saturate(200%);
+    opacity: 0.3; /* Kontrollera hur mycket den ska synas bakom */
+    z-index: 1; /* Lägger den bakom texten */
+}
+
+.about-hero h1 {
+    font-family: Orbitron, sans-serif;
+    font-size: 4rem; /* Gjorde den lite större */
+    color: var(--accent-color); /* Denna förblir nu knallgul! */
+    text-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2; /* Lägger texten framför loggan */
+}
+
+.subtitle {
+    position: relative;
+    z-index: 2;
+    color: #ccc;
+    font-size: 1.2rem;
+}
+
+
+.about-content {
+    /* Nu kommer 0.5 opacitet faktiskt visa stjärnorna från body! */
+    background-color: rgba(26, 11, 46, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 80px 15%;
+    position: relative;
+    z-index: 2;
+    margin-top: -100px;
+    border-radius: 60px 60px 0 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+}
+
 
 /* Row & Cards */
 .content-section {
@@ -132,9 +207,11 @@ nav {
     border: 1px solid rgba(255,255,255,0.1);
 }
 
-.movie-card:hover {
+.movie-card-wrapper:hover {
     transform: scale(1.08);
     z-index: 10;
+}
+.movie-card:hover {
     border-color: var(--accent-color);
 }
 
@@ -142,6 +219,10 @@ nav {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+.movie-card-wrapper {
+    margin-right: 15px;
+    transition: transform 0.3s;
 }
 /* Själva behållaren som lägger bild och text bredvid varandra */
 .profile-container {
@@ -168,8 +249,6 @@ nav {
     flex: 1;                /* Låter texten ta upp resten av bredden */
 }
 .image-wrapper img {
-    display: flex;
-    align-items: center;
     width: 500px;
 }
 .movie-container {
@@ -209,4 +288,11 @@ nav {
 /* Visa pilarna när man hovrar över containern */
 .movie-container:hover .nav-btn {
     opacity: 1;
+}
+.movie-info {
+    margin-top: 8px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    max-width: 200px;
 }

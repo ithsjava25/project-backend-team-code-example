@@ -1,5 +1,5 @@
 @import demo.codeexample.project.ProjectDto
-@import demo.codeexample.project.domain.Category
+@import demo.codeexample.shared.Category
 @import demo.codeexample.project.domain.Genre
 @import java.util.List
 

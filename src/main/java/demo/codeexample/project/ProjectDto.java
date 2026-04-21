@@ -1,6 +1,6 @@
 package demo.codeexample.project;
 
-import demo.codeexample.project.domain.Category;
+import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -15,7 +15,6 @@ public class ProjectDto {
         LocalDate releaseDate;
         Category category;
         Genre genre;
-        Long fileId;
 
         @NotNull
         Long companyId;

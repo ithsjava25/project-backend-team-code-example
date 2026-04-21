@@ -1,7 +1,6 @@
 package demo.codeexample.project.application.out;
 
-import demo.codeexample.project.ProjectDto;
-import demo.codeexample.project.domain.Category;
+import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.domain.Project;
 
@@ -11,6 +10,8 @@ import java.util.Optional;
 public interface ProjectRepositoryPort {
 
     List<Project> findAll();
+
+    List<Project> findAllByOrderByTitleAsc();
 
     List<Project> findProjectByCategory(Category category);
 
