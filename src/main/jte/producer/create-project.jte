@@ -136,6 +136,7 @@
 
         input.addEventListener('input', function() {
             const val = this.value.toLowerCase();
+            hiddenInput.value = '';
             suggestionBox.innerHTML = '';
 
             if (!val) {
@@ -152,7 +153,7 @@
                 const matchObj = matches[i];
                 const div = document.createElement('div');
                 div.className = 'worker-item';
-                div.innerHTML = matchObj.name;
+                div.textContent = matchObj.name;
 
                 div.onclick = function() {
                     input.value = matchObj.name;
