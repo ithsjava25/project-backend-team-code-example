@@ -1,13 +1,13 @@
-CREATE TABLE event_publication
-(
-    id                     BINARY(16)   NOT NULL,
-    event_type             VARCHAR(512) NOT NULL,
-    listener_id            VARCHAR(512) NOT NULL,
-    publication_date       TIMESTAMP(6) NOT NULL,
-    completion_date        TIMESTAMP(6) NULL,
-    serialized_event       VARCHAR(4000) NOT NULL,
-    status                 VARCHAR(20)  NOT NULL,
-    completion_attempts    INT          NOT NULL,
-    last_resubmission_date TIMESTAMP(6) NULL,
-    PRIMARY KEY (id)
-);
+CREATE TABLE IF NOT EXISTS EVENT_PUBLICATION (
+                                                 ID               BINARY(16) NOT NULL,
+    COMPLETION_DATE  DATETIME(6),
+    EVENT_TYPE       VARCHAR(512) NOT NULL,
+    LISTENER_ID      VARCHAR(512) NOT NULL,
+    PUBLICATION_DATE DATETIME(6) NOT NULL,
+    SERIALIZED_EVENT TEXT NOT NULL,
+    PRIMARY KEY (ID)
+    ) ENGINE=InnoDB;
+
+
+CREATE INDEX event_publication_by_completion_date_idx
+    ON EVENT_PUBLICATION (COMPLETION_DATE);

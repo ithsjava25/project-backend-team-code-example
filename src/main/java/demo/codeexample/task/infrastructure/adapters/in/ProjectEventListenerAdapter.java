@@ -16,7 +16,6 @@ public class ProjectEventListenerAdapter {
 
     @EventListener
     public void handle(ProjectCreatedEvent event) {
-        System.out.println("Event mottaget för projekt: " + event.title());//debuug
         taskUseCase.handleProjectCreated(event);
         }
     }

@@ -1,5 +1,6 @@
 package demo.codeexample.task.application.ports.usecase;
 
+import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.shared.LoggerAction;
 import demo.codeexample.shared.Role;
@@ -48,7 +49,13 @@ public class TaskService implements TaskUseCase {
 
     private Long findByRole(Set<Long> ids, Role role) {
         return ids.stream()
-                .filter(id -> userLookup.validateUserRole(id, role))
+                                .filter(id -> {
+                                try {
+                                        return userLookup.validateUserRole(id, role);
+                                    } catch (UserNotFoundException ex) {
+                                        return false;
+                                    }
+                            })
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No employee with the role " + role + " was found in the project."));
     }
