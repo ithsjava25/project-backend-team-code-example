@@ -24,12 +24,7 @@ public class ProjectController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
-        var projects = projectUseCase.findAllProjects();
-
-        List<ProjectDto> dtos = projects.stream()
-                .map(project -> modelMapper.map(project, ProjectDto.class))
-                .toList();
-        model.addAttribute("projects", dtos);
+        model.addAttribute("projects", projectUseCase.findAllProjects());
         return "producer/producer-dashboard";
     }
 
