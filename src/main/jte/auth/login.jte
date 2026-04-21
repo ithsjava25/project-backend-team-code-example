@@ -1,5 +1,4 @@
 @param String error
-<%--@param String welcomeMessage = "🎬 Film Studio"--%>
 @param String company = ""
 
 @template.layout(
