@@ -1,6 +1,6 @@
 @param String error
-@param String welcomeMessage = "🎬 Film Studio"
-@param String company
+<%--@param String welcomeMessage = "🎬 Film Studio"--%>
+@param String company = ""
 
 @template.layout(
 title = "Home",
@@ -9,7 +9,6 @@ content = @`
 
     <header class="hero" >
         <div class="login-card">
-            <h1>${welcomeMessage} </h1>
             <div class="text-center mb-4">
                 <p class="text-muted">Sign in to your account</p>
             </div>

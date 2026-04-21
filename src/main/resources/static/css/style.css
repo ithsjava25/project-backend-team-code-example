@@ -211,8 +211,9 @@ nav {
     opacity: 1;
 }
 
-/* Login sida relaterad*/
+/* Login side style */
 .login-card {
+    webkit-backdrop-filter: blur(8px);
     background: rgba(0, 0, 0, 0.3); /* dark transparent */
     color: #eee;
     backdrop-filter: blur(8px); /* glass effect */
