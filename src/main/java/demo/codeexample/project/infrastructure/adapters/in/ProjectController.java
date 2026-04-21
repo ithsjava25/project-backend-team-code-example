@@ -4,6 +4,7 @@ import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.user.UserLookup;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -36,6 +37,7 @@ public class ProjectController {
     }
 
     @PostMapping("/projects")
+    @Transactional
     public String createProject(@ModelAttribute @Valid CreateProjectDto dto) {
 
         projectUseCase.createProject(
