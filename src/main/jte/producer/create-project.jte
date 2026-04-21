@@ -17,7 +17,7 @@
 
 <nav class="navbar">
     <div class="navbar-content">
-        <a href="/web/producer/dashboard" class="logo-link">
+        <a href="/producer/dashboard" class="logo-link">
             <div class="logo-container">
                 <img src="/images/logo.png" class="logo-img">
                 <div class="brand-wrapper">

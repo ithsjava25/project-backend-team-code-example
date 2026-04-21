@@ -24,7 +24,7 @@ public class WebAuthController {
     // LOGIN
     // ─────────────────────────────────────────
 
-    @GetMapping("/web/login")
+    @GetMapping("/login")
     @ResponseBody
     public String loginPage(
             @RequestParam(required = false) String error,
@@ -42,7 +42,7 @@ public class WebAuthController {
     }
 
     @PostMapping(
-            value = "/web/login",
+            value = "/login",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
     public String handleLogin(
@@ -60,7 +60,7 @@ public class WebAuthController {
     // CHANGE PASSWORD
     // ─────────────────────────────────────────
 
-    @GetMapping("/web/change-password")
+    @GetMapping("/login/change-password")
     @ResponseBody
     public String changePasswordPage(
             @RequestParam(required = false) String error,
@@ -77,7 +77,7 @@ public class WebAuthController {
     }
 
     @PostMapping(
-            value = "/web/change-password",
+            value = "/login/change-password",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
     public String handleChangePassword(

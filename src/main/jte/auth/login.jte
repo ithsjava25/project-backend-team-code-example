@@ -20,7 +20,7 @@ content = @`
             @endif
 
             <!-- Email + Password Form -->
-            <form method="POST" action="/${company}/web/login">
+            <form method="POST" action="/${company}/login">
                 <div class="mb-3">
                     <label for="email" class="form-label">Work Email</label>
                     <input type="email"

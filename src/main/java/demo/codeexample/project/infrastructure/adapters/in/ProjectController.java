@@ -44,7 +44,7 @@ public class ProjectController {
                 dto.companyId()
         );
 
-        return "redirect:/web/producer/dashboard";
+        return "redirect:/producer/dashboard";
     }
 }
 

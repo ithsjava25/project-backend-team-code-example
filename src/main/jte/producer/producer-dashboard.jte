@@ -15,7 +15,7 @@
 
 <nav class="navbar">
     <div class="navbar-content">
-        <a href="/web/login" class="logo-link">
+        <a href="/login" class="logo-link">
             <div class="logo-container">
                 <img src="/images/logo.png" alt="Logo" class="logo-img">
                 <div class="brand-wrapper">

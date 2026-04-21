@@ -21,7 +21,7 @@
         <li><a href="/${company}">Home</a></li>
         <li><a href="/${company}/projects">Projects</a></li>
         <li><a href="/${company}/aboutUs">About Us</a></li>
-        <li><a href="/${company}/web/login" class="btn-login">Login</a></li>
+        <li><a href="/${company}/login" class="btn-login">Login</a></li>
     </ul>
 </nav>
 

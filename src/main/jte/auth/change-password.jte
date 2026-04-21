@@ -29,8 +29,7 @@ content = @`
             </div>
         @endif
 
-<%--        <form method="POST" action="/${company}/web/change-password">--%>
-        <form method="POST" action="${company == null || company.isEmpty() ? "" : "/" + company}/web/change-password">
+        <form method="POST" action="${company == null || company.isEmpty() ? "" : "/" + company}/change-password">
             <div class="mb-3">
                 <label for="currentPassword" class="form-label">
                     Current Password
@@ -42,7 +41,6 @@ content = @`
                        placeholder="••••••••"
                        required>
             </div>
-
             <div class="mb-3">
                 <label for="newPassword" class="form-label">
                     New Password
@@ -55,7 +53,6 @@ content = @`
                        required
                        minlength="8">
             </div>
-
             <div class="mb-3">
                 <label for="confirmPassword" class="form-label">
                     Confirm New Password
@@ -68,21 +65,16 @@ content = @`
                        required
                        minlength="8">
             </div>
-
             <button type="submit" class="btn btn-primary w-100 mb-3">
                 Update Password
             </button>
         </form>
-
         <p class="text-center text-muted mt-3" style="font-size: 0.85rem;">
-            <a href="/${company}/web/login" style="color: #e94560;">
+            <a href="/${company}/login" style="color: #e94560;">
                 Back to login
             </a>
         </p>
     </div>
-
-
-
 </header>
 
     <!-- Client-side password match check -->
