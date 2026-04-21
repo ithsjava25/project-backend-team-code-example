@@ -133,7 +133,7 @@ public class WebAuthService {
         public static LoginResult failure() {
             String company = TenantContext.getTenant();
             String prefix = (company != null && !company.isBlank()) ? "/" + company : "";
-            return new LoginResult(true, null,
+            return new LoginResult(false, null,
                     "redirect:" + prefix + "/web/login?error=true");
         }
     }

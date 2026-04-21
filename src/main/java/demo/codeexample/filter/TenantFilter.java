@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.Set;
+
 @Component
 public class TenantFilter implements HandlerInterceptor {
 
@@ -24,6 +26,12 @@ public class TenantFilter implements HandlerInterceptor {
 //        return true;
 //    }
 
+
+    private static final Set<String> NON_TENANT_ROOTS = Set.of(
+            "css", "js", "images", "oauth2", "login", "web",
+            "aboutUs", "error", "favicon.ico", "actuator"
+            );
+
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
@@ -35,20 +43,11 @@ public class TenantFilter implements HandlerInterceptor {
         if (parts.length > 1) {
             String firstSegment = parts[1];
 
-            if (!firstSegment.equals("css")
-                    && !firstSegment.equals("js")
-                    && !firstSegment.equals("images")
-                    && !firstSegment.equals("oauth2")
-                    && !firstSegment.equals("login")
-                    && !firstSegment.equals("web")) {
-                TenantContext.setTenant(firstSegment);
-            } else {
-                TenantContext.setTenant("");
-            }
-        } else {
+            TenantContext.setTenant(
+                    NON_TENANT_ROOTS.contains(firstSegment) ? "" : firstSegment);
+        }else {
             TenantContext.setTenant("");
         }
-
         return true;
     }
 
