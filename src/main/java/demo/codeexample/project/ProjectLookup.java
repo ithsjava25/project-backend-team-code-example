@@ -1,8 +1,7 @@
 package demo.codeexample.project;
 
 
-import demo.codeexample.project.domain.Category;
-import demo.codeexample.project.domain.Project;
+import demo.codeexample.shared.Category;
 
 import java.util.List;
 
@@ -10,6 +9,6 @@ public interface ProjectLookup {
 
     List<ProjectDto> findAllProjects();
 
-    List<Project> findProjectByCategory(Category category);
+    List<ProjectDto> findProjectByCategory(Category category);
 
 }

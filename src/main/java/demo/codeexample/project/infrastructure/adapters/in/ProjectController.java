@@ -2,18 +2,13 @@ package demo.codeexample.project.infrastructure.adapters.in;
 
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
-import demo.codeexample.project.domain.Category;
-import demo.codeexample.project.domain.Genre;
 import gg.jte.TemplateEngine;
-import gg.jte.output.StringOutput;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.Map;
 import java.util.Set;
 
 @Controller

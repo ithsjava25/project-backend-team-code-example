@@ -1,7 +1,7 @@
 package demo.codeexample.project.application.usecase;
 
 import demo.codeexample.project.ProjectDto;
-import demo.codeexample.project.domain.Category;
+import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
@@ -34,11 +34,11 @@ public class ProjectService implements ProjectUseCase {
                 .toList();
     }
 
-
-
     @Override
-    public List<Project> findProjectByCategory(Category category) {
-        return repository.findProjectByCategory(category);
+    public List<ProjectDto> findProjectByCategory(Category category) {
+        return repository.findProjectByCategory(category).stream()
+                .map(project -> mapper.map(project, ProjectDto.class))
+                .toList();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
-import demo.codeexample.project.ProjectDto;
-import demo.codeexample.project.domain.Category;
+import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.domain.Project;
