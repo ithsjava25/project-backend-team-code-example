@@ -20,9 +20,9 @@ content = @`
     <div class="content-section">
         <h2 class="row-title">Our Projects</h2>
         <div class="movie-container">
-            <button type="button" class="nav-btn left-btn" onclick="scrollGrid(-1)">&#10094;</button>
+            <button type="button" class="nav-btn left-btn" onclick="scrollGrid(this,-1)">&#10094;</button>
 
-            <div class="movie-row" id="movieRow">
+            <div class="movie-row">
                 @for(ProjectDto project : projects)
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
@@ -35,54 +35,55 @@ content = @`
                 @endfor
             </div>
 
-            <button type="button" class="nav-btn right-btn" onclick="scrollGrid(1)">&#10095;</button>
+            <button type="button" class="nav-btn right-btn" onclick="scrollGrid(this,1)">&#10095;</button>
         </div>
     </div>
-<%--    <div class="content-section">--%>
-<%--        <h2 class="row-title">Films/Movies</h2>--%>
-<%--        <div class="movie-container">--%>
-<%--            <button type="button" class="nav-btn left-btn" onclick="scrollGrid(-1)">&#10094;</button>--%>
+    <div class="content-section">
+        <h2 class="row-title">Films/Movies</h2>
+        <div class="movie-container">
+            <button type="button" class="nav-btn left-btn" onclick="scrollGrid(this,-1)">&#10094;</button>
 
-<%--            <div class="movie-row" id="movieRow">--%>
-<%--                @for(ProjectDto film : films)--%>
-<%--                    <div class="movie-card-wrapper">--%>
-<%--                        <div class="movie-card">--%>
-<%--                            <img class="card-image" src="${film.getFileId()}" alt="${film.getDescription()}" />--%>
-<%--                        </div>--%>
-<%--                        <div class="movie-info">--%>
-<%--                            <span class="project-title">${film.getTitle()} </span>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                @endfor--%>
-<%--            </div>--%>
+            <div class="movie-row" >
+                @for(ProjectDto film : films)
+                    <div class="movie-card-wrapper">
+                        <div class="movie-card">
+                            <img class="card-image" src="${film.getFileId()}" alt="${film.getDescription()}" />
+                        </div>
+                        <div class="movie-info">
+                            <span class="project-title">${film.getTitle()} </span>
+                        </div>
+                    </div>
+                @endfor
+            </div>
 
-<%--            <button type="button" class="nav-btn right-btn" onclick="scrollGrid(1)">&#10095;</button>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--    <div class="content-section">--%>
-<%--        <h2 class="row-title">Series</h2>--%>
-<%--        <div class="movie-container">--%>
-<%--            <button type="button" class="nav-btn left-btn" onclick="scrollGrid(-1)">&#10094;</button>--%>
+            <button type="button" class="nav-btn right-btn" onclick="scrollGrid(this,1)">&#10095;</button>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2 class="row-title">Series</h2>
+        <div class="movie-container">
+            <button type="button" class="nav-btn left-btn" onclick="scrollGrid(this,-1)">&#10094;</button>
 
-<%--            <div class="movie-row" id="movieRow">--%>
-<%--                @for(ProjectDto serie : series)--%>
-<%--                    <div class="movie-card-wrapper">--%>
-<%--                        <div class="movie-card">--%>
-<%--                            <img class="card-image" src="${serie.getFileId()}" alt="${serie.getDescription()}" />--%>
-<%--                        </div>--%>
-<%--                        <div class="movie-info">--%>
-<%--                            <span class="project-title">${serie.getTitle()} </span>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                @endfor--%>
-<%--            </div>--%>
+            <div class="movie-row" >
+                @for(ProjectDto serie : series)
+                    <div class="movie-card-wrapper">
+                        <div class="movie-card">
+                            <img class="card-image" src="${serie.getFileId()}" alt="${serie.getDescription()}" />
+                        </div>
+                        <div class="movie-info">
+                            <span class="project-title">${serie.getTitle()} </span>
+                        </div>
+                    </div>
+                @endfor
+            </div>
 
-<%--            <button type="button" class="nav-btn right-btn" onclick="scrollGrid(1)">&#10095;</button>--%>
-<%--        </div>--%>
-<%--    </div>--%>
+            <button type="button" class="nav-btn right-btn" onclick="scrollGrid(this,1)">&#10095;</button>
+        </div>
+    </div>
     <script>
-        function scrollGrid(direction) {
-            const row = document.getElementById('movieRow');
+        function scrollGrid(buttonElement, direction) {
+            const container = buttonElement.closest('.movie-container');
+            const row = container.querySelector('.movie-row');
             const scrollAmount = 400; // Hur många pixlar den ska rulla per klick
 
             row.scrollBy({

@@ -1,5 +1,6 @@
 package demo.codeexample.project.domain;
 
+import demo.codeexample.shared.Category;
 import lombok.*;
 
 import java.time.LocalDate;

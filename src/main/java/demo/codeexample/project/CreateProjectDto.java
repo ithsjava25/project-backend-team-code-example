@@ -1,6 +1,6 @@
 package demo.codeexample.project;
 
-import demo.codeexample.project.domain.Category;
+import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 
 import java.time.LocalDate;

@@ -1,9 +1,8 @@
 package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
-import demo.codeexample.project.domain.Category;
+import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 

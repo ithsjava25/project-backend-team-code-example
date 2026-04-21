@@ -2,7 +2,7 @@ package demo.codeexample.project.application.in;
 
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.ProjectLookup;
-import demo.codeexample.project.domain.Category;
+import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.domain.Project;
 
@@ -14,7 +14,7 @@ public interface ProjectUseCase extends ProjectLookup {
 
     List<ProjectDto> findAllProjects();
 
-    List<Project> findProjectByCategory(Category category);
+    List<ProjectDto> findProjectByCategory(Category category);
 
     List<Project> findProjectByGenre(Genre genre);
 
