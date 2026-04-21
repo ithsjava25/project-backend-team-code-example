@@ -50,7 +50,7 @@ public class TaskService implements TaskUseCase {
         return ids.stream()
                 .filter(id -> userLookup.validateUserRole(id, role))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Ingen anställd med rollen " + role + " hittades i projektet!"));
+                .orElseThrow(() -> new IllegalStateException("No employee with the role " + role + " was found in the project."));
     }
 
     @Override
