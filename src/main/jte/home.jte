@@ -26,7 +26,7 @@ content = @`
                 @for(ProjectDto project : projects)
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
-                            <img class="card-image" src="${project.getFileId()}" alt="${project.getDescription()}" />
+                            <img class="card-image" src="" alt="${project.getTitle()}" />
                         </div>
                         <div class="movie-info">
                             <span class="project-title">${project.getTitle()} </span>
@@ -47,7 +47,7 @@ content = @`
                 @for(ProjectDto film : films)
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
-                            <img class="card-image" src="${film.getFileId()}" alt="${film.getDescription()}" />
+                            <img class="card-image" src="" alt="${film.getTitle()}" />
                         </div>
                         <div class="movie-info">
                             <span class="project-title">${film.getTitle()} </span>
@@ -68,7 +68,7 @@ content = @`
                 @for(ProjectDto serie : series)
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
-                            <img class="card-image" src="${serie.getFileId()}" alt="${serie.getDescription()}" />
+                            <img class="card-image" src="" alt="${serie.getTitle()}" />
                         </div>
                         <div class="movie-info">
                             <span class="project-title">${serie.getTitle()} </span>

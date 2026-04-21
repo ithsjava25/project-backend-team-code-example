@@ -42,7 +42,6 @@ nav {
     font-size: 1.6rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-
     background: linear-gradient(90deg, #ffffff, #d4af37, #ffffff);
     background-size: 200% auto;
     -webkit-background-clip: text;
@@ -54,7 +53,6 @@ nav {
 @keyframes shine {
     0% { background-position: 0 }
     100% { background-position: 200% }
-
 }
 
 .nav-links {
@@ -129,26 +127,22 @@ nav {
     content: "";
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-
     background-image: url('/images/logo.png');
     background-size: 500px auto; /* Justera storleken här */
     background-repeat: no-repeat;
     background-position: center;
-
     /* Här styr vi loggans utseende utan att röra texten */
     filter: sepia(100%) hue-rotate(250deg) saturate(200%);
     opacity: 0.3; /* Kontrollera hur mycket den ska synas bakom */
-
     z-index: 1; /* Lägger den bakom texten */
 }
 
 .about-hero h1 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: Orbitron, sans-serif;
     font-size: 4rem; /* Gjorde den lite större */
     color: var(--accent-color); /* Denna förblir nu knallgul! */
     text-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
     margin-bottom: 10px;
-
     position: relative;
     z-index: 2; /* Lägger texten framför loggan */
 }
@@ -166,7 +160,6 @@ nav {
     background-color: rgba(26, 11, 46, 0.5);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-
     padding: 80px 15%;
     position: relative;
     z-index: 2;

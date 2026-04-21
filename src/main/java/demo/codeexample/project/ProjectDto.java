@@ -15,7 +15,6 @@ public class ProjectDto {
         LocalDate releaseDate;
         Category category;
         Genre genre;
-        Long fileId;
 
         @NotNull
         Long companyId;
