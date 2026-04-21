@@ -89,8 +89,8 @@ public class WebAuthService {
             return redirect("/web/change-password");
         }
         return switch (response.getRole()) {
-            case ADMIN, DIRECTOR             -> redirect("/web/dashboard");
-            case PRODUCER, RECRUITER, EDITOR -> redirect("/web/projects");
+            case ADMIN, DIRECTOR             -> redirect("/dashboard");
+            case PRODUCER, RECRUITER, EDITOR -> redirect("/projects");
             default                          -> redirect("/web/home");
         };
     }
