@@ -1,6 +1,5 @@
 package demo.codeexample.project.application.usecase;
 
-import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
@@ -9,7 +8,6 @@ import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.domain.Project;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 
 import java.time.LocalDate;
