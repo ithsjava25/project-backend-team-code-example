@@ -165,14 +165,16 @@
         });
     });
 
-
-    document.getElementById('teamSearch').addEventListener('input', function() {
-        const term = this.value.toLowerCase();
-        document.querySelectorAll('.team-member-item').forEach(item => {
-            const name = item.innerText.toLowerCase();
-            item.style.display = name.includes(term) ? 'flex' : 'none';
-        });
-    });
+        const teamSearch = document.getElementById('teamSearch');
+        if (teamSearch) {
+                teamSearch.addEventListener('input', function() {
+                        const term = this.value.toLowerCase();
+                        document.querySelectorAll('.team-member-item').forEach(item => {
+                                const name = item.innerText.toLowerCase();
+                                item.style.display = name.includes(term) ? 'flex' : 'none';
+                            });
+                    });
+            }
 
     document.addEventListener('click', e => {
         if (!e.target.classList.contains('worker-search')) {
