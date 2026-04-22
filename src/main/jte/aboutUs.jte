@@ -1,11 +1,10 @@
-@param String company
+@param String company = ""
 
 @template.layout(
 title = "About Us",
 company = company,
-bodyClass= "about-page",
 content = @`
-    <header class="about-hero">
+    <header class="hero">
         <h1>Hexagonal Film Productions</h1>
         <p class="subtitle">Bringing Stories to Life from a New Perspective</p>
     </header>
@@ -26,7 +25,6 @@ content = @`
             </p>
 
             <div class="image-wrapper">
-                <h2>The Production Team</h2>
                 <img src="/images/Hexagonallogga.png" alt="The Hexagonal Film Productions Team" class="about-img">
             </div>
         </div>

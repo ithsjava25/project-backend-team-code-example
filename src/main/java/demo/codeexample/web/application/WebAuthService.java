@@ -4,6 +4,7 @@ import demo.codeexample.auth.AuthLookup;
 import demo.codeexample.auth.ChangePasswordRequest;
 import demo.codeexample.auth.LoginRequest;
 import demo.codeexample.auth.LoginResponse;
+import demo.codeexample.company.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -45,19 +46,19 @@ public class WebAuthService {
                                        String confirmPassword,
                                        String jwtToken) {
         if (isTokenMissing(jwtToken)) {
-            return "redirect:/web/login";
+            return redirect("/login");
         }
         if (!passwordsMatch(newPassword, confirmPassword)) {
-            return encodeRedirect("/web/change-password",
+            return encodeRedirect("/login/change-password",
                     "Passwords do not match");
         }
         try {
             changePassword(currentPassword, newPassword, jwtToken);
-            return "redirect:/web/change-password" +
-                    "?success=Password+changed+successfully!";
+            return redirect("/login/change-password")
+                    + "?success=Password+changed+successfully!";
 
         } catch (Exception e) {
-            return encodeRedirect("/web/change-password", "Could not change password");
+            return encodeRedirect("/login/change-password", "Could not change password");
         }
     }
 
@@ -85,12 +86,12 @@ public class WebAuthService {
 
     private String resolveRedirectAfterLogin(LoginResponse response) {
         if (response.isPasswordResetRequired()) {
-            return "redirect:/web/change-password";
+            return redirect("/login/change-password");
         }
         return switch (response.getRole()) {
-            case ADMIN, DIRECTOR             -> "redirect:/web/dashboard";
-            case PRODUCER, RECRUITER, EDITOR -> "redirect:/web/projects";
-            default                          -> "redirect:/web/home";
+            case ADMIN, DIRECTOR             -> redirect("/dashboard");
+            case PRODUCER, RECRUITER, EDITOR -> redirect("/projects");
+            default                          -> redirect("/home");
         };
     }
 
@@ -115,6 +116,12 @@ public class WebAuthService {
     // LOGIN RESULT — carries cookie + redirect
     // ─────────────────────────────────────────
 
+    private String redirect(String path) {
+        String company = TenantContext.getTenant();
+        String prefix = (company != null && !company.isBlank()) ? "/" + company : "";
+        return "redirect:" + prefix + path;
+    }
+
     public record LoginResult(boolean success,
                               String cookie,
                               String redirect) {
@@ -124,8 +131,10 @@ public class WebAuthService {
         }
 
         public static LoginResult failure() {
+            String company = TenantContext.getTenant();
+            String prefix = (company != null && !company.isBlank()) ? "/" + company : "";
             return new LoginResult(false, null,
-                    "redirect:/web/login?error=true");
+                    "redirect:" + prefix + "/login?error=true");
         }
     }
 }

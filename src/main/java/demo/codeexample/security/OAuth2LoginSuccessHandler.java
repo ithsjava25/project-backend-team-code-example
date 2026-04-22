@@ -78,9 +78,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setHeader("Set-Cookie", cookieValue);
 
         String redirectUrl = switch (user.getRole()) {
-            case ADMIN, DIRECTOR             -> "/web/dashboard";
-            case PRODUCER, RECRUITER, EDITOR -> "/web/projects";
-            default                          -> "/web/home";
+            case ADMIN, DIRECTOR             -> "/dashboard";
+            case PRODUCER, RECRUITER, EDITOR -> "/projects";
+            default                          -> "/home";
         };
 
         response.sendRedirect(redirectUrl);

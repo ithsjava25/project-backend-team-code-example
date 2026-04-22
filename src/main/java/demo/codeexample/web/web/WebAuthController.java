@@ -1,6 +1,7 @@
 package demo.codeexample.web.web;
 
 import demo.codeexample.auth.LoginRequest;
+import demo.codeexample.company.TenantContext;
 import demo.codeexample.web.application.WebAuthService;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/web")
 @RequiredArgsConstructor
 public class WebAuthController {
 
@@ -27,16 +27,28 @@ public class WebAuthController {
     @GetMapping("/login")
     @ResponseBody
     public String loginPage(
-            @RequestParam(required = false) String error) {
+            @RequestParam(required = false) String error,
+            @RequestParam(required = false) String welcomeMessage) {
+
+        String company = TenantContext.getTenant();
+        String companyValue = company != null ? company : "";
+        String welcomeMessageValue = welcomeMessage != null ? welcomeMessage : "";
+
         return render("auth/login.jte", Map.of(
+                "company", companyValue,
+                "welcomeMessage", welcomeMessageValue,
                 "error", error != null ? "Invalid email or password" : ""
         ));
     }
 
-    @PostMapping(value = "/login",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String handleLogin(@ModelAttribute LoginRequest request,
-                              HttpServletResponse response) {
+    @PostMapping(
+            value = "/login",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
+    public String handleLogin(
+            @ModelAttribute LoginRequest request,
+            HttpServletResponse response) {
+
         WebAuthService.LoginResult result = webAuthService.handleLogin(request);
         if (result.success()) {
             response.addHeader("Set-Cookie", result.cookie());
@@ -48,28 +60,37 @@ public class WebAuthController {
     // CHANGE PASSWORD
     // ─────────────────────────────────────────
 
-    @GetMapping("/change-password")
+    @GetMapping("/login/change-password")
     @ResponseBody
     public String changePasswordPage(
             @RequestParam(required = false) String error,
             @RequestParam(required = false) String success) {
+
+        String company = TenantContext.getTenant();
+        String companyValue = company != null ? company : "";
+
         return render("auth/change-password.jte", Map.of(
-                "error",   error   != null ? error   : "",
+                "company", companyValue,
+                "error", error != null ? error : "",
                 "success", success != null ? success : ""
         ));
     }
 
-    @PostMapping(value = "/change-password",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(
+            value = "/login/change-password",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
     public String handleChangePassword(
             @RequestParam String currentPassword,
             @RequestParam String newPassword,
             @RequestParam String confirmPassword,
             @CookieValue(name = "jwt", required = false) String jwtToken) {
+
         return webAuthService.handleChangePassword(
                 currentPassword, newPassword, confirmPassword, jwtToken
         );
     }
+
 
     // ─────────────────────────────────────────
     // PRIVATE HELPERS
