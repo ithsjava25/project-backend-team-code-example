@@ -15,9 +15,16 @@ public class LoggerService implements LoggerLookup{
     private final LoggerRepository loggerRepository;
 
     @Override
-    public void log(LoggerAction action, Long userId, String entityType, Long entityId) {
+    public void log(LoggerAction action, Long userId, String entityType, Long entityId, Long projectId) {
         LoggerEntity log = new LoggerEntity();
         log.setAction(action);
+        log.setUserId(userId);
+        log.setEntityType(entityType);
+        log.setEntityId(entityId);
+        log.setProjectId(projectId);
+
+
+        loggerRepository.save(log);
     }
 
 }
