@@ -7,6 +7,7 @@ import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.domain.Project;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +22,10 @@ public interface ProjectUseCase extends ProjectLookup {
     List<Project> findProjectContainingTitle(String title);
 
     Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
-                          Category category, Genre genre, Long companyId);
+                          Category category, Genre genre, Long companyId,
+                          LocalDateTime recruitingDeadline,
+                          LocalDateTime recordingDeadline,
+                          LocalDateTime editingDeadline);
 
     ProjectDto getProjectDetails(Long projectId);
 }
