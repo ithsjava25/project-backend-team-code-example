@@ -14,4 +14,15 @@ public class UserDto {
     private Role role;
     private boolean active;
     private boolean passwordResetRequired;
+
+    public String getInitial() {
+        if (firstName != null && !firstName.isBlank()) {
+            return firstName.substring(0, 1).toUpperCase();
+        }
+        return "?";
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }
