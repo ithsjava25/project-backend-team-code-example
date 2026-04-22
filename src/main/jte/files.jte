@@ -1,22 +1,20 @@
-@param String csrfToken
+
 @param boolean isAuthenticated
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="_csrf" content="${csrfToken}">
-    <meta name="_csrf_header" content="X-CSRF-TOKEN">
     <title>S3 File Manager</title>
 </head>
 <body>
 <h1>S3 File Manager</h1>
 <p>Welcome! <!-- {displayName}! --></p>
 <div class="nav">
-    <a href="/" class="button">Home</a>
-    <form action="/logout" method="post" style="display:inline;">
-        <input type="hidden" name="_csrf" value="${csrfToken}">
-        <button type="submit" class="button">Logout</button>
+<%--    <a href="/" class="button">Home</a>--%>
+<%--    <form action="/logout" method="post" style="display:inline;">--%>
+<%--        <input type="hidden" name="_csrf" value="${csrfToken}">--%>
+<%--        <button type="submit" class="button">Logout</button>--%>
     </form>
 </div>
 
@@ -196,8 +194,8 @@
     }
 
     async function apiRequest(url, options = {}) {
-        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+       // const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        // const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
         options.credentials = options.credentials || 'same-origin';
         options.headers = options.headers || {};
@@ -207,7 +205,7 @@
 
         const method = options.method ? options.method.toUpperCase() : 'GET';
         if (method !== 'GET' && method !== 'HEAD') {
-            options.headers[csrfHeader] = csrfToken;
+           // options.headers[csrfHeader] = csrfToken;
         }
 
         const response = await fetch(url, options);

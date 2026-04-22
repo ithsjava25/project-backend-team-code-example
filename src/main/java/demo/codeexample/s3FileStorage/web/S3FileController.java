@@ -21,13 +21,10 @@ public class S3FileController {
     }
 
     @GetMapping("/files")
-    public String filesPage(Model model/*, @AuthenticationPrincipal OAuth2User user */, CsrfToken csrfToken) {
-//        if (user == null) {
-//            return "redirect:/login";
-//        }
-       // model.addAttribute("displayName", user.getAttribute("name"));
+    public String filesPage(Model model) {
+
         model.addAttribute("isAuthenticated", true);
-        model.addAttribute("csrfToken", csrfToken.getToken());
+
         return "files";
     }
 
@@ -36,6 +33,7 @@ public class S3FileController {
     public List<String> listFiles() {
         return s3Service.listFiles();
     }
+
     @DeleteMapping("/api/files")
     @ResponseBody
     public void deleteFile(@RequestParam String fileName) {
@@ -58,9 +56,15 @@ public class S3FileController {
 
     @PostMapping("/api/files/callback")
     @ResponseBody
-    public Map<String, String> uploadCallback(@RequestParam String fileName) {
-        log.info("Callback received: File {} has been uploaded successfully", fileName);
+    public Map<String, String> uploadCallback(
+            @RequestParam Long projectId,
+            @RequestParam String fileName,
+            @RequestParam String contentType) {
+
+        log.info("Callback received: Project {} saves file {} and has been uploaded successfully", projectId, fileName);
         // Here you could perform further processing, like saving metadata to a database
+        s3Service.saveFileMetadata(projectId, fileName, contentType);
+
         return Map.of("status", "success", "message", "Callback received for " + fileName);
     }
 }
