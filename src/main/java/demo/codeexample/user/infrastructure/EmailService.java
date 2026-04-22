@@ -1,5 +1,6 @@
 package demo.codeexample.user.infrastructure;
 
+import demo.codeexample.company.TenantContext;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,14 @@ public class EmailService {
     }
 
     public void sendWelcomeEmail(String toEmail, String firstName, String tempPassword) {
+
+// Get tenant from context — which company is this user for?
+        String tenant  = TenantContext.getTenant();
+        String loginUrl = buildLoginUrl(tenant);
+
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@filmstudio.com");
+
+//        message.setFrom("noreply@filmstudio.com");
         message.setTo(toEmail);
         message.setSubject("Welcome to FilmStudio - Your Account Details");
         message.setText("""
@@ -27,17 +34,31 @@ public class EmailService {
                 Email:    %s
                 Password: %s
                 
-                Please log in and change your password immediately.
+                Login here: %s
+                
+                Please change your password immediately after logging in.
                 
                 Best regards,
                 Film Studio Admin Team
-                """.formatted(firstName, toEmail, tempPassword));
+                """.formatted(firstName, toEmail, tempPassword, loginUrl));
 
         mailSender.send(message);
     }
+
+    private String buildLoginUrl(String tenant) {
+        String baseUrl = "http://localhost:8080";  // from properties ideally!
+        if (tenant == null || tenant.isBlank()) {
+            return baseUrl + "/login";
+        }
+        return baseUrl + "/" + tenant.toLowerCase() + "/login";
+    }
+
     public void sendPasswordResetEmail(String toEmail,
                                        String firstName,
                                        String tempPassword) {
+        String tenant   = TenantContext.getTenant();
+        String loginUrl = buildLoginUrl(tenant);
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
         message.setSubject("Film Studio — Password Reset");
@@ -50,14 +71,14 @@ public class EmailService {
             Email:    %s
             Password: %s
 
-            Please log in and change your password immediately.
+            Login here: %s
+
+            Please change your password immediately.
 
             Best regards,
             Film Studio Admin Team
-            """.formatted(firstName, toEmail, tempPassword));
+            """.formatted(firstName, toEmail, tempPassword, loginUrl));
 
         mailSender.send(message);
     }
-
-
 }
