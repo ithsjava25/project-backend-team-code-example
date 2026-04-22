@@ -1,7 +1,9 @@
+@import demo.codeexample.user.UserDto
 @import demo.codeexample.project.ProjectDto
 @import java.util.List
 
 @param List<ProjectDto> projects
+@param UserDto currentUser
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,6 +30,20 @@
         <div class="nav-links">
             <a href="/dashboard" class="active-tab">Producer</a>
             <a href="/projects/new" class="login-button">New Project</a>
+
+            @if(currentUser != null)
+                <div class="user-menu">
+                    <div class="user-avatar">
+                        ${currentUser.getInitial()}
+                    </div>
+                    <div class="user-tooltip">
+                        <div class="user-tooltip-name">${currentUser.getFullName()}</div>
+                        <div class="user-tooltip-role">${String.valueOf(currentUser.getRole())}</div>
+                        <div class="user-tooltip-email">${currentUser.getEmail()}</div>
+                    </div>
+                </div>
+            @endif
+
             <a href="/logout">Logout</a>
         </div>
     </div>

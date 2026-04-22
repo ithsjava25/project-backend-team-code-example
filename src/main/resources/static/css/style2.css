@@ -226,3 +226,65 @@ body {
 .btn-primary:hover {
     box-shadow: 0 0 20px var(--accent-purple);
 }
+
+
+/* Display log-in user */
+.user-menu {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 12px;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #5b6ee1;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.user-tooltip {
+    position: absolute;
+    top: 52px;
+    right: 0;
+    min-width: 220px;
+    background: white;
+    color: #1e293b;
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+    border: 1px solid #e2e8f0;
+    display: none;
+    z-index: 999;
+}
+
+.user-menu:hover .user-tooltip {
+    display: block;
+}
+
+.user-tooltip-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.user-tooltip-role {
+    font-size: 13px;
+    color: #6366f1;
+    margin-bottom: 4px;
+}
+
+.user-tooltip-email {
+    font-size: 12px;
+    color: #64748b;
+    word-break: break-word;
+}
