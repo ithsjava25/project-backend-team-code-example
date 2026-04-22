@@ -9,6 +9,7 @@ import java.util.Set;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Project {
 
     @Setter(AccessLevel.NONE)
@@ -17,8 +18,13 @@ public class Project {
     private String title;
     private String description;
     private LocalDate releaseDate;
-    private final Set<Long> employeesId;
-    private final Category category;
+
+    @Setter(AccessLevel.NONE)
+    private Set<Long> employeesId;
+
+    @Setter(AccessLevel.NONE)
+    private Category category;
+
     private Genre genre;
     private Long companyId;
 

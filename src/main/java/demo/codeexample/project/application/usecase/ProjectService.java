@@ -1,6 +1,8 @@
 package demo.codeexample.project.application.usecase;
 
+import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
+import demo.codeexample.project.application.out.CompanyPort;
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.in.ProjectUseCase;
@@ -11,59 +13,64 @@ import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 public class ProjectService implements ProjectUseCase {
 
     private final ProjectRepositoryPort repository;
     private final UserPort userPort;
+    private final CompanyPort companyPort;
     private final ModelMapper mapper;
 
-    public ProjectService(ProjectRepositoryPort repository, UserPort userPort, ModelMapper mapper) {
+    public ProjectService(ProjectRepositoryPort repository, UserPort userPort, CompanyPort companyPort, ModelMapper mapper) {
         this.repository = repository;
         this.userPort = userPort;
+        this.companyPort = companyPort;
         this.mapper = mapper;
     }
 
     @Override
-    public List<Project> findAllProjects() {
-        return repository.findAll();
+    public List<ProjectDto> findAllProjects() {
+        return repository.findAll().stream()
+                .map(entity -> mapper.map(entity, ProjectDto.class))
+                .toList();
     }
 
     @Override
-    public List<Project> findProjectByCategory(Category category) {
-        return repository.findProjectByCategory(category);
+    public List<ProjectDto> findAllProjectsFromCompany(String companyName) {
+        Long companyId = companyPort.getCompanyIdFromName(companyName);
+        return repository.findAllBelongingToCompany(companyId).stream()
+                .map(entity -> mapper.map(entity, ProjectDto.class))
+                .toList();
     }
 
     @Override
-    public List<Project> findProjectByGenre(Genre genre) {
-        return repository.findProjectByGenre(genre);
+    public List<ProjectDto> findProjectByCategory(Category category) {
+        return repository.findProjectByCategory(category).stream()
+                .map(project -> mapper.map(project, ProjectDto.class))
+                .toList();
     }
 
     @Override
-    public Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
-                                 Category category, Genre genre, Long companyId) {
+    public List<ProjectDto> findProjectByGenre(Genre genre) {
+        return repository.findProjectByGenre(genre).stream()
+                .map(project -> mapper.map(project, ProjectDto.class))
+                .toList();
+    }
 
-        userPort.validateEmployees(employeesId);
+    @Override
+    public Project createProject(CreateProjectDto newProject) {
 
-        Project newProject = Project.builder()
-                .id(null)
-                .title(title)
-                .description(description)
-                .releaseDate(releaseDate)
-                .employeesId(employeesId)
-                .category(category)
-                .genre(genre)
-                .companyId(companyId)
-                .build();
+        userPort.validateEmployees(newProject.employeesId());
+
         return repository.save(newProject);
     }
 
     @Override
-    public List<Project> findProjectContainingTitle(String title) {
-        return repository.findProjectContainingTitle(title);
+    public List<ProjectDto> findProjectContainingTitle(String title) {
+        return repository.findProjectContainingTitle(title).stream()
+                .map(project -> mapper.map(project, ProjectDto.class))
+                .toList();
     }
 
     public ProjectDto getProjectDetails(Long projectId) {

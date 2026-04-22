@@ -1,6 +1,8 @@
 package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
+import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
+import demo.codeexample.project.application.usecase.ProjectService;
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
@@ -30,6 +32,13 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     @Override
+    public List<Project> findAllBelongingToCompany(Long companyId) {
+        return jpaRepository.findByCompanyId(companyId).stream()
+                .map(this::toDomain)
+                .toList();
+    }
+
+    @Override
     public List<Project> findProjectByCategory(Category category) {
         return jpaRepository.findByCategory(category).stream()
                 .map(this::toDomain)
@@ -51,8 +60,8 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     @Override
-    public Project save(Project project) {
-        ProjectEntity entity = toEntity(project);
+    public Project save(CreateProjectDto project) {
+        ProjectEntity entity = mapper.map(project, ProjectEntity.class);
         ProjectEntity saved = jpaRepository.save(entity);
         return toDomain(saved);
     }
@@ -64,10 +73,29 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     private ProjectEntity toEntity(Project project){
-        return mapper.map(project, ProjectEntity.class);
+        return new ProjectEntity(
+                project.getId(),
+                project.getTitle(),
+                project.getDescription(),
+                project.getReleaseDate(),
+                project.getEmployeesId(),
+                project.getCategory(),
+                project.getGenre(),
+                project.getCompanyId()
+        );
     }
 
     private Project toDomain(ProjectEntity entity){
-        return mapper.map(entity, Project.class);
+        return Project.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .releaseDate(entity.getReleaseDate())
+                .employeesId(entity.getEmployeesId())
+                .category(entity.getCategory())
+                .genre(entity.getGenre())
+                .companyId(entity.getCompanyId())
+                .build();
+
     }
 }

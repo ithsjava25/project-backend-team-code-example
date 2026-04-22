@@ -20,7 +20,7 @@
         <li><a href="/">Home</a></li>
         <li><a href="/projects">Projects</a></li>
         <li><a href="/aboutUs">About Us</a></li>
-        <li><a href="/${company}/web/login" class="btn-login">Login</a></li>
+        <li><a href="/${company}/login" class="btn-login">Login</a></li>
     </ul>
 </nav>
 

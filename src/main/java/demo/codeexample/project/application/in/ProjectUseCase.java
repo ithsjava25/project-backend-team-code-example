@@ -1,5 +1,6 @@
 package demo.codeexample.project.application.in;
 
+import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
@@ -11,16 +12,17 @@ import java.util.Set;
 
 public interface ProjectUseCase {
 
-    List<Project> findAllProjects();
+    List<ProjectDto> findAllProjects();
 
-    List<Project> findProjectByCategory(Category category);
+    List<ProjectDto> findAllProjectsFromCompany(String companyName);
 
-    List<Project> findProjectByGenre(Genre genre);
+    List<ProjectDto> findProjectByCategory(Category category);
 
-    List<Project> findProjectContainingTitle(String title);
+    List<ProjectDto> findProjectByGenre(Genre genre);
 
-    Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
-                          Category category, Genre genre, Long companyId);
+    List<ProjectDto> findProjectContainingTitle(String title);
+
+    Project createProject(CreateProjectDto newProject);
 
     ProjectDto getProjectDetails(Long projectId);
 }

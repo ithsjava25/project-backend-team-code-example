@@ -8,45 +8,35 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @Controller
-@RequestMapping("/web")
 @RequiredArgsConstructor
 public class WebAuthController {
 
-    private final WebAuthService webAuthService;   // ← only service needed!
+    private final WebAuthService webAuthService;
     private final TemplateEngine templateEngine;
 
-    // ─────────────────────────────────────────
-    // LOGIN
-    // ─────────────────────────────────────────
-
     @GetMapping("/login")
-    @ResponseBody
-    public String loginPage(
-            @RequestParam(required = false) String error) {
-        return render("auth/login.jte", Map.of(
-                "error", error != null ? "Invalid email or password" : ""
-        ));
+    public String loginPage(@RequestParam(required = false) String error, Model model) {
+        model.addAttribute("error", error != null ? "Invalid email or password" : "");
+        return "auth/login";
     }
 
-    @PostMapping(value = "/login",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String handleLogin(@ModelAttribute LoginRequest request,
-                              HttpServletResponse response) {
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String handleLogin(@ModelAttribute LoginRequest request, HttpServletResponse response) {
+
         WebAuthService.LoginResult result = webAuthService.handleLogin(request);
         if (result.success()) {
             response.addHeader("Set-Cookie", result.cookie());
         }
+
         return result.redirect();
     }
 
-    // ─────────────────────────────────────────
-    // CHANGE PASSWORD
-    // ─────────────────────────────────────────
 
     @GetMapping("/change-password")
     @ResponseBody
@@ -71,9 +61,6 @@ public class WebAuthController {
         );
     }
 
-    // ─────────────────────────────────────────
-    // PRIVATE HELPERS
-    // ─────────────────────────────────────────
 
     private String render(String template, Map<String, Object> params) {
         var output = new StringOutput();

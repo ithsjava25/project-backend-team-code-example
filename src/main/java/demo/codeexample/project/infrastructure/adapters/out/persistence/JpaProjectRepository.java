@@ -1,5 +1,6 @@
 package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
+import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,6 @@ public interface JpaProjectRepository extends JpaRepository<ProjectEntity, Long>
     List<ProjectEntity> findByGenre(Genre genre);
 
     List<ProjectEntity> findByTitleContainingIgnoreCase(String title);
+
+    List<ProjectEntity> findByCompanyId(Long companyId);
 }

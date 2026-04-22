@@ -1,4 +1,5 @@
 @param String error
+@param String company
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +34,7 @@
     @endif
 
     <!-- Email + Password Form -->
-    <form method="POST" action="/web/login">
+    <form method="POST" action="/${company}/login">
         <div class="mb-3">
             <label for="email" class="form-label">Work Email</label>
             <input type="email"

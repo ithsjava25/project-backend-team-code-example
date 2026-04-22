@@ -6,8 +6,6 @@ import lombok.Getter;
 @Getter
 public class LoginResponse {
 
-    // public DTO
-
     private final String token;
     private final Role role;
     private final boolean passwordResetRequired;

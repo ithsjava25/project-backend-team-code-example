@@ -5,6 +5,7 @@
     --accent-color: #d4af37;
     --primary-purple: #6a1b9a;
     --text-color: #f4f4f4;
+    --side-padding: 5%;
 }
 
 body {
@@ -12,7 +13,7 @@ body {
     color: var(--text-color);
     font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
     margin: 0;
-    padding: 0 20px;
+    padding: 0;
     overflow-x: hidden;
 }
 
@@ -22,7 +23,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.2rem 5%;
+    padding: 1.2rem var(--side-padding);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -42,6 +43,7 @@ nav {
     display: flex;
     gap: 25px;
     align-items: center;
+    justify-content: right;
 }
 
 .nav-links a {
@@ -91,7 +93,7 @@ nav {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 5%;
+    padding: 0 var(--side-padding);
 }
 
 /* Row & Cards */

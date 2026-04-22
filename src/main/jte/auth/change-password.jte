@@ -68,7 +68,7 @@
         </div>
     @endif
 
-    <form method="POST" action="/web/change-password">
+    <form method="POST" action="/change-password">
         <div class="mb-3">
             <label for="currentPassword" class="form-label">
                 Current Password
@@ -113,7 +113,7 @@
     </form>
 
     <p class="text-center text-muted mt-3" style="font-size: 0.85rem;">
-        <a href="/web/login" style="color: #e94560;">
+        <a href="/login" style="color: #e94560;">
             Back to login
         </a>
     </p>
