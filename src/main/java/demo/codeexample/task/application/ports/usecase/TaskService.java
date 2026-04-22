@@ -70,6 +70,9 @@ public class TaskService implements TaskUseCase {
     @Override
     public Task createTask(TaskType taskType, String description, TaskStatus status,
                            LocalDateTime deadline, Long projectId, Long userId){
+        String employeeName = userLookup.findById(userId)
+                .map(user -> user.getFirstName() + " " + user.getLastName())
+                .orElse("Unknown User (ID: " + userId + ")");
 
         Task task = new Task(null, taskType, description, status, deadline, projectId, userId);
 
@@ -80,7 +83,7 @@ public class TaskService implements TaskUseCase {
                 "TASK",
                 savedTask.getId(),
                 projectId,
-                "New " + taskType.toString().toLowerCase() + "-task created with id: " + savedTask.getId() + ". Assigned to userId: " + userId + ".");
+                "New " + taskType.toString().toLowerCase() + "-task created with id: " + savedTask.getId() + ". Assigned to: " + employeeName + ".");
         return savedTask;
 
     }
