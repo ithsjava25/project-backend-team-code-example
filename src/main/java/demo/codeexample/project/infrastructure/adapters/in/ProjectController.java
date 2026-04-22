@@ -1,14 +1,18 @@
 package demo.codeexample.project.infrastructure.adapters.in;
 
 import demo.codeexample.project.CreateProjectDto;
+import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
-import gg.jte.TemplateEngine;
+import demo.codeexample.user.UserLookup;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -16,22 +20,24 @@ import java.util.Set;
 public class ProjectController {
 
     private final ProjectUseCase projectUseCase;
-    private final TemplateEngine templateEngine;
+    private final UserLookup userLookup;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
-        var projects = projectUseCase.findAllProjects();
-
-        model.addAttribute("projects", projects);
+        model.addAttribute("projects", projectUseCase.findAllProjects());
         return "producer/producer-dashboard";
     }
 
     @GetMapping("/projects/new")
-    public String createProjectPage() {
+    public String createProjectPage(Model model) {
+        var users = userLookup.findAll();
+        model.addAttribute("users", users);
         return "producer/create-project";
     }
 
     @PostMapping("/projects")
+    @Transactional
     public String createProject(@ModelAttribute @Valid CreateProjectDto dto) {
 
         projectUseCase.createProject(
@@ -41,7 +47,10 @@ public class ProjectController {
                 dto.employeesId() != null ? dto.employeesId() : Set.of(),
                 dto.category(),
                 dto.genre(),
-                dto.companyId()
+                dto.companyId(),
+                dto.recruitingDeadline(),
+                dto.recordingDeadline(),
+                dto.editingDeadline()
         );
 
         return "redirect:/producer/dashboard";

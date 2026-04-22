@@ -1,6 +1,8 @@
 package demo.codeexample.project.application.usecase;
 
+import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.project.ProjectDto;
+import demo.codeexample.project.application.out.ProjectEventPort;
 import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.in.ProjectUseCase;
@@ -10,8 +12,8 @@ import demo.codeexample.project.domain.Project;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 
-
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -19,11 +21,13 @@ public class ProjectService implements ProjectUseCase {
 
     private final ProjectRepositoryPort repository;
     private final UserPort userPort;
+    private final ProjectEventPort projectEventPort;
     private final ModelMapper mapper;
 
-    public ProjectService(ProjectRepositoryPort repository, UserPort userPort, ModelMapper mapper) {
+    public ProjectService(ProjectRepositoryPort repository, UserPort userPort, ProjectEventPort projectEventPort, ModelMapper mapper) {
         this.repository = repository;
         this.userPort = userPort;
+        this.projectEventPort = projectEventPort;
         this.mapper = mapper;
     }
 
@@ -48,7 +52,10 @@ public class ProjectService implements ProjectUseCase {
 
     @Override
     public Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
-                                 Category category, Genre genre, Long companyId) {
+                                 Category category, Genre genre, Long companyId,
+                                 LocalDateTime recruitingDeadline,
+                                 LocalDateTime recordingDeadline,
+                                 LocalDateTime editingDeadline) {
 
         userPort.validateEmployees(employeesId);
 
@@ -62,7 +69,21 @@ public class ProjectService implements ProjectUseCase {
                 .genre(genre)
                 .companyId(companyId)
                 .build();
-        return repository.save(newProject);
+        Project savedProject = repository.save(newProject);
+
+        ProjectCreatedEvent event = new ProjectCreatedEvent(
+                savedProject.getId(),
+                savedProject.getTitle(),
+                savedProject.getEmployeesId(),
+                savedProject.getReleaseDate(),
+                savedProject.getCompanyId(),
+                recruitingDeadline,
+                recordingDeadline,
+                editingDeadline );
+
+        projectEventPort.publish(event);
+
+        return savedProject;
     }
 
     @Override

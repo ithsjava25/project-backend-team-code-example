@@ -1,8 +1,10 @@
 @import demo.codeexample.project.ProjectDto
 @import demo.codeexample.shared.Category
 @import demo.codeexample.project.domain.Genre
+@import demo.codeexample.user.UserDto
 @import java.util.List
 
+@param List<UserDto> users
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,10 +42,12 @@
     <p class="subtitle">Start a new film production by filling in the details below.</p>
 
     <div class="form-card">
-        <form action="/projects" method="post">
+        <form action="/hexagonal/projects" method="post">
 
             <label class="form-label">Project Title</label>
             <input type="text" name="title" class="form-input" required>
+
+            <input type="hidden" name="companyId" value="1">
 
             <label class="form-label">Category</label>
             <select name="category" class="form-input" required>
@@ -66,6 +70,48 @@
                 @endfor
             </select>
 
+            <div class="task-group" style="margin-bottom: 20px; position: relative;">
+                <label class="form-label">Assign Recruiting Worker (Role: Recruiter)</label>
+                <input type="text"
+                       class="form-input worker-search"
+                       placeholder="Search name..."
+                       data-role="RECRUITER"
+                       autocomplete="off">
+                <input type="hidden" name="employeesId">
+                <div class="dropdown-suggestions" style="display: none;"></div>
+            </div>
+
+            <div class="task-group" style="margin-bottom: 20px; position: relative;">
+                <label class="form-label">Assign Recording Worker (Role: Director)</label>
+                <input type="text"
+                       class="form-input worker-search"
+                       placeholder="Search name..."
+                       data-role="DIRECTOR"
+                       autocomplete="off">
+                <input type="hidden" name="employeesId">
+                <div class="dropdown-suggestions" style="display: none;"></div>
+            </div>
+
+            <div class="task-group" style="margin-bottom: 20px; position: relative;">
+                <label class="form-label">Assign Editing Worker (Role: Editor)</label>
+                <input type="text"
+                       class="form-input worker-search"
+                       placeholder="Search name..."
+                       data-role="EDITOR"
+                       autocomplete="off">
+                <input type="hidden" name="employeesId">
+                <div class="dropdown-suggestions" style="display: none;"></div>
+            </div>
+
+            <label class="form-label">Deadline for Recruiting</label>
+            <input type="datetime-local" name="recruitingDeadline" class="form-input" required>
+
+            <label class="form-label">Deadline for Recording</label>
+            <input type="datetime-local" name="recordingDeadline" class="form-input" required>
+
+            <label class="form-label">Deadline for Editing</label>
+            <input type="datetime-local" name="editingDeadline" class="form-input" required>
+
             <label class="form-label">Description</label>
             <textarea name="description" class="form-input" rows="5"></textarea>
 
@@ -74,5 +120,70 @@
     </div>
 </main>
 
+<script>
+
+    const allUsers = [
+        @for(var u : users)
+        { id: "${u.getId()}", name: "${u.getFirstName()} ${u.getLastName()}", role: "${u.getRole()}" },
+        @endfor
+    ];
+
+    document.querySelectorAll('.worker-search').forEach(input => {
+        const container = input.parentElement;
+        const suggestionBox = container.querySelector('.dropdown-suggestions');
+        const hiddenInput = container.querySelector('input[type="hidden"]');
+        const targetRole = input.getAttribute('data-role');
+
+        input.addEventListener('input', function() {
+            const val = this.value.toLowerCase();
+            hiddenInput.value = '';
+            suggestionBox.innerHTML = '';
+
+            if (!val) {
+                suggestionBox.style.display = 'none';
+                return;
+            }
+
+
+            const matches = allUsers.filter(u =>
+                u.name.toLowerCase().includes(val) && u.role === targetRole
+            );
+
+            for (let i = 0; i < matches.length; i++) {
+                const matchObj = matches[i];
+                const div = document.createElement('div');
+                div.className = 'worker-item';
+                div.textContent = matchObj.name;
+
+                div.onclick = function() {
+                    input.value = matchObj.name;
+                    hiddenInput.value = matchObj.id;
+                    suggestionBox.style.display = 'none';
+                };
+                suggestionBox.appendChild(div);
+            }
+            suggestionBox.style.display = matches.length > 0 ? 'block' : 'none';
+        });
+    });
+
+        const teamSearch = document.getElementById('teamSearch');
+        if (teamSearch) {
+                teamSearch.addEventListener('input', function() {
+                        const term = this.value.toLowerCase();
+                        document.querySelectorAll('.team-member-item').forEach(item => {
+                                const name = item.innerText.toLowerCase();
+                                item.style.display = name.includes(term) ? 'flex' : 'none';
+                            });
+                    });
+            }
+
+    document.addEventListener('click', e => {
+        if (!e.target.classList.contains('worker-search')) {
+            document.querySelectorAll('.dropdown-suggestions').forEach(d => d.style.display = 'none');
+        }
+    });
+</script>
 </body>
 </html>
+
+
