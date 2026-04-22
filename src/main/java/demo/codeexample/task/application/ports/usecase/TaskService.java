@@ -75,7 +75,7 @@ public class TaskService implements TaskUseCase {
         Task task = new Task(null, taskType, description, status, deadline, projectId, userId);
 
         Task savedTask = taskRepository.save(task);
-        logger.log(LoggerAction.TASK_CREATED, userId, "TASK", savedTask.getId());
+        logger.log(LoggerAction.TASK_CREATED, userId, "TASK", savedTask.getId(), projectId);
         return savedTask;
 
     }

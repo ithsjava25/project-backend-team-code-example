@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "logger")
 public class LoggerEntity {
 
     @Id
@@ -19,16 +20,22 @@ public class LoggerEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "logger_action")
     private LoggerAction action;
 
     private String message;
 
+    @Column(name = "user_id")
     private Long userId;
+    @Column(name = "project_id")
     private Long projectId;
 
+    @Column(name = "entity_type")
     private String entityType;
+    @Column(name = "entity_id")
     private Long entityId;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @PrePersist
