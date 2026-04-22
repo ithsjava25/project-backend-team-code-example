@@ -5,6 +5,7 @@ import demo.codeexample.s3FileStorage.domain.S3FileRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
@@ -91,12 +92,19 @@ public class S3FileService {
         PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
         return presignedRequest.url().toString();
     }
-
     public void saveFileMetadata(Long projectId, String fileKey, String contentType) {
-        S3File s3File = new S3File();
-        s3File.setProjectId(projectId);
-        s3File.setFileKey(fileKey);
-        s3File.setContentType(contentType);
-        s3FileRepository.save(s3File);
+        System.out.println("DEBUG: Nu körs saveFileMetadata för projekt " + projectId); // Dyker denna upp i konsolen?
+
+        try {
+            S3File s3File = new S3File();
+            s3File.setProjectId(projectId);
+            s3File.setFileKey(fileKey);
+            s3File.setContentType(contentType);
+
+            s3FileRepository.saveAndFlush(s3File); // saveAndFlush tvingar DB att skriva direkt
+            System.out.println("DEBUG: Sparning lyckades!");
+        } catch (Exception e) {
+            System.err.println("DEBUG: Fel vid sparning: " + e.getMessage());
+        }
     }
 }

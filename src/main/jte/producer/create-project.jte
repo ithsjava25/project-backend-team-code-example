@@ -1,3 +1,4 @@
+@import demo.codeexample.project.ProjectDto
 @import demo.codeexample.shared.Category
 @import demo.codeexample.project.domain.Genre
 @import demo.codeexample.user.UserDto
@@ -88,7 +89,12 @@ content = @`
             <label class="form-label">Description</label>
             <textarea name="description" class="form-input" rows="5"></textarea>
 
-            <button type="submit" class="btn-primary">Create Project</button>
+            <label class="form-label">Project Media (Images/PDFs)</label>
+            <input type="file" id="projectFiles" class="form-input" multiple accept="image/*,application/pdf">
+            <div id="uploadStatus" style="margin-top: 10px; font-size: 0.9rem;"></div>
+
+            <button type="submit" class="btn-primary" id="submitBtn">Create Project & Upload</button>
+<%--            <button type="submit" class="btn-primary">Create Project</button>--%>
         </form>
     </div>
 </main>
@@ -155,6 +161,82 @@ content = @`
             document.querySelectorAll('.dropdown-suggestions').forEach(d => d.style.display = 'none');
         }
     });
+</script>
+<script>
+    const currentCompany = "${company}"
+    @raw
+    document.querySelector('form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const btn = document.getElementById('submitBtn');
+        const status = document.getElementById('uploadStatus');
+        btn.disabled = true;
+        status.style.color = "inherit"; // Återställ färg
+        status.innerText = "Creating project...";
+
+        try {
+            // 1. Skapa projektet via AJAX
+            // Vi använder URLSearchParams för att simulera ett vanligt formulärinskick
+            const formData = new URLSearchParams(new FormData(this));
+
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData, // Spring läser detta via @ModelAttribute
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.text();
+                throw new Error("Could not create one project: " + errorData);
+            }
+
+            const project = await response.json();
+            const projectId = project.id;
+
+            // 2. Hantera filer
+            const fileInput = document.getElementById('projectFiles');
+            const files = fileInput.files;
+
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    status.innerText = `Uploading file ${i + 1} of ${files.length}: ${file.name}...`;
+
+                    // A. Hämta Presigned URL
+                    const urlRes = await fetch(`/${currentCompany}/api/files/upload-url?fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`);
+                    const { url } = await urlRes.json();
+
+                    // B. Ladda upp till S3
+                    await fetch(url, {
+                        method: 'PUT',
+                        body: file,
+                        headers: { 'Content-Type': file.type }
+                    });
+
+                    // C. Callback till servern för att spara i S3File-tabellen
+                    await fetch(`/${currentCompany}/api/files/callback?projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`, {
+                        method: 'POST'
+                    });
+                }
+            }
+
+            status.style.color = "green";
+            status.innerText = "Project and files uploaded successfully! Redirecting...";
+
+            setTimeout(() => {
+                window.location.href = "/${currentCompany}/producer/dashboard";
+            }, 1500);
+
+        } catch (err) {
+            console.error(err);
+            status.style.color = "red";
+            status.innerText = "Error: " + err.message;
+            btn.disabled = false;
+        }
+    });
+    @endraw
 </script>
 `
 )

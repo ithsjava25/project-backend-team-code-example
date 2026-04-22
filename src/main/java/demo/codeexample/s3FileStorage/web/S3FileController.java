@@ -2,6 +2,7 @@ package demo.codeexample.s3FileStorage.web;
 
 import demo.codeexample.s3FileStorage.application.S3FileService;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +56,7 @@ public class S3FileController {
 
     @PostMapping("/api/files/callback")
     @ResponseBody
+    @Transactional
     public Map<String, String> uploadCallback(
             @RequestParam Long projectId,
             @RequestParam String fileName,
