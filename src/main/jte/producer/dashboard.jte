@@ -9,9 +9,7 @@
 title = "Dashboard",
 company = company,
 content = @`
-    <header class="dashboard-header">
-        <h1 class="page-title">Producer Dashboard</h1>
-    </header>
+    <h1 class="page-title">Producer Dashboard</h1>
 
     <div class="table-card">
         <table class="project-table">
