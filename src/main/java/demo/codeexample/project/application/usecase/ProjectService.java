@@ -4,6 +4,7 @@ import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.out.ProjectEventPort;
+import demo.codeexample.project.application.out.SecurityPort;
 import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.in.ProjectUseCase;
@@ -24,13 +25,15 @@ public class ProjectService implements ProjectUseCase {
     private final ProjectRepositoryPort repository;
     private final UserPort userPort;
     private final ProjectEventPort projectEventPort;
+    private final SecurityPort securityPort;
     private final ModelMapper mapper;
     private final LoggerLookup logger;
 
-    public ProjectService(ProjectRepositoryPort repository, UserPort userPort, ProjectEventPort projectEventPort, ModelMapper mapper, LoggerLookup logger) {
+    public ProjectService(ProjectRepositoryPort repository, UserPort userPort, ProjectEventPort projectEventPort, SecurityPort securityPort, ModelMapper mapper, LoggerLookup logger) {
         this.repository = repository;
         this.userPort = userPort;
         this.projectEventPort = projectEventPort;
+        this.securityPort = securityPort;
         this.mapper = mapper;
         this.logger = logger;
     }
@@ -60,9 +63,10 @@ public class ProjectService implements ProjectUseCase {
                                  LocalDateTime recruitingDeadline,
                                  LocalDateTime recordingDeadline,
                                  LocalDateTime editingDeadline) {
+        Long currentUserId = securityPort.getCurrentUserId();
+        String creatorName = securityPort.getCurrentUserName();
 
         userPort.validateEmployees(employeesId);
-
         Project newProject = Project.builder()
                 .id(null)
                 .title(title)
@@ -77,11 +81,12 @@ public class ProjectService implements ProjectUseCase {
 
         logger.log(
                 LoggerAction.PROJECT_CREATED,
-                1L, // denna ska kopplas till en user genom security
+                //currentUserId, ---- Funkar just nu inte och kan inte testa förrens vi fixat login page.
+                1L,
                 "PROJECT",
                 savedProject.getId(),
                 savedProject.getId(),
-                "New project created: " + savedProject.getTitle()
+                "New project created: " + savedProject.getTitle() + ". Created by: " + creatorName
         );
 
         ProjectCreatedEvent event = new ProjectCreatedEvent(
