@@ -19,7 +19,7 @@ public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    @Column(name = "Task_id")
+    @Column(name = "task_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
