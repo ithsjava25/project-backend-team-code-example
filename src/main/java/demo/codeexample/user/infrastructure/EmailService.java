@@ -35,4 +35,29 @@ public class EmailService {
 
         mailSender.send(message);
     }
+    public void sendPasswordResetEmail(String toEmail,
+                                       String firstName,
+                                       String tempPassword) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Film Studio — Password Reset");
+        message.setText("""
+            Hi %s,
+
+            Your password has been reset by an administrator.
+
+            New temporary login details:
+            Email:    %s
+            Password: %s
+
+            Please log in and change your password immediately.
+
+            Best regards,
+            Film Studio Admin Team
+            """.formatted(firstName, toEmail, tempPassword));
+
+        mailSender.send(message);
+    }
+
+
 }
