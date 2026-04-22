@@ -44,12 +44,8 @@ public class WebAuthController {
     public String changePasswordPage(@RequestParam(required = false) String error,
                                      @RequestParam(required = false) String success) {
 
-        String companyValue = company != null ? company : "";
 
-        return render("auth/change-password.jte", Map.of(
-                "error",   error   != null ? error   : "",
-                "success", success != null ? success : ""
-        ));
+        return "auth/change-password";
     }
 
     @PostMapping(value = "/login/change-password", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

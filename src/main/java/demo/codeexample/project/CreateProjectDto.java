@@ -1,10 +1,12 @@
 package demo.codeexample.project;
 
-import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
+import demo.codeexample.shared.Category;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public record CreateProjectDto(

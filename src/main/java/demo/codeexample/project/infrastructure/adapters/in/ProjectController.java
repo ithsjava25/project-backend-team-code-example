@@ -3,7 +3,6 @@ package demo.codeexample.project.infrastructure.adapters.in;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
-import demo.codeexample.project.application.out.CompanyPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
