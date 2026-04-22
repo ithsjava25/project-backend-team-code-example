@@ -11,7 +11,6 @@ import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.domain.Task;
 import demo.codeexample.task.domain.TaskType;
 import demo.codeexample.user.UserLookup;
-import org.springframework.modulith.events.ApplicationModuleListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -75,7 +74,13 @@ public class TaskService implements TaskUseCase {
         Task task = new Task(null, taskType, description, status, deadline, projectId, userId);
 
         Task savedTask = taskRepository.save(task);
-        logger.log(LoggerAction.TASK_CREATED, userId, "TASK", savedTask.getId(), projectId);
+        logger.log(
+                LoggerAction.TASK_CREATED,
+                userId,
+                "TASK",
+                savedTask.getId(),
+                projectId,
+                "New " + taskType.toString().toLowerCase() + "-task created with id: " + savedTask.getId() + ". Assigned to userId: " + userId + ".");
         return savedTask;
 
     }

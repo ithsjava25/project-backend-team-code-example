@@ -5,6 +5,7 @@ import demo.codeexample.shared.LoggerAction;
 import demo.codeexample.logger.domain.LoggerEntity;
 import demo.codeexample.logger.domain.LoggerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +14,17 @@ import org.springframework.stereotype.Service;
 public class LoggerService implements LoggerLookup{
 
     private final LoggerRepository loggerRepository;
+    private final MessageSource messageSource;
 
     @Override
-    public void log(LoggerAction action, Long userId, String entityType, Long entityId, Long projectId) {
+    public void log(LoggerAction action, Long userId, String entityType, Long entityId, Long projectId, String message) {
         LoggerEntity log = new LoggerEntity();
         log.setAction(action);
         log.setUserId(userId);
         log.setEntityType(entityType);
         log.setEntityId(entityId);
         log.setProjectId(projectId);
+        log.setMessage(message);
 
 
         loggerRepository.save(log);
