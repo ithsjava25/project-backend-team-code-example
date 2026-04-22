@@ -26,7 +26,8 @@ public class ProjectController {
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         model.addAttribute("projects", projectUseCase.findAllProjects());
-        return "producer/producer-dashboard";
+//        return "producer/producer-dashboard";
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/projects/new")
