@@ -1,6 +1,7 @@
 package demo.codeexample.web.web;
 
 import demo.codeexample.auth.LoginRequest;
+import demo.codeexample.company.TenantContext;
 import demo.codeexample.web.application.WebAuthService;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
@@ -38,24 +39,25 @@ public class WebAuthController {
     }
 
 
-    @GetMapping("/change-password")
+    @GetMapping("/login/change-password")
     @ResponseBody
-    public String changePasswordPage(
-            @RequestParam(required = false) String error,
-            @RequestParam(required = false) String success) {
+    public String changePasswordPage(@RequestParam(required = false) String error,
+                                     @RequestParam(required = false) String success) {
+
+        String companyValue = company != null ? company : "";
+
         return render("auth/change-password.jte", Map.of(
                 "error",   error   != null ? error   : "",
                 "success", success != null ? success : ""
         ));
     }
 
-    @PostMapping(value = "/change-password",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String handleChangePassword(
-            @RequestParam String currentPassword,
-            @RequestParam String newPassword,
-            @RequestParam String confirmPassword,
-            @CookieValue(name = "jwt", required = false) String jwtToken) {
+    @PostMapping(value = "/login/change-password", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String handleChangePassword(@RequestParam String currentPassword,
+                                       @RequestParam String newPassword,
+                                       @RequestParam String confirmPassword,
+                                       @CookieValue(name = "jwt", required = false) String jwtToken) {
+
         return webAuthService.handleChangePassword(
                 currentPassword, newPassword, confirmPassword, jwtToken
         );

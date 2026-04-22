@@ -1,13 +1,14 @@
 package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
+import demo.codeexample.shared.Category;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.usecase.ProjectService;
-import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.domain.Project;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,6 +28,14 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     @Override
     public List<Project> findAll() {
         return jpaRepository.findAll().stream()
+                .map(this::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Project> findAllByOrderByTitleAsc() {
+        return jpaRepository.findAll(Sort.by("title").ascending())
+                .stream()
                 .map(this::toDomain)
                 .toList();
     }
@@ -63,6 +72,7 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     public Project save(CreateProjectDto project) {
         ProjectEntity entity = mapper.map(project, ProjectEntity.class);
         ProjectEntity saved = jpaRepository.save(entity);
+        jpaRepository.flush();
         return toDomain(saved);
     }
 
@@ -96,6 +106,5 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
                 .genre(entity.getGenre())
                 .companyId(entity.getCompanyId())
                 .build();
-
     }
 }

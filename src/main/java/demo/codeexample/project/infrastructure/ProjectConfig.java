@@ -1,6 +1,7 @@
 package demo.codeexample.project.infrastructure;
 
 import demo.codeexample.project.application.out.CompanyPort;
+import demo.codeexample.project.application.out.ProjectEventPort;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.application.usecase.ProjectService;
@@ -13,8 +14,8 @@ public class ProjectConfig {
 
     @Bean
     public ProjectService projectService(ProjectRepositoryPort projectRepositoryPort, UserPort userPort,
-                                         CompanyPort companyPort, ModelMapper modelMapper) {
-        return new ProjectService(projectRepositoryPort, userPort, companyPort, modelMapper);
+                                         CompanyPort companyPort, ProjectEventPort projectEventPort, ModelMapper modelMapper) {
+        return new ProjectService(projectRepositoryPort, userPort, companyPort, projectEventPort, modelMapper);
     }
 
 }

@@ -2,7 +2,6 @@ package demo.codeexample.project;
 
 import demo.codeexample.project.domain.Category;
 import demo.codeexample.project.domain.Genre;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -25,7 +24,16 @@ public record CreateProjectDto(
         Genre genre,
 
         @NotNull(message = "What company created the project?")
-        Long companyId
+        Long companyId,
+
+        @NotNull(message = "Choose a deadline")
+        LocalDateTime recruitingDeadline,
+
+        @NotNull(message = "Choose a deadline")
+        LocalDateTime recordingDeadline,
+
+        @NotNull(message = "Choose a deadline")
+        LocalDateTime editingDeadline
 ) {}
 
 

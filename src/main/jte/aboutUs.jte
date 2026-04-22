@@ -1,5 +1,8 @@
+@param String company = ""
+
 @template.layout(
 title = "About Us",
+company = company,
 content = @`
     <header class="hero">
         <h1>Hexagonal Film Productions</h1>

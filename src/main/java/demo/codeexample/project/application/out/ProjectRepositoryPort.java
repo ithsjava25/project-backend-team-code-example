@@ -1,7 +1,7 @@
 package demo.codeexample.project.application.out;
 
 import demo.codeexample.project.CreateProjectDto;
-import demo.codeexample.project.domain.Category;
+import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.domain.Project;
 
@@ -13,6 +13,8 @@ public interface ProjectRepositoryPort {
     List<Project> findAll();
 
     List<Project> findAllBelongingToCompany(Long companyId);
+
+    List<Project> findAllByOrderByTitleAsc();
 
     List<Project> findProjectByCategory(Category category);
 

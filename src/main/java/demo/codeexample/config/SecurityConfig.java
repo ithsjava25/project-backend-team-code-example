@@ -52,9 +52,9 @@ public class SecurityConfig {
 
                                 .requestMatchers("/api/auth/**").permitAll()
 
-                                .requestMatchers("/web/login").permitAll()  // login is public
+                                .requestMatchers("/login").permitAll()  // login is public
 
-                                .requestMatchers("/web/change-password").permitAll()
+                                .requestMatchers("/login/change-password").permitAll()
                                 // ↑ must be accessible — user has token in cookie but might
 
                                 .requestMatchers("/oauth2/**").permitAll()

@@ -13,6 +13,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "task")
 public class TaskEntity {
 
     @Id
