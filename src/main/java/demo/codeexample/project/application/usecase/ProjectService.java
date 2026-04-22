@@ -14,10 +14,8 @@ import demo.codeexample.project.domain.Project;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class ProjectService implements ProjectUseCase {
 
@@ -67,10 +65,11 @@ public class ProjectService implements ProjectUseCase {
 
     @Override
     public Project createProject(CreateProjectDto newProject) {
-
         userPort.validateEmployees(newProject.employeesId());
+        Project savedProject = repository.save(newProject);
+        publishProjectEvent(newProject);
 
-        return repository.save(newProject);
+        return savedProject;
     }
 
     @Override
@@ -80,10 +79,33 @@ public class ProjectService implements ProjectUseCase {
                 .toList();
     }
 
+    @Override
+    public Optional<ProjectDto> findProjectByTitle(String title) {
+        return repository.findByTitle(title)
+                .map(k -> mapper.map(k, ProjectDto.class));
+    }
+
     public ProjectDto getProjectDetails(Long projectId) {
         return repository.findById(projectId)
                 .map(project -> mapper.map(project, ProjectDto.class))
                 .orElseThrow(() -> new EntityNotFoundException("Project not found: " + projectId));
+    }
+
+    public void publishProjectEvent(CreateProjectDto projectDto){
+        ProjectDto project = findProjectByTitle(projectDto.title());
+
+        ProjectCreatedEvent event = new ProjectCreatedEvent(
+                project.
+                project.getTitle(),
+                project.getEmployeesId(),
+                project.getReleaseDate(),
+                project.getCompanyId(),
+                projectDto.recruitingDeadline(),
+                projectDto.recordingDeadline(),
+                projectDto.editingDeadline()
+        );
+
+        projectEventPort.publish(event);
     }
 
 }

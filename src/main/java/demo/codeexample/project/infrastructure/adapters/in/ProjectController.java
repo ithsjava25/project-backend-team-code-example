@@ -3,6 +3,7 @@ package demo.codeexample.project.infrastructure.adapters.in;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
+import demo.codeexample.user.UserLookup;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectController {
 
     private final ProjectUseCase projectUseCase;
+    private final UserLookup userLookup;
 
     @GetMapping("/dashboard")
     public String dashboard(@ModelAttribute("company") String companyName, Model model) {
@@ -25,7 +27,10 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/new")
-    public String createProjectPage() {
+    public String createProjectPage(Model model) {
+        var users = userLookup.findAll();
+        model.addAttribute("users", users);
+
         return "producer/create-project";
     }
 

@@ -22,6 +22,8 @@ public interface ProjectRepositoryPort {
 
     List<Project> findProjectContainingTitle(String title);
 
+    Optional<Project> findByTitle(String title);
+
     Project save(CreateProjectDto project);
 
     Optional<Project> findById(Long id);

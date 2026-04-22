@@ -19,14 +19,11 @@ public record CreateProjectDto(
         @NotNull(message = "There must be people working on the project.")
         Set<Long> employeesId,
 
-        @NotBlank(message = "Choose a category!")
+        @NotNull(message = "Choose a category!")
         Category category,
 
-        @NotBlank(message = "Choose a genre!")
+        @NotNull(message = "Choose a genre!")
         Genre genre,
-
-        @NotNull(message = "What company created the project?")
-        Long companyId,
 
         @NotNull(message = "Choose a deadline")
         LocalDateTime recruitingDeadline,

@@ -1,48 +1,21 @@
-@import demo.codeexample.project.ProjectDto
 @import demo.codeexample.shared.Category
 @import demo.codeexample.project.domain.Genre
 @import demo.codeexample.user.UserDto
 @import java.util.List
 
 @param List<UserDto> users
+@param String company
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Project | Producer</title>
-    <link rel="stylesheet" href="/css/style2.css">
-</head>
-
-<body>
-
-<nav class="navbar">
-    <div class="navbar-content">
-        <a href="/producer/dashboard" class="logo-link">
-            <div class="logo-container">
-                <img src="/images/logo.png" class="logo-img">
-                <div class="brand-wrapper">
-                    <span class="brand-main">Hexagonal</span>
-                    <span class="brand-sub">Productions</span>
-                </div>
-            </div>
-        </a>
-
-        <div class="nav-links">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/projects/new" class="active-tab">New Project</a>
-            <a href="/logout">Logout</a>
-        </div>
-    </div>
-</nav>
-
+@template.layoutDashboard(
+title = "Create",
+company = company,
+content = @`
 <main class="container">
     <h1 class="page-title">Create New Project</h1>
     <p class="subtitle">Start a new film production by filling in the details below.</p>
 
     <div class="form-card">
-        <form action="/hexagonal/projects" method="post">
+        <form action="/${company}/projects" method="post">
 
             <label class="form-label">Project Title</label>
             <input type="text" name="title" class="form-input" required>
@@ -183,7 +156,7 @@
         }
     });
 </script>
-</body>
-</html>
+`
+)
 
 

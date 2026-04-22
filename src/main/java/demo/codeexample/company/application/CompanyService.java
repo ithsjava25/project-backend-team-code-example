@@ -15,6 +15,6 @@ public class CompanyService implements CompanyLookup {
 
     @Override
     public Long getCompanyIdFromName(String companyName) {
-        return repository.getCompanyIdFromName(companyName);
+        return repository.getIdByName(companyName);
     }
 }
