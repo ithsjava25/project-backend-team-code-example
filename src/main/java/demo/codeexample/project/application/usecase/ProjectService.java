@@ -1,5 +1,6 @@
 package demo.codeexample.project.application.usecase;
 
+import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.out.ProjectEventPort;
@@ -9,6 +10,7 @@ import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.domain.Project;
+import demo.codeexample.shared.LoggerAction;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 
@@ -23,12 +25,14 @@ public class ProjectService implements ProjectUseCase {
     private final UserPort userPort;
     private final ProjectEventPort projectEventPort;
     private final ModelMapper mapper;
+    private final LoggerLookup logger;
 
-    public ProjectService(ProjectRepositoryPort repository, UserPort userPort, ProjectEventPort projectEventPort, ModelMapper mapper) {
+    public ProjectService(ProjectRepositoryPort repository, UserPort userPort, ProjectEventPort projectEventPort, ModelMapper mapper, LoggerLookup logger) {
         this.repository = repository;
         this.userPort = userPort;
         this.projectEventPort = projectEventPort;
         this.mapper = mapper;
+        this.logger = logger;
     }
 
     @Override
@@ -70,6 +74,15 @@ public class ProjectService implements ProjectUseCase {
                 .companyId(companyId)
                 .build();
         Project savedProject = repository.save(newProject);
+
+        logger.log(
+                LoggerAction.PROJECT_CREATED,
+                1L, // denna ska kopplas till en user genom security
+                "PROJECT",
+                savedProject.getId(),
+                savedProject.getId(),
+                "New project created: " + savedProject.getTitle()
+        );
 
         ProjectCreatedEvent event = new ProjectCreatedEvent(
                 savedProject.getId(),
