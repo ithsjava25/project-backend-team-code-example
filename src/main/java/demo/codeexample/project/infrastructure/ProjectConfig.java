@@ -5,6 +5,7 @@ import demo.codeexample.project.application.out.CompanyPort;
 import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.project.application.out.ProjectEventPort;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
+import demo.codeexample.project.application.out.SecurityPort;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.application.usecase.ProjectService;
 import org.modelmapper.ModelMapper;
@@ -16,8 +17,8 @@ public class ProjectConfig {
 
     @Bean
     public ProjectService projectService(ProjectRepositoryPort projectRepositoryPort, UserPort userPort,
-                                         CompanyPort companyPort, ProjectEventPort projectEventPort, ModelMapper modelMapper, LoggerLookup logger) {
-        return new ProjectService(projectRepositoryPort, userPort, projectEventPort, companyPort, modelMapper, logger);
+                                         CompanyPort companyPort, ProjectEventPort projectEventPort, SecurityPort securityPort, ModelMapper modelMapper, LoggerLookup logger) {
+        return new ProjectService(projectRepositoryPort, userPort, projectEventPort, securityPort, companyPort, modelMapper, logger);
     }
 
 }

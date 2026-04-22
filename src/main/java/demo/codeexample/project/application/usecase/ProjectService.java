@@ -5,6 +5,7 @@ import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.out.ProjectEventPort;
+import demo.codeexample.project.application.out.SecurityPort;
 import demo.codeexample.shared.Category;
 import demo.codeexample.project.application.out.CompanyPort;
 import demo.codeexample.project.domain.Genre;
@@ -27,14 +28,16 @@ public class ProjectService implements ProjectUseCase {
     private final UserPort userPort;
     private final CompanyPort companyPort;
     private final ProjectEventPort projectEventPort;
+    private final SecurityPort securityPort;
     private final ModelMapper mapper;
     private final LoggerLookup logger;
 
     public ProjectService(ProjectRepositoryPort repository, UserPort userPort,
-                          ProjectEventPort projectEventPort, CompanyPort companyPort, ModelMapper mapper, LoggerLookup logger) {
+                          ProjectEventPort projectEventPort, SecurityPort securityPort, CompanyPort companyPort, ModelMapper mapper, LoggerLookup logger) {
         this.repository = repository;
         this.userPort = userPort;
         this.projectEventPort = projectEventPort;
+        this.securityPort = securityPort;
         this.companyPort = companyPort;
         this.mapper = mapper;
         this.logger = logger;
@@ -76,7 +79,8 @@ public class ProjectService implements ProjectUseCase {
 
         logger.log(
                 LoggerAction.PROJECT_CREATED,
-                1L, // denna ska kopplas till en user genom security
+                //currentUserId, ---- Funkar just nu inte och kan inte testa förrens vi fixat login page.
+                1L,
                 "PROJECT",
                 project.getId(),
                 project.getId(),

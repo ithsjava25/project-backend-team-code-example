@@ -4,6 +4,7 @@ import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.shared.LoggerAction;
 import demo.codeexample.shared.Role;
+import demo.codeexample.task.application.ports.out.TaskUserPort;
 import demo.codeexample.task.domain.TaskStatus;
 import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
@@ -21,11 +22,14 @@ public class TaskService implements TaskUseCase {
 
     private final TaskRepositoryPort taskRepository;
     private final LoggerLookup logger;
-    private final UserLookup userLookup;
+    private final TaskUserPort userPort;
 
     public TaskService(TaskRepositoryPort taskRepository, UserLookup userLookup, LoggerLookup logger) {
+
+
+    public TaskService(TaskRepositoryPort taskRepository, TaskUserPort userPort, LoggerLookup logger) {
         this.taskRepository = taskRepository;
-        this.userLookup = userLookup;
+        this.userPort = userPort;
         this.logger = logger;
     }
 
@@ -43,18 +47,11 @@ public class TaskService implements TaskUseCase {
         createTask(TaskType.EDITING, "Editing scenes for " + event.title(),
                 TaskStatus.ASSIGNED, event.editingDeadline(), event.projectId(), editorId);
     }
-
     private Long findByRole(Set<Long> ids, Role role) {
         return ids.stream()
-                                .filter(id -> {
-                                try {
-                                        return userLookup.validateUserRole(id, role);
-                                    } catch (UserNotFoundException ex) {
-                                        return false;
-                                    }
-                            })
+                .filter(id -> userPort.hasRole(id, role)) // Clean method call
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("No employee with the role " + role + " was found in the project."));
+                .orElseThrow(() -> new IllegalStateException("No " + role + " found."));
     }
 
     @Override
@@ -69,22 +66,21 @@ public class TaskService implements TaskUseCase {
 
     @Override
     public Task createTask(TaskType taskType, String description, TaskStatus status,
-                           LocalDateTime deadline, Long projectId, Long userId){
-        String employeeName = userLookup.findById(userId)
-                .map(user -> user.getFirstName() + " " + user.getLastName())
-                .orElse("Unknown User (ID: " + userId + ")");
+                           LocalDateTime deadline, Long projectId, Long userId) {
+
+        String employeeName = userPort.getEmployeeFullName(userId);
 
         Task task = new Task(null, taskType, description, status, deadline, projectId, userId);
-
         Task savedTask = taskRepository.save(task);
+
         logger.log(
                 LoggerAction.TASK_CREATED,
                 userId,
                 "TASK",
                 savedTask.getId(),
                 projectId,
-                "New " + taskType.toString().toLowerCase() + "-task created with id: " + savedTask.getId() + ". Assigned to: " + employeeName + ".");
+                taskType + "-task was created for: " + employeeName + ". In project: " + savedTask.getProjectId()
+        );
         return savedTask;
-
     }
 }
