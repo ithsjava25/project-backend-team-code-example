@@ -14,7 +14,6 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="navbar-content">
             <a href="/${company}" class="logo-link">
                 <div class="logo-container">
                     <img src="/images/logo.png" alt="Logo" class="logo-img">
@@ -29,7 +28,6 @@
                 <a href="/${company}/projects/new" class="login-button">New Project</a>
                 <a href="/${company}">Logout</a>
             </div>
-        </div>
     </nav>
 
     <main>
