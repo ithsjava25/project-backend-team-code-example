@@ -160,6 +160,8 @@ public class UserService implements UserLookup, UserAuthPort {
         return repository.findByEmail(email)
                 .map(user -> new UserAuthDto(
                         user.getId(),
+                        user.getFirstName(),
+                        user.getLastName(),
                         user.getEmail(),
                         user.getPassword(),
                         user.getRole(),
