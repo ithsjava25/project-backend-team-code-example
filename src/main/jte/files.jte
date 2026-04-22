@@ -15,7 +15,7 @@
 <%--    <form action="/logout" method="post" style="display:inline;">--%>
 <%--        <input type="hidden" name="_csrf" value="${csrfToken}">--%>
 <%--        <button type="submit" class="button">Logout</button>--%>
-    </form>
+<%--    </form>--%>
 </div>
 
 <div id="uploadSection">

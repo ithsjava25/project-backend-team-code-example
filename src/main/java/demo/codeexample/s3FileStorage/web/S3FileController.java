@@ -4,7 +4,6 @@ import demo.codeexample.s3FileStorage.application.S3FileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.web.csrf.CsrfToken;
 
 import java.util.List;
 import java.util.Map;
