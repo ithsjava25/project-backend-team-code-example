@@ -26,7 +26,9 @@ content = @`
                 @for(ProjectDto project : projects)
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
-                            <img class="card-image" src="" alt="${project.getTitle()}" />
+                            <img class="card-image" src="/${company}/api/files/project-poster/${project.getId()}"
+                                 alt="${project.getTitle()}"
+                                 style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
                         </div>
                         <div class="movie-info">
                             <span class="project-title">${project.getTitle()} </span>

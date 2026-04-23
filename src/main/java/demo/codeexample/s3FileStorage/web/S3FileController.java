@@ -53,6 +53,35 @@ public class S3FileController {
         String url = s3Service.generatePresignedDownloadUrl(fileName);
         return Map.of("url", url);
     }
+    @GetMapping("/api/files/project-poster/{projectId}")
+    public String getProjectPoster(@PathVariable Long projectId) {
+        try {
+            // 1. Hämta listan säkert
+            var keys = s3Service.findFileKeysByProjectId(projectId);
+
+            // 2. Kolla om listan är null eller tom INNAN vi kör get(0) eller getFirst()
+            if (keys == null || keys.isEmpty()) {
+                log.warn("Ingen bild hittades i databasen för projekt {}", projectId);
+                return "redirect:/images/Hexagonalt_filmproduktionslogotyp.png";
+            }
+
+            String fileName = keys.get(0);
+
+            // 3. Generera URL
+            String presignedUrl = s3Service.generatePresignedDownloadUrl(fileName);
+
+            if (presignedUrl == null) {
+                return "redirect:/images/Hexagonalt_filmproduktionslogotyp.png";
+            }
+
+            return "redirect:" + presignedUrl;
+
+        } catch (Exception e) {
+            // Detta gör att vi ser EXAKT vad som går fel i IntelliJ-konsolen
+            log.error("Krasch vid hämtning av bild för projekt " + projectId, e);
+            return "redirect:/images/Hexagonalt_filmproduktionslogotyp.png"; // Vid fel, visa placeholder istället för att ge 500
+        }
+    }
 
     @PostMapping("/api/files/callback")
     @ResponseBody

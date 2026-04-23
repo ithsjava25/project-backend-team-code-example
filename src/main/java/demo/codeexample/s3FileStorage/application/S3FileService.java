@@ -1,11 +1,11 @@
 package demo.codeexample.s3FileStorage.application;
 
+import demo.codeexample.s3FileStorage.S3FileLookup;
 import demo.codeexample.s3FileStorage.domain.S3File;
 import demo.codeexample.s3FileStorage.domain.S3FileRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
@@ -16,13 +16,14 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class S3FileService {
+public class S3FileService implements S3FileLookup {
 
+    private static final String BUCKET_NAME = "my-bucket";
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
-    private static final String BUCKET_NAME = "my-bucket";
     private final S3FileRepository s3FileRepository;
 
     @Value("${app.cors.allowed-origin:http://localhost:8080}")
@@ -51,6 +52,7 @@ public class S3FileService {
             System.err.println("Could not set CORS: " + e.getMessage());
         }
     }
+
     public List<String> listFiles() {
         return s3Client.listObjectsV2Paginator(req -> req.bucket(BUCKET_NAME))
                 .contents()
@@ -92,8 +94,8 @@ public class S3FileService {
         PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
         return presignedRequest.url().toString();
     }
+
     public void saveFileMetadata(Long projectId, String fileKey, String contentType) {
-        System.out.println("DEBUG: Nu körs saveFileMetadata för projekt " + projectId); // Dyker denna upp i konsolen?
 
         try {
             S3File s3File = new S3File();
@@ -102,9 +104,16 @@ public class S3FileService {
             s3File.setContentType(contentType);
 
             s3FileRepository.saveAndFlush(s3File); // saveAndFlush tvingar DB att skriva direkt
-            System.out.println("DEBUG: Sparning lyckades!");
         } catch (Exception e) {
             System.err.println("DEBUG: Fel vid sparning: " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<String> findFileKeysByProjectId(Long projectId) {
+        return s3FileRepository.findAllByProjectId(projectId)
+                .stream()
+                .map(S3File::getFileKey)
+                .collect(Collectors.toList());
     }
 }
