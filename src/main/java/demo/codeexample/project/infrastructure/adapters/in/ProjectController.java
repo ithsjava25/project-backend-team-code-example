@@ -4,12 +4,10 @@ import demo.codeexample.auth.CurrentUserLookup;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
-import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,14 +24,11 @@ public class ProjectController {
     @GetMapping("/dashboard")
     @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
     public String dashboard(@ModelAttribute("company") String companyName, Model model) {
-        UserDto currentUser = currentUserLookup.getCurrentUser()
+        var currentUser = currentUserLookup.getCurrentUser()
                 .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
-        Long userId = currentUser.getId();
-
-        model.addAttribute("projects", projectUseCase.findProjectsForUser(userId));
+        model.addAttribute("projects", projectUseCase.findProjectsForUser(currentUser.getId()));
         model.addAttribute("company", companyName);
-        model.addAttribute("currentUser", currentUser);
 
         return "producer/dashboard";
     }
@@ -41,13 +36,8 @@ public class ProjectController {
     @GetMapping("/projects/new")
     @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR', 'PRODUCER', 'RECRUITER', 'EDITOR')")
     public String createProjectPage(@ModelAttribute("company") String companyName, Model model) {
-        var users = userLookup.findAll();
-        model.addAttribute("users", users);
+        model.addAttribute("users", userLookup.findAll());
         model.addAttribute("company", companyName);
-
-        var currentUser = currentUserLookup.getCurrentUser()
-                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
-        model.addAttribute("currentUser", currentUser);
 
         return "producer/create-project";
     }
@@ -60,12 +50,8 @@ public class ProjectController {
                                      Model model) {
         ProjectDto currentProject = projectUseCase.getProjectDetails(projectId);
 
-        var currentUser = currentUserLookup.getCurrentUser()
-                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
-
         model.addAttribute("currentProject", currentProject);
         model.addAttribute("company", companyName);
-        model.addAttribute("currentUser", currentUser);
 
         return "project-details";
     }
