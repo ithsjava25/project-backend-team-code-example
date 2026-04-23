@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,12 +37,15 @@ public class TaskController {
         dto.setComments(commentLookup.getCommentsForTask(taskId));
 
         model.addAttribute("task", dto);
-        return "task";
+        return "task/taskPage";
     }
 
-    @PostMapping("/{taskId}/comments")
-    public String addComment(@PathVariable Long taskId, @Valid CreateCommentDto createCommentDto) {
-        // Logic to save createCommentDto.getContent()
-        return "redirect:/tasks/" + taskId + "/view";
-    }
+    @PostMapping("hexagonal/{taskId}/comments")
+    public String addComment(@PathVariable Long taskId, @Valid CreateCommentDto dto) {
+        String principal = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Long userId = principal.equals("anonymousUser") ? 1L : Long.parseLong(principal);
+
+        taskUseCase.addComment(taskId, dto.getContent(), userId);
+        return "redirect:/" + taskId + "/view";
 }

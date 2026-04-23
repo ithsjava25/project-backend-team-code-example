@@ -11,6 +11,9 @@ import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.domain.Task;
 import demo.codeexample.task.domain.TaskType;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.modulith.events.ApplicationModuleListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -79,4 +82,13 @@ public class TaskService implements TaskUseCase {
             );
             return savedTask;
         }
+    @Override
+    public void addComment(Long taskId, String content, Long writerId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+
+        task.addComment(content, writerId);
+
+        taskRepository.save(task);
+    }
     }
