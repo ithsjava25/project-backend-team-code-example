@@ -4,6 +4,7 @@ import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.user.UserLookup;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -45,9 +46,10 @@ public class ProjectController {
 
 
     @PostMapping("/projects")
+    @Transactional
     public String createProject(@ModelAttribute("projectDto") @Valid CreateProjectDto projectDto) {
         projectUseCase.createProject(projectDto);
-        return "redirect:/${company}/dashboard";
+        return "redirect:/{company}/dashboard";
     }
 }
 

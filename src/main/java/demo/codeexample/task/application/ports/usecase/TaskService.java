@@ -24,8 +24,6 @@ public class TaskService implements TaskUseCase {
     private final LoggerLookup logger;
     private final UserLookup userLookup;
 
-
-
     public TaskService(TaskRepositoryPort taskRepository, UserLookup userLookup, LoggerLookup logger) {
         this.taskRepository = taskRepository;
         this.userLookup = userLookup;

@@ -16,6 +16,7 @@ public interface TaskUseCase {
     void handleProjectCreated(ProjectCreatedEvent event);
 
     List<Task> findAll();
+
     Optional<Task> findById(Long id);
 
     Task createTask(TaskType taskType, String description, TaskStatus status,
