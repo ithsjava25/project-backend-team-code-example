@@ -60,4 +60,10 @@ public class UserController {
         userService.deactivateUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}/reset-password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserDto> resetPassword(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.resetPassword(id));
+    }
 }

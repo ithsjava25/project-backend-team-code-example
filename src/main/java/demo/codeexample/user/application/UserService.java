@@ -151,6 +151,32 @@ public class UserService implements UserLookup, UserAuthPort {
         repository.save(user);
     }
 
+    @Override
+    public UserDto resetPassword(Long id) {
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+
+        // Generate new temp password
+        String tempPassword = generateTempPassword();
+        user.setPassword(passwordEncoder.encode(tempPassword));
+        user.setPasswordResetRequired(true);  // ← force change on next login!
+
+        User saved = repository.save(user);
+
+        // Send email with new temp password
+        try {
+            emailService.sendPasswordResetEmail(
+                    saved.getEmail(),
+                    saved.getFirstName(),
+                    tempPassword
+            );
+        } catch (Exception e) {
+            System.err.println("Failed to send reset email: " + e.getMessage());
+        }
+
+        return mapper.map(saved, UserDto.class);
+    }
+
     // ─────────────────────────────────────────
     // AUTH OPERATIONS
     // ─────────────────────────────────────────
