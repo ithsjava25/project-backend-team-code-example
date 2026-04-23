@@ -97,4 +97,9 @@ public class ProjectService implements ProjectUseCase {
                 .orElseThrow(() -> new EntityNotFoundException("Project not found: " + projectId));
     }
 
+    @Override
+    public List<ProjectDto> findProjectsForUser(Long userId) {
+        return findAllProjects();
+    }
+
 }

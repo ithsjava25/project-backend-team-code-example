@@ -1,5 +1,6 @@
 package demo.codeexample.project.infrastructure.adapters.in;
 
+import demo.codeexample.auth.application.CurrentUserProvider;
 import demo.codeexample.company.TenantContext;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
@@ -8,6 +9,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +23,19 @@ public class ProjectController {
     private final ProjectUseCase projectUseCase;
     private final UserLookup userLookup;
     private final ModelMapper modelMapper;
+    private final CurrentUserProvider currentUserProvider;
+
 
     @GetMapping("/dashboard")
+    @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
     public String dashboard(Model model) {
-        model.addAttribute("projects", projectUseCase.findAllProjects());
+        Long userId = currentUserProvider.getCurrentUserId();
+        model.addAttribute("projects", projectUseCase.findProjectsForUser(userId));
         return "producer/producer-dashboard";
     }
 
     @GetMapping("/projects/new")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR', 'PRODUCER', 'RECRUITER', 'EDITOR')")
     public String createProjectPage(Model model) {
         var users = userLookup.findAll();
         model.addAttribute("users", users);
@@ -37,6 +44,7 @@ public class ProjectController {
 
     @PostMapping("/projects")
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR', 'PRODUCER', 'RECRUITER', 'EDITOR')")
     public String createProject(@ModelAttribute @Valid CreateProjectDto dto) {
 
         projectUseCase.createProject(

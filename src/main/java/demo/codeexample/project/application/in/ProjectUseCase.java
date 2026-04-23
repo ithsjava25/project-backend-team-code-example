@@ -21,6 +21,8 @@ public interface ProjectUseCase extends ProjectLookup {
 
     List<Project> findProjectContainingTitle(String title);
 
+    List<ProjectDto> findProjectsForUser(Long userId);
+
     Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
                           Category category, Genre genre, Long companyId,
                           LocalDateTime recruitingDeadline,
