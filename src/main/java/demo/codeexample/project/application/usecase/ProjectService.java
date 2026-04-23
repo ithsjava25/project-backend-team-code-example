@@ -11,6 +11,8 @@ import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.domain.Project;
+import demo.codeexample.shared.Role;
+import demo.codeexample.user.UserLookup;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 
@@ -24,14 +26,16 @@ public class ProjectService implements ProjectUseCase {
     private final CompanyPort companyPort;
     private final ProjectEventPort projectEventPort;
     private final ModelMapper mapper;
+    private final UserLookup userLookup;
 
     public ProjectService(ProjectRepositoryPort repository, UserPort userPort,
-                          ProjectEventPort projectEventPort, CompanyPort companyPort, ModelMapper mapper) {
+                          ProjectEventPort projectEventPort, CompanyPort companyPort, ModelMapper mapper, UserLookup userLookup) {
         this.repository = repository;
         this.userPort = userPort;
         this.projectEventPort = projectEventPort;
         this.companyPort = companyPort;
         this.mapper = mapper;
+        this.userLookup = userLookup;
     }
 
     @Override
@@ -103,13 +107,20 @@ public class ProjectService implements ProjectUseCase {
                 .orElseThrow(() -> new EntityNotFoundException("Project not found: " + projectId));
     }
 
+
     @Override
     public List<ProjectDto> findProjectsForUser(Long userId) {
+        var user = userLookup.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("User not found: " + userId));
+
+        if (user.getRole() == Role.ADMIN || user.getRole() == Role.PRODUCER) {
+            return findAllProjects();
+        }
+
         return repository.findAll().stream()
                 .filter(project -> project.getEmployeesId() != null
                         && project.getEmployeesId().contains(userId))
                 .map(project -> mapper.map(project, ProjectDto.class))
                 .toList();
     }
-
 }
