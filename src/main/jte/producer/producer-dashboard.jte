@@ -33,18 +33,18 @@
 
             @if(currentUser != null)
                 <div class="user-menu">
-                    <div class="user-avatar">
-                        ${currentUser.getInitial()}
-                    </div>
+                    <div class="user-avatar">${currentUser.getInitial()}</div>
                     <div class="user-tooltip">
                         <div class="user-tooltip-name">${currentUser.getFullName()}</div>
-                        <div class="user-tooltip-role">${String.valueOf(currentUser.getRole())}</div>
+                        <div class="user-tooltip-role">${currentUser.getRoleName()}</div>
                         <div class="user-tooltip-email">${currentUser.getEmail()}</div>
                     </div>
                 </div>
             @endif
 
-            <a href="/logout">Logout</a>
+            <form action="/logout" method="post" style="display:inline;">
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
         </div>
     </div>
 </nav>
