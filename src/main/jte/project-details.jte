@@ -14,7 +14,7 @@ content = @`
                 <p class="genre-tag">${currentProject.getGenre().toString()}</p>
             </div>
             <div class="header-actions">
-                <a href="/${company}/dashboard" class="btn-back">← Back to Dashboard</a>
+                <a href="/${company}/dashboard/current" class="btn-back">← Back to Dashboard</a>
             </div>
         </header>
 
