@@ -1,7 +1,11 @@
 @import gg.jte.Content
+@import demo.codeexample.user.UserDto
+
 @param Content content
 @param String company
 @param String title
+@param UserDto currentUser
+
 
 <!DOCTYPE html>
 <html lang="sv">
@@ -23,11 +27,23 @@
                 </div>
             </a>
 
-            <div class="nav-links">
-                <a href="/${company}/dashboard" class="active-tab">Current Projects</a>
-                <a href="/${company}/projects/new" class="login-button">New Project</a>
-                <a href="/${company}">Logout</a>
-            </div>
+        <div class="nav-links">
+            <a href="/${company}/dashboard" class="active-tab">Current Projects</a>
+            <a href="/${company}/projects/new" class="login-button">New Project</a>
+
+            @if(currentUser != null)
+                <div class="user-menu">
+                    <div class="user-avatar">${currentUser.getInitial()}</div>
+                    <div class="user-tooltip">
+                        <div class="user-tooltip-name">${currentUser.getFullName()}</div>
+                        <div class="user-tooltip-role">${currentUser.getRoleName()}</div>
+                        <div class="user-tooltip-email">${currentUser.getEmail()}</div>
+                    </div>
+                </div>
+            @endif
+
+            <a href="/${company}">Logout</a>
+        </div>
     </nav>
 
     <main>
