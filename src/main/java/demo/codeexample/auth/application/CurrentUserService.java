@@ -1,5 +1,6 @@
-package demo.codeexample.security;
+package demo.codeexample.auth.application;
 
+import demo.codeexample.auth.infrastructure.CustomUserDetails;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
 import lombok.RequiredArgsConstructor;

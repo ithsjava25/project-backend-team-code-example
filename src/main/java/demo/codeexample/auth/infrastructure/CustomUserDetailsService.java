@@ -1,4 +1,4 @@
-package demo.codeexample.security;
+package demo.codeexample.auth.infrastructure;
 
 import demo.codeexample.user.UserAuthDto;
 import demo.codeexample.user.UserAuthPort;

@@ -1,6 +1,6 @@
 package demo.codeexample.shared.web;
 
-import demo.codeexample.security.CurrentUserService;
+import demo.codeexample.auth.application.CurrentUserService;
 import demo.codeexample.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ControllerAdvice;
