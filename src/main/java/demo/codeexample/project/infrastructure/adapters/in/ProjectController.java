@@ -1,7 +1,6 @@
 package demo.codeexample.project.infrastructure.adapters.in;
 
 import demo.codeexample.project.CreateProjectDto;
-import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -26,8 +24,7 @@ public class ProjectController {
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         model.addAttribute("projects", projectUseCase.findAllProjects());
-//        return "producer/producer-dashboard";
-        return "redirect:/dashboard";
+        return "producer/producer-dashboard";
     }
 
     @GetMapping("/projects/new")
