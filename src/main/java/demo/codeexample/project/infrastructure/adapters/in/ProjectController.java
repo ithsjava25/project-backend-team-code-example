@@ -38,16 +38,15 @@ public class ProjectController {
         return "producer/dashboard";
     }
 
-
     @GetMapping("/projects/new")
     @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR', 'PRODUCER', 'RECRUITER', 'EDITOR')")
     public String createProjectPage(@ModelAttribute("company") String companyName, Model model) {
         var users = userLookup.findAll();
-        UserDto currentUser = currentUserLookup.getCurrentUser()
-                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
-
         model.addAttribute("users", users);
         model.addAttribute("company", companyName);
+
+        var currentUser = currentUserLookup.getCurrentUser()
+                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
         model.addAttribute("currentUser", currentUser);
 
         return "producer/create-project";
