@@ -65,7 +65,7 @@
             @endif
         </div>
 
-        <form action="/tasks/${task.getTaskId()}/comments" method="post" style="margin-top: 2rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
+        <form action="/${task.getId()}/comments" method="post" style="margin-top: 2rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
             <textarea name="content" rows="3" placeholder="Add a comment..." required
                       style="width: 100%; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;"></textarea>
             <button type="submit" class="login-button" style="margin-top: 1rem; border: none; cursor: pointer;">Post</button>

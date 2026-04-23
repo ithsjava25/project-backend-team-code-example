@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskResponseDto {
-    private Long taskId;
+    private Long Id;
     private TaskType taskType; // Add this!
     private String title;
     private String description;
@@ -24,5 +24,6 @@ public class TaskResponseDto {
     private Long projectId;
     private Long userId;
     private List<CommentDto> comments;
+    private String projectName;
 }
 

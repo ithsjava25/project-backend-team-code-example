@@ -22,4 +22,5 @@ public interface TaskUseCase {
     Task createTask(TaskType taskType, String description, TaskStatus status,
                     LocalDateTime deadline, Long projectId, Long userId);
 
+    void addComment(Long taskId, String content, Long writerId);
 }
