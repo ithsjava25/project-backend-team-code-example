@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 @AllArgsConstructor
@@ -17,11 +18,9 @@ public class CompanyController {
     private final ProjectLookup projectLookup;
 
     @GetMapping({"", "/"})
-    public String index(Model model) {
-        String company = TenantContext.getTenant();
+    public String index(@ModelAttribute("company") String companyName, Model model) {
 
-        model.addAttribute("company", company);
-        model.addAttribute("projects", projectLookup.findAllProjects());
+        model.addAttribute("projects", projectLookup.findAllCompletedProjectsByCompany(companyName));
         model.addAttribute("films",projectLookup.findProjectByCategory(Category.FILM));
         model.addAttribute("series",projectLookup.findProjectByCategory(Category.SERIES));
 

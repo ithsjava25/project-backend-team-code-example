@@ -16,7 +16,7 @@ public interface JpaProjectRepository extends JpaRepository<ProjectEntity, Long>
 
     List<ProjectEntity> findByTitleContainingIgnoreCase(String title);
 
-    List<ProjectEntity> findByCompanyId(Long companyId);
+    List<ProjectEntity> findProjectsByCompanyNameAndCompletedOrderByReleaseDateDesc(String companyName, boolean completed);
 
     Optional<Project> findByTitle(String title);
 }

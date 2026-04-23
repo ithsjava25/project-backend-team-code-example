@@ -20,7 +20,7 @@ content = @`
             <label class="form-label">Project Title</label>
             <input type="text" name="title" class="form-input" required>
 
-            <input type="hidden" name="companyId" value="1">
+            <input type="hidden" name="companyName" value="${company}">
 
             <label class="form-label">Category</label>
             <select name="category" class="form-input" required>

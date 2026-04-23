@@ -25,8 +25,8 @@ public record CreateProjectDto(
         @NotNull(message = "Choose a genre!")
         Genre genre,
 
-        @NotNull(message = "What company does the project belong to")
-        Long companyId,
+        @NotBlank(message = "What company does the project belong to")
+        String companyName,
 
         @NotNull(message = "Choose a deadline")
         LocalDateTime recruitingDeadline,

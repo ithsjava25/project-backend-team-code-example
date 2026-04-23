@@ -19,9 +19,17 @@ public class ProjectController {
     private final ProjectUseCase projectUseCase;
     private final UserLookup userLookup;
 
-    @GetMapping("/dashboard")
-    public String dashboard(@ModelAttribute("company") String companyName, Model model) {
-        var projects = projectUseCase.findAllProjectsFromCompany(companyName);
+    @GetMapping("/dashboard/completed")
+    public String dashboardCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
+        var projects = projectUseCase.findAllCompletedProjectsByCompany(companyName);
+
+        model.addAttribute("projects", projects);
+        return "producer/dashboard";
+    }
+
+    @GetMapping("/dashboard/current")
+    public String dashboardNotCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
+        var projects = projectUseCase.findAllNotCompleteProjectsByCompany(companyName);
 
         model.addAttribute("projects", projects);
         return "producer/dashboard";
@@ -49,7 +57,7 @@ public class ProjectController {
     @Transactional
     public String createProject(@ModelAttribute("projectDto") @Valid CreateProjectDto projectDto) {
         projectUseCase.createProject(projectDto);
-        return "redirect:/{company}/dashboard";
+        return "redirect:/{company}/dashboard/current";
     }
 }
 

@@ -5,7 +5,6 @@ import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.out.ProjectEventPort;
 import demo.codeexample.shared.Category;
-import demo.codeexample.project.application.out.CompanyPort;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
@@ -21,33 +20,32 @@ public class ProjectService implements ProjectUseCase {
 
     private final ProjectRepositoryPort repository;
     private final UserPort userPort;
-    private final CompanyPort companyPort;
     private final ProjectEventPort projectEventPort;
     private final ModelMapper mapper;
 
     public ProjectService(ProjectRepositoryPort repository, UserPort userPort,
-                          ProjectEventPort projectEventPort, CompanyPort companyPort, ModelMapper mapper) {
+                          ProjectEventPort projectEventPort, ModelMapper mapper) {
         this.repository = repository;
         this.userPort = userPort;
         this.projectEventPort = projectEventPort;
-        this.companyPort = companyPort;
         this.mapper = mapper;
     }
 
+
     @Override
-    public List<ProjectDto> findAllProjects() {
-        return repository.findAllByOrderByTitleAsc().stream()
+    public List<ProjectDto> findAllCompletedProjectsByCompany(String companyName) {
+        return repository.findAllProjectsBelongingToCompany(companyName, true).stream()
                 .map(entity -> mapper.map(entity, ProjectDto.class))
                 .toList();
     }
 
     @Override
-    public List<ProjectDto> findAllProjectsFromCompany(String companyName) {
-        Long companyId = companyPort.getCompanyIdFromName(companyName);
-        return repository.findAllBelongingToCompany(companyId).stream()
+    public List<ProjectDto> findAllNotCompleteProjectsByCompany(String companyName) {
+        return repository.findAllProjectsBelongingToCompany(companyName, false).stream()
                 .map(entity -> mapper.map(entity, ProjectDto.class))
                 .toList();
     }
+
 
     @Override
     public List<ProjectDto> findProjectByCategory(Category category) {
@@ -66,7 +64,6 @@ public class ProjectService implements ProjectUseCase {
     @Override
     public Project createProject(CreateProjectDto projectDto) {
         userPort.validateEmployees(projectDto.employeesId());
-
         Project project = repository.save(projectDto);
 
         ProjectCreatedEvent event = new ProjectCreatedEvent(
@@ -74,7 +71,7 @@ public class ProjectService implements ProjectUseCase {
                 project.getTitle(),
                 project.getEmployeesId(),
                 project.getReleaseDate(),
-                project.getCompanyId(),
+                project.getCompanyName(),
                 projectDto.recruitingDeadline(),
                 projectDto.recordingDeadline(),
                 projectDto.editingDeadline()
