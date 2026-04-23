@@ -36,7 +36,7 @@
                     <div class="user-avatar">${currentUser.getInitial()}</div>
                     <div class="user-tooltip">
                         <div class="user-tooltip-name">${currentUser.getFullName()}</div>
-                        <div class="user-tooltip-role">${currentUser.getRoleName()}</div>
+                        <div class="user-tooltip-role">${currentUser.getRoleDisplayName()}</div>
                         <div class="user-tooltip-email">${currentUser.getEmail()}</div>
                     </div>
                 </div>
