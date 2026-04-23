@@ -76,15 +76,16 @@ public class ProjectService implements ProjectUseCase {
         userPort.validateEmployees(projectDto.employeesId());
 
         Project project = repository.save(projectDto);
+        Long currentUserId = securityPort.getCurrentUserId();
+        String creatorName = securityPort.getCurrentUserName();
 
         logger.log(
                 LoggerAction.PROJECT_CREATED,
-                //currentUserId, ---- Funkar just nu inte och kan inte testa förrens vi fixat login page.
-                1L,
+                currentUserId,
                 "PROJECT",
                 project.getId(),
                 project.getId(),
-                "New project created: " + project.getTitle()
+                "New project created: " + project.getTitle() + ". Created by: " + creatorName
         );
 
         ProjectCreatedEvent event = new ProjectCreatedEvent(

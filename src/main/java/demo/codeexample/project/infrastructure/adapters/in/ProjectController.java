@@ -3,6 +3,7 @@ package demo.codeexample.project.infrastructure.adapters.in;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
+import demo.codeexample.project.application.out.SecurityPort;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ public class ProjectController {
 
     private final ProjectUseCase projectUseCase;
     private final UserLookup userLookup;
+    private final SecurityPort securityPort;
 
     @GetMapping("/dashboard/completed")
     public String dashboardCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
@@ -32,6 +34,7 @@ public class ProjectController {
     @GetMapping("/dashboard/current")
     public String dashboardNotCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
         var projects = projectUseCase.findAllNotCompleteProjectsByCompany(companyName);
+
 
         model.addAttribute("projects", projects);
         return "producer/dashboard";

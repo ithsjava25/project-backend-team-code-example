@@ -1,6 +1,7 @@
 package demo.codeexample.project.infrastructure.adapters.out.external;
 
 import demo.codeexample.project.application.out.SecurityPort;
+import demo.codeexample.security.UserAuthHelper;
 import demo.codeexample.user.UserLookup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
