@@ -7,8 +7,6 @@ import lombok.*;
 @Getter
 public class ChangePasswordRequest {
 
-    // public DTO
-
     @NotBlank(message = "Current password is required")
     private String currentPassword;
 

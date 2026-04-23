@@ -1,6 +1,7 @@
 @param String error
 @param String success
-@param String company = ""
+
+@param String company
 
 
 @template.layout(

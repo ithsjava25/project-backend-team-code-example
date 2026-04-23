@@ -26,10 +26,6 @@ public class UserService implements UserLookup, UserAuthPort {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
-    // ─────────────────────────────────────────
-    // READ OPERATIONS
-    // ─────────────────────────────────────────
-
     @Override
     public List<UserDto> findAll() {
         return repository.findAll().stream()
