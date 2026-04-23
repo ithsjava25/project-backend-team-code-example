@@ -48,4 +48,5 @@ public class TaskController {
 
         taskUseCase.addComment(taskId, dto.getContent(), userId);
         return "redirect:/" + taskId + "/view";
+    }
 }
