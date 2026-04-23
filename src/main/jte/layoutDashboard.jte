@@ -33,16 +33,31 @@
 
             @if(currentUser != null)
                 <div class="user-menu">
-                    <div class="user-avatar">${currentUser.getInitial()}</div>
-                    <div class="user-tooltip">
-                        <div class="user-tooltip-name">${currentUser.getFullName()}</div>
-                        <div class="user-tooltip-role">${currentUser.getRoleName()}</div>
-                        <div class="user-tooltip-email">${currentUser.getEmail()}</div>
+                    <div class="user-avatar">
+                        ${currentUser.getFirstName().substring(0,1)}
+                    </div>
+
+                    <div class="user-dropdown">
+                        <div class="user-info">
+                            <div class="user-name">
+                                ${currentUser.getFirstName()} ${currentUser.getLastName()}
+                            </div>
+                            <div class="user-email">
+                                ${currentUser.getEmail()}
+                            </div>
+                            <div class="user-role">
+                                ${currentUser.getRole()}
+                            </div>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a href="/${company}" class="dropdown-item logout">
+                            Logout
+                        </a>
                     </div>
                 </div>
             @endif
-
-            <a href="/${company}">Logout</a>
         </div>
     </nav>
 

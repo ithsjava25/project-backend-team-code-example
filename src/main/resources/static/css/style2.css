@@ -327,3 +327,75 @@ main{
     color: #64748b;
     overflow-wrap: break-word;
 }
+
+.user-menu {
+    position: relative;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background: #6366f1;
+    color: white;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: white;
+    color: black;
+    border-radius: 10px;
+    width: 220px;
+    padding: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    display: none;
+    z-index: 100;
+}
+
+.user-menu:hover .user-dropdown {
+    display: block;
+}
+
+.user-info {
+    margin-bottom: 10px;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.user-email {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.user-role {
+    font-size: 0.8em;
+    color: #888;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #eee;
+    margin: 10px 0;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 8px 0;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-item.logout {
+    color: #e11d48;
+    font-weight: bold;
+}
