@@ -4,22 +4,19 @@ import demo.codeexample.shared.Role;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static demo.codeexample.shared.Role.PRODUCER;
 
 @Component
+@AllArgsConstructor
 public class CustomerAdapter implements UserPort {
 
     private final UserLookup userLookup;
-
-    public CustomerAdapter(UserLookup userLookup){
-        this.userLookup = userLookup;
-    }
 
     @Override
     public Optional<UserInfo> findById(Long id) {

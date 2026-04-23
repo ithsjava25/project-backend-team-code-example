@@ -10,9 +10,8 @@ import java.util.Set;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Project {
-
-    protected Project(){}
 
     @Setter(AccessLevel.NONE)
     private Long id;
@@ -20,9 +19,10 @@ public class Project {
     private String title;
     private String description;
     private LocalDate releaseDate;
+
     @Setter(AccessLevel.NONE)
     private Set<Long> employeesId;
-    @Setter(AccessLevel.NONE)
+
     private Category category;
     private Genre genre;
     private Long companyId;

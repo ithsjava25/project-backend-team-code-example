@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -17,84 +18,47 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class WebAuthController {
 
-    private final WebAuthService webAuthService;   // ← only service needed!
+    private final WebAuthService webAuthService;
     private final TemplateEngine templateEngine;
 
-    // ─────────────────────────────────────────
-    // LOGIN
-    // ─────────────────────────────────────────
-
     @GetMapping("/login")
-    @ResponseBody
-    public String loginPage(
-            @RequestParam(required = false) String error,
-            @RequestParam(required = false) String welcomeMessage) {
-
-        String company = TenantContext.getTenant();
-        String companyValue = company != null ? company : "";
-        String welcomeMessageValue = welcomeMessage != null ? welcomeMessage : "";
-
-        return render("auth/login.jte", Map.of(
-                "company", companyValue,
-                "welcomeMessage", welcomeMessageValue,
-                "error", error != null ? "Invalid email or password" : ""
-        ));
+    public String loginPage(@RequestParam(required = false) String error, Model model) {
+        model.addAttribute("error", error != null ? "Invalid email or password" : "");
+        return "auth/login";
     }
 
-    @PostMapping(
-            value = "/login",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
-    )
-    public String handleLogin(
-            @ModelAttribute LoginRequest request,
-            HttpServletResponse response) {
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String handleLogin(@ModelAttribute LoginRequest request, HttpServletResponse response) {
 
         WebAuthService.LoginResult result = webAuthService.handleLogin(request);
         if (result.success()) {
             response.addHeader("Set-Cookie", result.cookie());
         }
+
         return result.redirect();
     }
 
-    // ─────────────────────────────────────────
-    // CHANGE PASSWORD
-    // ─────────────────────────────────────────
 
     @GetMapping("/login/change-password")
     @ResponseBody
-    public String changePasswordPage(
-            @RequestParam(required = false) String error,
-            @RequestParam(required = false) String success) {
+    public String changePasswordPage(@RequestParam(required = false) String error,
+                                     @RequestParam(required = false) String success) {
 
-        String company = TenantContext.getTenant();
-        String companyValue = company != null ? company : "";
 
-        return render("auth/change-password.jte", Map.of(
-                "company", companyValue,
-                "error", error != null ? error : "",
-                "success", success != null ? success : ""
-        ));
+        return "auth/change-password";
     }
 
-    @PostMapping(
-            value = "/login/change-password",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
-    )
-    public String handleChangePassword(
-            @RequestParam String currentPassword,
-            @RequestParam String newPassword,
-            @RequestParam String confirmPassword,
-            @CookieValue(name = "jwt", required = false) String jwtToken) {
+    @PostMapping(value = "/login/change-password", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String handleChangePassword(@RequestParam String currentPassword,
+                                       @RequestParam String newPassword,
+                                       @RequestParam String confirmPassword,
+                                       @CookieValue(name = "jwt", required = false) String jwtToken) {
 
         return webAuthService.handleChangePassword(
                 currentPassword, newPassword, confirmPassword, jwtToken
         );
     }
 
-
-    // ─────────────────────────────────────────
-    // PRIVATE HELPERS
-    // ─────────────────────────────────────────
 
     private String render(String template, Map<String, Object> params) {
         var output = new StringOutput();

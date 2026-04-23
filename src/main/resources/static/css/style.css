@@ -5,6 +5,7 @@
     --accent-color: #d4af37;
     --primary-purple: #6a1b9a;
     --text-color: #f4f4f4;
+    --side-padding: 5%;
 }
 
 body {
@@ -30,7 +31,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.2rem 5%;
+    padding: 1.2rem var(--side-padding);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -60,6 +61,7 @@ nav {
     display: flex;
     gap: 25px;
     align-items: center;
+    justify-content: right;
 }
 
 .nav-links a {
@@ -109,7 +111,7 @@ nav {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 5%;
+    padding: 0 var(--side-padding);
 }
 .about-hero {
     height: 60vh;

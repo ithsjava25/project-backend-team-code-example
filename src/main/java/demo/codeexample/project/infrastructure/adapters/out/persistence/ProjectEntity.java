@@ -45,8 +45,9 @@ public class ProjectEntity {
     @Column(nullable = false)
     private Long companyId;
 
-    public ProjectEntity(String title, String description, LocalDate releaseDate,
+    public ProjectEntity(Long id, String title, String description, LocalDate releaseDate,
                          Set<Long> employeesId, Category category, Genre genre, Long companyId){
+        this.id = id;
         this.title = title;
         this.description = description;
         this.releaseDate = releaseDate;
@@ -55,6 +56,7 @@ public class ProjectEntity {
         this.genre = genre;
         this.companyId = companyId;
     }
+
 
     @Override
     public final boolean equals(Object o) {

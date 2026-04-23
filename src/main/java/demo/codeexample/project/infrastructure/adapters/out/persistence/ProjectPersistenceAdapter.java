@@ -1,6 +1,7 @@
 package demo.codeexample.project.infrastructure.adapters.out.persistence;
 
 import demo.codeexample.shared.Category;
+import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.domain.Project;
@@ -38,6 +39,13 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     @Override
+    public List<Project> findAllBelongingToCompany(Long companyId) {
+        return jpaRepository.findByCompanyId(companyId).stream()
+                .map(this::toDomain)
+                .toList();
+    }
+
+    @Override
     public List<Project> findProjectByCategory(Category category) {
         return jpaRepository.findByCategory(category).stream()
                 .map(this::toDomain)
@@ -59,10 +67,14 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     @Override
-    public Project save(Project project) {
-        ProjectEntity entity = toEntity(project);
+    public Optional<Project> findByTitle(String title) {
+        return jpaRepository.findByTitle(title);
+    }
+
+    @Override
+    public Project save(CreateProjectDto project) {
+        ProjectEntity entity = mapper.map(project, ProjectEntity.class);
         ProjectEntity saved = jpaRepository.save(entity);
-        jpaRepository.flush();
         return toDomain(saved);
     }
 
@@ -72,9 +84,6 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
                 .map(this::toDomain);
     }
 
-    private ProjectEntity toEntity(Project project){
-        return mapper.map(project, ProjectEntity.class);
-    }
 
     private Project toDomain(ProjectEntity entity){
         return Project.builder()

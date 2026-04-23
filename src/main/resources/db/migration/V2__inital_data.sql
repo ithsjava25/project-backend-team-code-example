@@ -16,7 +16,8 @@ INSERT INTO project VALUES
     (null, 'The Texas Chain Saw Massacre', 'Sally, Franklin and their three friends run out of gas while driving to their grandfather''s house. One by one they are tormented and killed by a chainsaw-wielding killer and his psychopathic family.', '1974-10-11', 'FILM', 'HORROR', 1),
     (null, 'True Detective', 'Police officers and detectives around the USA are forced to face dark secrets about themselves and the people around them while investigating homicides.', '2014-01-12', 'SERIES', 'CRIME', 1),
     (null, 'Dexter', 'Dexter Morgan, a man with homicidal tendencies, lives a double life. He works as a forensic technician for the police department during the day and kills heinous perpetrators in his free time.', '2006-10-01', 'SERIES', 'DRAMA', 1),
-    (null, 'The Office', 'The show documents the exploits of a paper supply company in Scranton, Pennsylvania. With an office including the likes of various peers, this series takes a look at the lives of its co-workers.', '2004-03-24', 'SERIES', 'COMEDY', 1);
+    (null, 'The Office', 'The show documents the exploits of a paper supply company in Scranton, Pennsylvania. With an office including the likes of various peers, this series takes a look at the lives of its co-workers.', '2004-03-24', 'SERIES', 'COMEDY', 1),
+    (null, 'Kung Fu Panda', 'When Po the Panda, a kung fu enthusiast, gets selected as the Dragon Warrior, he decides to team up with the Furious Five and destroy the evil forces that threaten the Valley of Peace.', '2008-07-18', 'FILM', 'KIDS', 2);
 
 INSERT INTO users VALUES
     (null, 'Admin', 'System', 'admin', '$2a$12$3UjYpLZtkxLTRTmfzKaq4u9FLA253tB3t1K2XHeCyyjxRV/jcBHO.', 'ADMIN', true, false, '2026-01-01 01:00:00', null  ),

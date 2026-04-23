@@ -22,32 +22,22 @@ public class AuthService implements AuthLookup {
     private final JwtService jwtService;
 
 
-    // ─────────────────────────────────────────
-    // PUBLIC API (AuthLookup implementation)
-    // ─────────────────────────────────────────
-
-
     @Override
     public LoginResponse getLoginResponse(LoginRequest request) {
         String normalizedEmail = normalizeEmail(request.getEmail());
-        UserAuthDto user       = findAndValidateUser(normalizedEmail,
-                request.getPassword());
-        String token           = generateToken(user);
+        UserAuthDto user = findAndValidateUser(normalizedEmail, request.getPassword());
+        String token = generateToken(user);
         return buildLoginResponse(token, user);
     }
 
     @Override
-    public void changePassword(ChangePasswordRequest request,
-                               String authHeader) {
+    public void changePassword(ChangePasswordRequest request, String authHeader) {
         String email = extractEmailFromHeader(authHeader);
         UserAuthDto user = findUserByEmail(email);
         validatePasswordChange(request, user);
         saveNewPassword(email, request.getNewPassword());
     }
 
-    // ─────────────────────────────────────────
-    // PRIVATE HELPERS — each does ONE thing
-    // ─────────────────────────────────────────
 
     private String normalizeEmail(String email) {
         if (email == null || email.isBlank()) {

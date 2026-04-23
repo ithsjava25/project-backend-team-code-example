@@ -1,0 +1,173 @@
+@import demo.codeexample.project.ProjectDto
+@param ProjectDto currentProject
+@param String company
+
+@template.layoutDashboard(
+title = currentProject.getTitle(),
+company = company,
+content = @`
+    <div class="project-container">
+        <header class="project-header">
+            <div class="header-content">
+                <h1>${currentProject.getTitle()}</h1>
+                <span class="category-badge">${currentProject.getCategory().toString()}</span>
+                <p class="genre-tag">${currentProject.getGenre().toString()}</p>
+            </div>
+            <div class="header-actions">
+                <a href="/${company}/dashboard" class="btn-back">← Back to Dashboard</a>
+            </div>
+        </header>
+
+        <div class="project-grid">
+            <section class="main-info">
+                <div class="card description-card">
+                    <h2>Description</h2>
+                    <p>${currentProject.getDescription()}</p>
+                </div>
+
+                <div class="card media-placeholder">
+                    <h2>Media Assets</h2>
+                    <div class="placeholder-box">
+                        <span>Video & Image Gallery Coming Soon</span>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="sidebar">
+                <div class="card stats-card">
+                    <div class="stat-item">
+                        <span class="label">Release Date</span>
+                        <span class="value">${currentProject.getReleaseDate().toString()}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">Production Status</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+<%--                <div class="card team-card">--%>
+<%--                    <h2>Team Members</h2>--%>
+<%--                    <ul class="employee-list">--%>
+<%--                        @for(var empId : currentProject.getEmployeesId())--%>
+<%--                            <li>--%>
+<%--                                <div class="avatar"></div>--%>
+<%--                                <span>User ID: ${empId}</span>--%>
+<%--                            </li>--%>
+<%--                        @endfor--%>
+<%--                    </ul>--%>
+<%--                </div>--%>
+            </aside>
+        </div>
+    </div>
+
+    <style>
+        :root {
+            --bg-dark: #0f0a1e;
+            --card-bg: #1a142d;
+            --accent-purple: #6366f1;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .project-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
+        }
+
+        .category-badge {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent-purple);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid var(--accent-purple);
+            text-transform: uppercase;
+        }
+
+        h1 { font-size: 3rem; margin: 10px 0; font-weight: 800; }
+        h2 { color: var(--accent-purple); font-size: 1.2rem; margin-bottom: 15px; }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 20px;
+        }
+
+        .placeholder-box {
+            height: 300px;
+            background: rgba(0,0,0,0.2);
+            border: 2px dashed rgba(255,255,255,0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+        }
+
+        .btn-back {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .btn-back:hover { color: var(--accent-purple); }
+
+        .stat-item { margin-bottom: 20px; }
+        .label { display: block; color: var(--text-dim); font-size: 0.9rem; }
+        .value { font-weight: 700; font-size: 1.1rem; }
+
+        .progress-bar {
+            height: 8px;
+            background: #334155;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .employee-list { list-style: none; padding: 0; }
+        .employee-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(45deg, #333, #666);
+            border-radius: 50%;
+        }
+    </style>
+`
+)

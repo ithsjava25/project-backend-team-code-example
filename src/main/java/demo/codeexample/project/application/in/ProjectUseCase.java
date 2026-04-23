@@ -1,33 +1,32 @@
 package demo.codeexample.project.application.in;
 
+import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.ProjectLookup;
 import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.domain.Project;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 public interface ProjectUseCase extends ProjectLookup {
 
     List<ProjectDto> findAllProjects();
 
+    List<ProjectDto> findAllProjectsFromCompany(String companyName);
+
     List<ProjectDto> findProjectByCategory(Category category);
 
-    List<Project> findProjectByGenre(Genre genre);
+    List<ProjectDto> findProjectByGenre(Genre genre);
 
-    List<Project> findProjectContainingTitle(String title);
+    List<ProjectDto> findProjectContainingTitle(String title);
 
     List<ProjectDto> findProjectsForUser(Long userId);
 
-    Project createProject(String title, String description, LocalDate releaseDate, Set<Long> employeesId,
-                          Category category, Genre genre, Long companyId,
-                          LocalDateTime recruitingDeadline,
-                          LocalDateTime recordingDeadline,
-                          LocalDateTime editingDeadline);
+    Optional<ProjectDto> findProjectByTitle(String title);
+
+    Project createProject(CreateProjectDto projectDto);
 
     ProjectDto getProjectDetails(Long projectId);
 }

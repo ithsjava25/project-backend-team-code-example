@@ -21,10 +21,6 @@ public class WebAuthService {
     @Value("${cookie.secure:true}")
     private boolean cookieSecure;
 
-    // ─────────────────────────────────────────
-    // LOGIN
-    // ─────────────────────────────────────────
-
     public LoginResult handleLogin(LoginRequest request) {
         try {
             LoginResponse loginResponse = authLookup.getLoginResponse(request);
@@ -37,38 +33,29 @@ public class WebAuthService {
         }
     }
 
-    // ─────────────────────────────────────────
-    // CHANGE PASSWORD
-    // ─────────────────────────────────────────
+    public String handleChangePassword(String currentPassword, String newPassword, String confirmPassword, String jwtToken) {
+        String prefix = getRedirectPrefix();
 
-    public String handleChangePassword(String currentPassword,
-                                       String newPassword,
-                                       String confirmPassword,
-                                       String jwtToken) {
         if (isTokenMissing(jwtToken)) {
-            return redirect("/login");
+            return prefix + "/login";
         }
         if (!passwordsMatch(newPassword, confirmPassword)) {
-            return encodeRedirect("/login/change-password",
+            return encodeRedirect(prefix + "/change-password",
                     "Passwords do not match");
         }
         try {
             changePassword(currentPassword, newPassword, jwtToken);
-            return redirect("/login/change-password")
-                    + "?success=Password+changed+successfully!";
+            return prefix + "/change-password" +
+                    "?success=Password+changed+successfully!";
 
         } catch (Exception e) {
-            return encodeRedirect("/login/change-password", "Could not change password");
+            return encodeRedirect(prefix + "/change-password", "Could not change password");
         }
     }
 
-    // ─────────────────────────────────────────
-    // PRIVATE HELPERS
-    // ─────────────────────────────────────────
 
-    private void changePassword(String currentPassword,
-                                String newPassword,
-                                String jwtToken) {
+
+    private void changePassword(String currentPassword, String newPassword, String jwtToken) {
         ChangePasswordRequest request = new ChangePasswordRequest();
         request.setCurrentPassword(currentPassword);
         request.setNewPassword(newPassword);
@@ -85,12 +72,16 @@ public class WebAuthService {
     }
 
     private String resolveRedirectAfterLogin(LoginResponse response) {
+        String prefix = getRedirectPrefix();
+
         if (response.isPasswordResetRequired()) {
-            return redirect("/login/change-password");
+            return prefix + "/change-password";
         }
+
         return switch (response.getRole()) {
-            case ADMIN, DIRECTOR, PRODUCER, RECRUITER, EDITOR -> redirect("/dashboard");
-            default -> redirect("/home");
+            case ADMIN, DIRECTOR, PRODUCER,
+                 RECRUITER, EDITOR           -> prefix + "/dashboard";
+            default                          -> prefix + "/home";
         };
     }
 
@@ -111,29 +102,20 @@ public class WebAuthService {
         return "redirect:" + path + "?error=" + encoded;
     }
 
-    // ─────────────────────────────────────────
-    // LOGIN RESULT — carries cookie + redirect
-    // ─────────────────────────────────────────
-
-    private String redirect(String path) {
-        String company = TenantContext.getTenant();
-        String prefix = (company != null && !company.isBlank()) ? "/" + company : "";
-        return "redirect:" + prefix + path;
+    private String getRedirectPrefix(){
+        return "redirect:/" + TenantContext.getTenant();
     }
 
-    public record LoginResult(boolean success,
-                              String cookie,
-                              String redirect) {
+
+    public record LoginResult(boolean success, String cookie, String redirect) {
 
         public static LoginResult success(String cookie, String redirect) {
             return new LoginResult(true, cookie, redirect);
         }
 
         public static LoginResult failure() {
-            String company = TenantContext.getTenant();
-            String prefix = (company != null && !company.isBlank()) ? "/" + company : "";
             return new LoginResult(false, null,
-                    "redirect:" + prefix + "/login?error=true");
+                    "redirect:/" + TenantContext.getTenant() + "/login?error=true");
         }
     }
 }
