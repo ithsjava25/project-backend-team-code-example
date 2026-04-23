@@ -40,12 +40,14 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public String getRoleName() {
-        return user.getRole().name();
+        return user.getRole() != null ? user.getRole().name() : "";
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+        return user.getRole() == null
+                ? List.of()
+                : List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
     }
 
     @Override

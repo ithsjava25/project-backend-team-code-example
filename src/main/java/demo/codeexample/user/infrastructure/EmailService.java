@@ -1,6 +1,8 @@
 package demo.codeexample.user.infrastructure;
 
 import demo.codeexample.company.TenantContext;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -9,9 +11,12 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     private final JavaMailSender mailSender;
+    private final String baseUrl;
 
-    public EmailService(JavaMailSender mailSender) {
+    public EmailService(JavaMailSender mailSender,
+                        @Value("${app.base-url:http://localhost:8080}") String baseUrl) {
         this.mailSender=mailSender;
+        this.baseUrl=baseUrl;
     }
 
     public void sendWelcomeEmail(String toEmail, String firstName, String tempPassword) {
@@ -46,7 +51,7 @@ public class EmailService {
     }
 
     private String buildLoginUrl(String tenant) {
-        String baseUrl = "http://localhost:8080";  // from properties ideally!
+
         if (tenant == null || tenant.isBlank()) {
             return baseUrl + "/login";
         }

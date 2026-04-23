@@ -1,5 +1,6 @@
 package demo.codeexample.project.infrastructure.adapters.in;
 
+import demo.codeexample.company.TenantContext;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.user.UserLookup;
@@ -51,6 +52,11 @@ public class ProjectController {
                 dto.editingDeadline()
         );
 
-        return "redirect:/dashboard";
+//        return "redirect:/producer/dashboard";
+
+        String company = TenantContext.getTenant();
+        String prefix = (company != null && !company.isBlank()) ? "/" + company : "";
+        return "redirect:" + prefix + "/dashboard";
+
     }
 }
