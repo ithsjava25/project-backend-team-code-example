@@ -64,12 +64,24 @@ public class ProjectService implements ProjectUseCase {
     }
 
     @Override
-    public Project createProject(CreateProjectDto newProject) {
-        userPort.validateEmployees(newProject.employeesId());
-        Project savedProject = repository.save(newProject);
-        publishProjectEvent(newProject);
+    public Project createProject(CreateProjectDto projectDto) {
+        userPort.validateEmployees(projectDto.employeesId());
 
-        return savedProject;
+        Project project = repository.save(projectDto);
+
+        ProjectCreatedEvent event = new ProjectCreatedEvent(
+                project.getId(),
+                project.getTitle(),
+                project.getEmployeesId(),
+                project.getReleaseDate(),
+                project.getCompanyId(),
+                projectDto.recruitingDeadline(),
+                projectDto.recordingDeadline(),
+                projectDto.editingDeadline()
+        );
+        projectEventPort.publish(event);
+
+        return project;
     }
 
     @Override
@@ -89,23 +101,6 @@ public class ProjectService implements ProjectUseCase {
         return repository.findById(projectId)
                 .map(project -> mapper.map(project, ProjectDto.class))
                 .orElseThrow(() -> new EntityNotFoundException("Project not found: " + projectId));
-    }
-
-    public void publishProjectEvent(CreateProjectDto projectDto){
-        ProjectDto project = findProjectByTitle(projectDto.title());
-
-        ProjectCreatedEvent event = new ProjectCreatedEvent(
-                project.
-                project.getTitle(),
-                project.getEmployeesId(),
-                project.getReleaseDate(),
-                project.getCompanyId(),
-                projectDto.recruitingDeadline(),
-                projectDto.recordingDeadline(),
-                projectDto.editingDeadline()
-        );
-
-        projectEventPort.publish(event);
     }
 
 }

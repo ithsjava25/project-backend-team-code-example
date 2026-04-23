@@ -23,9 +23,7 @@ public class Project {
     @Setter(AccessLevel.NONE)
     private Set<Long> employeesId;
 
-    @Setter(AccessLevel.NONE)
     private Category category;
-
     private Genre genre;
     private Long companyId;
 

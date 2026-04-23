@@ -24,7 +24,7 @@ public interface ProjectUseCase extends ProjectLookup {
 
     Optional<ProjectDto> findProjectByTitle(String title);
 
-    Project createProject(CreateProjectDto newProject);
+    Project createProject(CreateProjectDto projectDto);
 
     ProjectDto getProjectDetails(Long projectId);
 }

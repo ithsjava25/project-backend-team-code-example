@@ -45,9 +45,9 @@ public class ProjectController {
 
 
     @PostMapping("/projects")
-    public String createProject(@ModelAttribute @Valid CreateProjectDto dto) {
-        projectUseCase.createProject(dto);
-        return "redirect:/dashboard";
+    public String createProject(@ModelAttribute("projectDto") @Valid CreateProjectDto projectDto) {
+        projectUseCase.createProject(projectDto);
+        return "redirect:/${company}/dashboard";
     }
 }
 
