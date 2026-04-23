@@ -75,7 +75,6 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     public Project save(CreateProjectDto project) {
         ProjectEntity entity = mapper.map(project, ProjectEntity.class);
         ProjectEntity saved = jpaRepository.save(entity);
-        jpaRepository.flush();
         return toDomain(saved);
     }
 
