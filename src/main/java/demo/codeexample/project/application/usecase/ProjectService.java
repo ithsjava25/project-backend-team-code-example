@@ -105,7 +105,11 @@ public class ProjectService implements ProjectUseCase {
 
     @Override
     public List<ProjectDto> findProjectsForUser(Long userId) {
-        return findAllProjects();
+        return repository.findAll().stream()
+                .filter(project -> project.getEmployeesId() != null
+                        && project.getEmployeesId().contains(userId))
+                .map(project -> mapper.map(project, ProjectDto.class))
+                .toList();
     }
 
 }
