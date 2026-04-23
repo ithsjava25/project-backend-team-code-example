@@ -2,6 +2,7 @@ package demo.codeexample.project.infrastructure.adapters.in;
 
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
+import demo.codeexample.security.CurrentUserService;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -20,10 +21,15 @@ public class ProjectController {
     private final ProjectUseCase projectUseCase;
     private final UserLookup userLookup;
     private final ModelMapper modelMapper;
+    private final CurrentUserService currentUserService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         model.addAttribute("projects", projectUseCase.findAllProjects());
+
+        currentUserService.getCurrentUser()
+                .ifPresent(user -> model.addAttribute("currentUser", user));
+
         return "producer/producer-dashboard";
     }
 
