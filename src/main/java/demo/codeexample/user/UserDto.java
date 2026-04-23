@@ -31,4 +31,13 @@ public class UserDto {
     public String getRoleName() {
         return role != null ? role.name() : "";
     }
+
+    public String getRoleDisplayName() {
+        if (role == null) {
+            return "";
+        }
+
+        String lower = role.name().toLowerCase();
+        return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
+    }
 }

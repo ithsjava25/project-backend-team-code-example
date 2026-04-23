@@ -32,6 +32,10 @@ public class CurrentUserService {
             return userLookup.findByEmail(email);
         }
 
+        if (principal instanceof Long userId) {
+            return userLookup.findById(userId);
+        }
+
         return Optional.empty();
     }
 }
