@@ -1,4 +1,3 @@
-@import demo.codeexample.project.ProjectDto
 @import demo.codeexample.shared.Category
 @import demo.codeexample.project.domain.Genre
 @import demo.codeexample.user.UserDto
@@ -226,7 +225,7 @@ content = @`
             status.innerText = "Project and files uploaded successfully! Redirecting...";
 
             setTimeout(() => {
-                window.location.href = "/${currentCompany}/producer/dashboard";
+                window.location.href = `/${currentCompany}/dashboard`;
             }, 1500);
 
         } catch (err) {
