@@ -22,11 +22,11 @@ public interface ProjectUseCase extends ProjectLookup {
 
     List<ProjectDto> findProjectContainingTitle(String title);
 
-    List<ProjectDto> findProjectsForUser(Long userId);
-
     Optional<ProjectDto> findProjectByTitle(String title);
 
     Project createProject(CreateProjectDto projectDto);
 
     ProjectDto getProjectDetails(Long projectId);
+
+    List<ProjectDto> findProjectsForUser(Long userId);
 }
