@@ -1,16 +1,16 @@
 package demo.codeexample.project.infrastructure.adapters.in;
 
+import demo.codeexample.auth.CurrentUserLookup;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
+import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,32 +21,34 @@ public class ProjectController {
 
     private final ProjectUseCase projectUseCase;
     private final UserLookup userLookup;
-    private final ModelMapper modelMapper;
+    private final CurrentUserLookup currentUserLookup;
 
     @GetMapping("/dashboard")
     @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
     public String dashboard(@ModelAttribute("company") String companyName, Model model) {
-        Long userId = getCurrentUserId();
+        UserDto currentUser = currentUserLookup.getCurrentUser()
+                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
+
+        Long userId = currentUser.getId();
 
         model.addAttribute("projects", projectUseCase.findProjectsForUser(userId));
         model.addAttribute("company", companyName);
-
-        userLookup.findById(userId)
-                .ifPresent(user -> model.addAttribute("currentUser", user));
+        model.addAttribute("currentUser", currentUser);
 
         return "producer/dashboard";
     }
+
 
     @GetMapping("/projects/new")
     @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR', 'PRODUCER', 'RECRUITER', 'EDITOR')")
     public String createProjectPage(@ModelAttribute("company") String companyName, Model model) {
         var users = userLookup.findAll();
+        UserDto currentUser = currentUserLookup.getCurrentUser()
+                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
+
         model.addAttribute("users", users);
         model.addAttribute("company", companyName);
-
-        Long userId = getCurrentUserId();
-        userLookup.findById(userId)
-                .ifPresent(user -> model.addAttribute("currentUser", user));
+        model.addAttribute("currentUser", currentUser);
 
         return "producer/create-project";
     }
@@ -58,13 +60,12 @@ public class ProjectController {
                                      @ModelAttribute("company") String companyName,
                                      Model model) {
         ProjectDto currentProject = projectUseCase.getProjectDetails(projectId);
+        UserDto currentUser = currentUserLookup.getCurrentUser()
+                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
         model.addAttribute("currentProject", currentProject);
         model.addAttribute("company", companyName);
-
-        Long userId = getCurrentUserId();
-        userLookup.findById(userId)
-                .ifPresent(user -> model.addAttribute("currentUser", user));
+        model.addAttribute("currentUser", currentUser);
 
         return "project-details";
     }
@@ -75,21 +76,5 @@ public class ProjectController {
     public String createProject(@ModelAttribute("projectDto") @Valid CreateProjectDto projectDto) {
         projectUseCase.createProject(projectDto);
         return "redirect:/{company}/dashboard";
-    }
-
-    private Long getCurrentUserId() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (auth == null || !auth.isAuthenticated()) {
-            throw new IllegalStateException("No authenticated user");
-        }
-
-        Object principal = auth.getPrincipal();
-
-        if (principal instanceof Long userId) {
-            return userId;
-        }
-
-        throw new IllegalStateException("Unsupported principal type");
     }
 }
