@@ -4,11 +4,13 @@
 @import java.util.List
 
 @param List<UserDto> users
+@param UserDto currentUser
 @param String company
 
 @template.layoutDashboard(
 title = "Create",
 company = company,
+currentUser = currentUser,
 content = @`
 <main class="container">
     <h1 class="page-title">Create New Project</h1>
