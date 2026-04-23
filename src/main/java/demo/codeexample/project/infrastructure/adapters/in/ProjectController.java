@@ -59,7 +59,8 @@ public class ProjectController {
                                      @ModelAttribute("company") String companyName,
                                      Model model) {
         ProjectDto currentProject = projectUseCase.getProjectDetails(projectId);
-        UserDto currentUser = currentUserLookup.getCurrentUser()
+
+        var currentUser = currentUserLookup.getCurrentUser()
                 .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
         model.addAttribute("currentProject", currentProject);
