@@ -1,21 +1,23 @@
 package demo.codeexample.auth.application;
 
+import demo.codeexample.auth.CurrentUserLookup;
 import demo.codeexample.auth.infrastructure.CustomUserDetails;
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Component
+@Service
 @RequiredArgsConstructor
-public class CurrentUserService {
+public class CurrentUserService implements CurrentUserLookup {
 
     private final UserLookup userLookup;
 
+    @Override
     public Optional<UserDto> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

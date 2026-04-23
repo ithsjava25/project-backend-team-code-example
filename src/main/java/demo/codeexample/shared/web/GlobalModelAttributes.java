@@ -1,6 +1,6 @@
 package demo.codeexample.shared.web;
 
-import demo.codeexample.auth.application.CurrentUserService;
+import demo.codeexample.auth.CurrentUserLookup;
 import demo.codeexample.user.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @RequiredArgsConstructor
 public class GlobalModelAttributes {
 
-    private final CurrentUserService currentUserService;
+    private final CurrentUserLookup currentUserLookup;
 
     @ModelAttribute("currentUser")
     public UserDto currentUser() {
-        return currentUserService.getCurrentUser().orElse(null);
+        return currentUserLookup.getCurrentUser().orElse(null);
     }
 }
