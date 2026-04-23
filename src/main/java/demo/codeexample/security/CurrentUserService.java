@@ -2,6 +2,7 @@ package demo.codeexample.security;
 
 import demo.codeexample.user.UserDto;
 import demo.codeexample.user.UserLookup;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -9,13 +10,10 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class CurrentUserService {
 
     private final UserLookup userLookup;
-
-    public CurrentUserService(UserLookup userLookup) {
-        this.userLookup = userLookup;
-    }
 
     public Optional<UserDto> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -23,6 +23,12 @@ public class UserDto {
     }
 
     public String getFullName() {
-        return firstName + " " + lastName;
+        String first = firstName != null ? firstName : "";
+        String last = lastName != null ? lastName : "";
+        return (first + " " + last).trim();
+    }
+
+    public String getRoleName() {
+        return role != null ? role.name() : "";
     }
 }
