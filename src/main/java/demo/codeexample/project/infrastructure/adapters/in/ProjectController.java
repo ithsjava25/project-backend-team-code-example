@@ -56,6 +56,17 @@ public class ProjectController {
         return "project-details";
     }
 
+    @GetMapping("/{title}/info/{projectId}")
+    public String projectInfo(@PathVariable String title, @PathVariable Long projectId, Model model) {
+        ProjectDto project = projectUseCase.getProjectDetails(projectId);
+
+        model.addAttribute("project", project);
+        // Use the company name directly from the project DTO
+        model.addAttribute("company", project.getCompanyName().toLowerCase());
+
+        return "project-movieinfo";
+    }
+
 
     @PostMapping("/projects")
     @Transactional
