@@ -58,11 +58,17 @@ public class ProjectController {
 
     @GetMapping("/{title}/info/{projectId}")
     public String projectInfo(@PathVariable String title, @PathVariable Long projectId, Model model) {
-        ProjectDto project = projectUseCase.getProjectDetails(projectId);
+        try {
+            ProjectDto project = projectUseCase.getProjectDetails(projectId);
 
-        model.addAttribute("project", project);
-        // Use the company name directly from the project DTO
-        model.addAttribute("company", project.getCompanyName().toLowerCase());
+            model.addAttribute("project", project);
+            String companyName = project.getCompanyName();
+            model.addAttribute("company", companyName != null ? companyName.toLowerCase(java.util.Locale.ROOT) : "");
+        } catch (jakarta.persistence.EntityNotFoundException e) {
+            model.addAttribute("project", null);
+            model.addAttribute("company", "");
+
+        }
 
         return "project-movieinfo";
     }
