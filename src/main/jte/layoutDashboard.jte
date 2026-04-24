@@ -32,8 +32,6 @@
 
             @if(currentUser != null && (currentUser.getRole().name().equals("ADMIN") || currentUser.getRole().name().equals("PRODUCER")))
                 <a href="/${company}/projects/new" class="login-button">New Project</a>
-            @else
-                <span class="login-button disabled-link">New Project</span>
             @endif
 
             @if(currentUser != null)
