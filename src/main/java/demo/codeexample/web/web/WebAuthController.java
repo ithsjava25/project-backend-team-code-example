@@ -12,14 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @Controller
 @RequiredArgsConstructor
 public class WebAuthController {
 
     private final WebAuthService webAuthService;
-    private final TemplateEngine templateEngine;
 
     @GetMapping("/login")
     public String loginPage(@RequestParam(required = false) String error, Model model) {
@@ -54,15 +51,7 @@ public class WebAuthController {
                                        @RequestParam String confirmPassword,
                                        @CookieValue(name = "jwt", required = false) String jwtToken) {
 
-        return webAuthService.handleChangePassword(
-                currentPassword, newPassword, confirmPassword, jwtToken
-        );
+        return webAuthService.handleChangePassword(currentPassword, newPassword, confirmPassword, jwtToken);
     }
 
-
-    private String render(String template, Map<String, Object> params) {
-        var output = new StringOutput();
-        templateEngine.render(template, params, output);
-        return output.toString();
-    }
 }

@@ -2,9 +2,9 @@ package demo.codeexample.s3FileStorage.web;
 
 import demo.codeexample.s3FileStorage.application.S3FileService;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.web.csrf.CsrfToken;
 
 import java.util.List;
 import java.util.Map;
@@ -21,13 +21,10 @@ public class S3FileController {
     }
 
     @GetMapping("/files")
-    public String filesPage(Model model/*, @AuthenticationPrincipal OAuth2User user */, CsrfToken csrfToken) {
-//        if (user == null) {
-//            return "redirect:/login";
-//        }
-       // model.addAttribute("displayName", user.getAttribute("name"));
+    public String filesPage(Model model) {
+
         model.addAttribute("isAuthenticated", true);
-        model.addAttribute("csrfToken", csrfToken.getToken());
+
         return "files";
     }
 
@@ -36,6 +33,7 @@ public class S3FileController {
     public List<String> listFiles() {
         return s3Service.listFiles();
     }
+
     @DeleteMapping("/api/files")
     @ResponseBody
     public void deleteFile(@RequestParam String fileName) {
@@ -55,12 +53,48 @@ public class S3FileController {
         String url = s3Service.generatePresignedDownloadUrl(fileName);
         return Map.of("url", url);
     }
+    @GetMapping("/api/files/project-poster/{projectId}")
+    public String getProjectPoster(@PathVariable Long projectId) {
+        try {
+            // 1. Hämta listan säkert
+            var keys = s3Service.findFileKeysByProjectId(projectId);
+
+            // 2. Kolla om listan är null eller tom INNAN vi kör get(0) eller getFirst()
+            if (keys == null || keys.isEmpty()) {
+                log.warn("Ingen bild hittades i databasen för projekt {}", projectId);
+                return "redirect:/images/Hexagonalt_filmproduktionslogotyp.png";
+            }
+
+            String fileName = keys.get(0);
+
+            // 3. Generera URL
+            String presignedUrl = s3Service.generatePresignedDownloadUrl(fileName);
+
+            if (presignedUrl == null) {
+                return "redirect:/images/Hexagonalt_filmproduktionslogotyp.png";
+            }
+
+            return "redirect:" + presignedUrl;
+
+        } catch (Exception e) {
+            // Detta gör att vi ser EXAKT vad som går fel i IntelliJ-konsolen
+            log.error("Krasch vid hämtning av bild för projekt " + projectId, e);
+            return "redirect:/images/Hexagonalt_filmproduktionslogotyp.png"; // Vid fel, visa placeholder istället för att ge 500
+        }
+    }
 
     @PostMapping("/api/files/callback")
     @ResponseBody
-    public Map<String, String> uploadCallback(@RequestParam String fileName) {
-        log.info("Callback received: File {} has been uploaded successfully", fileName);
+    @Transactional
+    public Map<String, String> uploadCallback(
+            @RequestParam Long projectId,
+            @RequestParam String fileName,
+            @RequestParam String contentType) {
+
+        log.info("Callback received: Project {} saves file {} and has been uploaded successfully", projectId, fileName);
         // Here you could perform further processing, like saving metadata to a database
+        s3Service.saveFileMetadata(projectId, fileName, contentType);
+
         return Map.of("status", "success", "message", "Callback received for " + fileName);
     }
 }

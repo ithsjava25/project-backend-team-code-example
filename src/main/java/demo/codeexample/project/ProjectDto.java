@@ -15,7 +15,6 @@ public class ProjectDto {
         LocalDate releaseDate;
         Category category;
         Genre genre;
-
-        @NotNull
-        Long companyId;
+        String companyName;
+        boolean completed;
 }

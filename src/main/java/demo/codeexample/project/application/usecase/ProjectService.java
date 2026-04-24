@@ -1,9 +1,11 @@
 package demo.codeexample.project.application.usecase;
 
 import demo.codeexample.project.CreateProjectDto;
+import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.out.ProjectEventPort;
+import demo.codeexample.project.application.out.SecurityPort;
 import demo.codeexample.shared.Category;
 import demo.codeexample.project.application.out.CompanyPort;
 import demo.codeexample.project.domain.Genre;
@@ -13,9 +15,12 @@ import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.domain.Project;
 import demo.codeexample.shared.Role;
 import demo.codeexample.user.UserLookup;
+import demo.codeexample.shared.LoggerAction;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,32 +28,34 @@ public class ProjectService implements ProjectUseCase {
 
     private final ProjectRepositoryPort repository;
     private final UserPort userPort;
-    private final CompanyPort companyPort;
     private final ProjectEventPort projectEventPort;
+    private final SecurityPort securityPort;
     private final ModelMapper mapper;
     private final UserLookup userLookup;
+    private final LoggerLookup logger;
 
     public ProjectService(ProjectRepositoryPort repository, UserPort userPort,
-                          ProjectEventPort projectEventPort, CompanyPort companyPort, ModelMapper mapper, UserLookup userLookup) {
+                          ProjectEventPort projectEventPort, SecurityPort securityPort, ModelMapper mapper,
+                          LoggerLookup logger, UserLookup userLookup) {
         this.repository = repository;
         this.userPort = userPort;
         this.projectEventPort = projectEventPort;
-        this.companyPort = companyPort;
+        this.securityPort = securityPort;
         this.mapper = mapper;
+        this.logger = logger;
         this.userLookup = userLookup;
     }
 
     @Override
-    public List<ProjectDto> findAllProjects() {
-        return repository.findAllByOrderByTitleAsc().stream()
+    public List<ProjectDto> findAllCompletedProjectsByCompany(String companyName) {
+        return repository.findAllProjectsBelongingToCompany(companyName, true).stream()
                 .map(entity -> mapper.map(entity, ProjectDto.class))
                 .toList();
     }
 
     @Override
-    public List<ProjectDto> findAllProjectsFromCompany(String companyName) {
-        Long companyId = companyPort.getCompanyIdFromName(companyName);
-        return repository.findAllBelongingToCompany(companyId).stream()
+    public List<ProjectDto> findAllNotCompleteProjectsByCompany(String companyName) {
+        return repository.findAllProjectsBelongingToCompany(companyName, false).stream()
                 .map(entity -> mapper.map(entity, ProjectDto.class))
                 .toList();
     }
@@ -72,13 +79,24 @@ public class ProjectService implements ProjectUseCase {
         userPort.validateEmployees(projectDto.employeesId());
 
         Project project = repository.save(projectDto);
+        Long currentUserId = securityPort.getCurrentUserId();
+        String creatorName = securityPort.getCurrentUserName();
+
+        logger.log(
+                LoggerAction.PROJECT_CREATED,
+                currentUserId,
+                "PROJECT",
+                project.getId(),
+                project.getId(),
+                "New project created: " + project.getTitle() + ". Created by: " + creatorName
+        );
 
         ProjectCreatedEvent event = new ProjectCreatedEvent(
                 project.getId(),
                 project.getTitle(),
                 project.getEmployeesId(),
                 project.getReleaseDate(),
-                project.getCompanyId(),
+                project.getCompanyName(),
                 projectDto.recruitingDeadline(),
                 projectDto.recordingDeadline(),
                 projectDto.editingDeadline()
