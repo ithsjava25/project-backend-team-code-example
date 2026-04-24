@@ -7,8 +7,8 @@ import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +21,17 @@ public class ProjectController {
     private final ProjectUseCase projectUseCase;
     private final UserLookup userLookup;
 
-    @GetMapping("/dashboard")
-    public String dashboard(@ModelAttribute("company") String companyName, Model model) {
-        var projects = projectUseCase.findAllProjectsFromCompany(companyName);
+    @GetMapping("/dashboard/completed")
+    public String dashboardCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
+        var projects = projectUseCase.findAllCompletedProjectsByCompany(companyName);
+
+        model.addAttribute("projects", projects);
+        return "producer/dashboard";
+    }
+
+    @GetMapping("/dashboard/current")
+    public String dashboardNotCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
+        var projects = projectUseCase.findAllNotCompleteProjectsByCompany(companyName);
 
         model.addAttribute("projects", projects);
         return "producer/dashboard";
@@ -49,17 +57,15 @@ public class ProjectController {
 
     @PostMapping("/projects")
     @Transactional
-    @ResponseBody // Vi svarar med JSON så JavaScriptet kan läsa ID:t
+    @ResponseBody // Respond with JSON so that JavaScriptet can read the ID
     public ResponseEntity<?> createProject(@ModelAttribute("projectDto") @Valid CreateProjectDto dto) {
         try {
             var newProject = projectUseCase.createProject(dto);
 
-            // 2. Kontrollera att vi fick ett ID
             if (newProject == null || newProject.getId() == null) {
                 return ResponseEntity.status(500).body("Project was saved without Id. Check database");
             }
 
-            // 3. Skicka tillbaka ID:t till JavaScriptet
             return ResponseEntity.ok(Map.of("id", newProject.getId()));
 
         } catch (Exception e) {

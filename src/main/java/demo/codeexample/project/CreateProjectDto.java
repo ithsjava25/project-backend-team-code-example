@@ -29,8 +29,8 @@ public record CreateProjectDto(
         @NotNull(message = "Choose a genre!")
         Genre genre,
 
-        @NotNull(message = "What company does the project belong to")
-        Long companyId,
+        @NotBlank(message = "What company does the project belong to")
+        String companyName,
 
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) // För <input type="datetime-local">
         @NotNull(message = "Choose a deadline")

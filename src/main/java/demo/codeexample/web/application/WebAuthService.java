@@ -80,7 +80,7 @@ public class WebAuthService {
 
         return switch (response.getRole()) {
             case ADMIN, DIRECTOR, PRODUCER,
-                 RECRUITER, EDITOR           -> prefix + "/dashboard";
+                 RECRUITER, EDITOR           -> prefix + "/dashboard/current";
             default                          -> prefix + "/home";
         };
     }

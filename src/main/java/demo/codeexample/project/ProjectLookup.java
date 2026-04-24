@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface ProjectLookup {
 
-    List<ProjectDto> findAllProjects();
-
     List<ProjectDto> findProjectByCategory(Category category);
+
+    List<ProjectDto> findAllCompletedProjectsByCompany(String companyName);
 
 }

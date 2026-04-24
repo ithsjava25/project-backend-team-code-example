@@ -14,8 +14,8 @@ public class ProjectConfig {
 
     @Bean
     public ProjectService projectService(ProjectRepositoryPort projectRepositoryPort, UserPort userPort,
-                                         CompanyPort companyPort, ProjectEventPort projectEventPort, ModelMapper modelMapper) {
-        return new ProjectService(projectRepositoryPort, userPort, projectEventPort, companyPort, modelMapper);
+                                         ProjectEventPort projectEventPort, ModelMapper modelMapper) {
+        return new ProjectService(projectRepositoryPort, userPort, projectEventPort, modelMapper);
     }
 
 }

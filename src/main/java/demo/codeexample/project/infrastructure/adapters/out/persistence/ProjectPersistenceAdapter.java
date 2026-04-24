@@ -6,7 +6,6 @@ import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.domain.Project;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,16 +30,8 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     @Override
-    public List<Project> findAllByOrderByTitleAsc() {
-        return jpaRepository.findAll(Sort.by("title").ascending())
-                .stream()
-                .map(this::toDomain)
-                .toList();
-    }
-
-    @Override
-    public List<Project> findAllBelongingToCompany(Long companyId) {
-        return jpaRepository.findByCompanyId(companyId).stream()
+    public List<Project> findAllProjectsBelongingToCompany(String companyName, boolean completed) {
+        return jpaRepository.findProjectsByCompanyNameAndCompletedOrderByReleaseDateDesc(companyName, completed).stream()
                 .map(this::toDomain)
                 .toList();
     }
@@ -94,7 +85,7 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
                 .employeesId(entity.getEmployeesId())
                 .category(entity.getCategory())
                 .genre(entity.getGenre())
-                .companyId(entity.getCompanyId())
+                .companyName(entity.getCompanyName())
                 .build();
     }
 }
