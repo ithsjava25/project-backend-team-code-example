@@ -7,7 +7,7 @@ public interface LoggerLookup {
              Long userId,
              String entityType,
              Long entityId,
-            Long projectId,
+             Long projectId,
              String message);
 
 }
