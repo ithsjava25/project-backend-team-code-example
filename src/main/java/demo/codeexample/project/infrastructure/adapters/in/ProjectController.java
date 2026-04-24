@@ -51,7 +51,7 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/new")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR', 'PRODUCER', 'RECRUITER', 'EDITOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCER')")
     public String createProjectPage(@ModelAttribute("company") String companyName, Model model) {
         var users = userLookup.findAll();
         model.addAttribute("users", users);
@@ -78,7 +78,7 @@ public class ProjectController {
 
     @PostMapping("/projects")
     @Transactional
-    @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR', 'PRODUCER', 'RECRUITER', 'EDITOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCER')")
     @ResponseBody // Respond with JSON so that JavaScriptet can read the ID
     public ResponseEntity<?> createProject(@ModelAttribute("projectDto") @Valid CreateProjectDto dto) {
         try {

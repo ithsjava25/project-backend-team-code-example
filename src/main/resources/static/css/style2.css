@@ -89,6 +89,12 @@ body {
     padding-bottom: 5px;
 }
 
+.disabled-link {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .login-button {
     border: 1px solid var(--accent-purple);
     padding: 8px 20px;
