@@ -27,7 +27,11 @@ public class ProjectController {
     @GetMapping("/dashboard/completed")
     @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
     public String dashboardCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
-        model.addAttribute("projects", projectUseCase.findAllCompletedProjectsByCompany(companyName));
+        var currentUser = currentUserLookup.getCurrentUser()
+                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
+
+        model.addAttribute("projects",
+                projectUseCase.findCompletedProjectsForUser(currentUser.getId(), companyName));
         model.addAttribute("company", companyName);
 
         return "producer/dashboard";
@@ -35,11 +39,12 @@ public class ProjectController {
 
     @GetMapping("/dashboard/current")
     @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
-    public String dashboardNotCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
+    public String dashboardCurrentProjects(@ModelAttribute("company") String companyName, Model model) {
         var currentUser = currentUserLookup.getCurrentUser()
                 .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
-        model.addAttribute("projects", projectUseCase.findProjectsForUser(currentUser.getId()));
+        model.addAttribute("projects",
+                projectUseCase.findCurrentProjectsForUser(currentUser.getId(), companyName));
         model.addAttribute("company", companyName);
 
         return "producer/dashboard";

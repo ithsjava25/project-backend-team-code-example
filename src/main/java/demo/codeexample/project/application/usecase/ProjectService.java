@@ -134,4 +134,30 @@ public class ProjectService implements ProjectUseCase {
                 .map(project -> mapper.map(project, ProjectDto.class))
                 .toList();
     }
+
+    @Override
+    public List<ProjectDto> findCurrentProjectsForUser(Long userId, String companyName) {
+        return findProjectsForUserAndStatus(userId, companyName, false);
+    }
+
+    @Override
+    public List<ProjectDto> findCompletedProjectsForUser(Long userId, String companyName) {
+        return findProjectsForUserAndStatus(userId, companyName, true);
+    }
+
+    private List<ProjectDto> findProjectsForUserAndStatus(Long userId, String companyName, boolean completed) {
+        var user = userLookup.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("User not found: " + userId));
+
+        return repository.findAllProjectsBelongingToCompany(companyName, completed).stream()
+                .filter(project ->
+                        user.getRole() == Role.ADMIN
+                                || user.getRole() == Role.PRODUCER
+                                || (project.getEmployeesId() != null
+                                && project.getEmployeesId().contains(userId))
+                )
+                .map(project -> mapper.map(project, ProjectDto.class))
+                .toList();
+    }
+
 }
