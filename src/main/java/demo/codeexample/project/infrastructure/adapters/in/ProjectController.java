@@ -27,7 +27,7 @@ public class ProjectController {
     @GetMapping("/dashboard/completed")
     @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
     public String dashboardCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
-        var projects = projectUseCase.findAllCompletedProjectsByCompany(companyName);
+//        var projects = projectUseCase.findAllCompletedProjectsByCompany(companyName);
 
         var currentUser = currentUserLookup.getCurrentUser()
                 .orElseThrow(() -> new IllegalStateException("No authenticated user"));
