@@ -9,7 +9,6 @@ import demo.codeexample.task.application.ports.usecase.TaskService;
 import demo.codeexample.task.domain.Task;
 import demo.codeexample.task.infrastructure.adapters.in.ProjectEventListenerAdapter;
 import demo.codeexample.user.UserLookup;
-import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
