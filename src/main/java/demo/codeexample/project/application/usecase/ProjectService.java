@@ -124,11 +124,19 @@ public class ProjectService implements ProjectUseCase {
     }
 
     @Override
-    public List<ProjectDto> findProjectsForUser(Long userId) {
+    public List<ProjectDto> findProjectsForUser(Long userId, String companyName) {
         var user = userLookup.findById(userId)
                 .orElseThrow(() -> new IllegalStateException("User not found: " + userId));
 
-        return repository.findAll().stream()
+        var companyProjects = repository.findAllProjectsBelongingToCompany(companyName, false);
+
+        if (user.getRole() == Role.ADMIN || user.getRole() == Role.PRODUCER) {
+            return companyProjects.stream()
+                    .map(project -> mapper.map(project, ProjectDto.class))
+                    .toList();
+        }
+
+        return companyProjects.stream()
                 .filter(project -> project.getEmployeesId() != null
                         && project.getEmployeesId().contains(userId))
                 .map(project -> mapper.map(project, ProjectDto.class))
@@ -149,7 +157,9 @@ public class ProjectService implements ProjectUseCase {
         var user = userLookup.findById(userId)
                 .orElseThrow(() -> new IllegalStateException("User not found: " + userId));
 
-        return repository.findAllProjectsBelongingToCompany(companyName, completed).stream()
+        var projects = repository.findAllProjectsBelongingToCompany(companyName, completed);
+
+        return projects.stream()
                 .filter(project ->
                         user.getRole() == Role.ADMIN
                                 || user.getRole() == Role.PRODUCER
