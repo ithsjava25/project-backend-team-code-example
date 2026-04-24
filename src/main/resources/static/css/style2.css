@@ -206,10 +206,17 @@ main{
 }
 /* ACTION BUTTON */
 .btn-details {
+    display: inline-block;
     background: transparent;
-    border: 1px solid var(--accent-purple);
     color: white;
-    padding: 8px 20px;
+    text-decoration: none;
+    justify-content: center;
+
+    width: auto;
+    min-width: 90px;
+    padding: 8px 15px;
+
+    border: 1px solid var(--accent-purple);
     border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;

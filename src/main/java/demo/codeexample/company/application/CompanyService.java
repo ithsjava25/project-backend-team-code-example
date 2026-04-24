@@ -17,4 +17,6 @@ public class CompanyService implements CompanyLookup {
     public Long getCompanyIdFromName(String companyName) {
         return repository.getIdByName(companyName);
     }
+
+
 }

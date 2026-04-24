@@ -18,7 +18,7 @@
 </head>
 <body>
     <nav class="navbar">
-            <a href="/${company}" class="logo-link">
+            <a href="/${company}/dashboard/current" class="logo-link">
                 <div class="logo-container">
                     <img src="/images/logo.png" alt="Logo" class="logo-img">
                     <div class="brand-wrapper">
@@ -28,7 +28,7 @@
             </a>
 
         <div class="nav-links">
-            <a href="/${company}/dashboard" class="active-tab">Current Projects</a>
+            <a href="/${company}/dashboard/completed" class="active-tab">Completed Projects</a>
             <a href="/${company}/projects/new" class="login-button">New Project</a>
 
             @if(currentUser != null)

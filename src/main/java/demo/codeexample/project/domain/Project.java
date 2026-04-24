@@ -25,6 +25,7 @@ public class Project {
 
     private Category category;
     private Genre genre;
-    private Long companyId;
+    private String companyName;
+    private boolean completed;
 
 }

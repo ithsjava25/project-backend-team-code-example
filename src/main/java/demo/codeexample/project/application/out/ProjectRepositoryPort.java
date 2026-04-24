@@ -12,9 +12,7 @@ public interface ProjectRepositoryPort {
 
     List<Project> findAll();
 
-    List<Project> findAllBelongingToCompany(Long companyId);
-
-    List<Project> findAllByOrderByTitleAsc();
+    List<Project> findAllProjectsBelongingToCompany(String companyName, boolean completed);
 
     List<Project> findProjectByCategory(Category category);
 
@@ -27,4 +25,5 @@ public interface ProjectRepositoryPort {
     Project save(CreateProjectDto project);
 
     Optional<Project> findById(Long id);
+
 }

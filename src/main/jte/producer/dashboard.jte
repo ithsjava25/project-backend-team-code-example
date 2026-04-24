@@ -22,7 +22,7 @@ content = @`
                     <th>Category</th>
                     <th>Genre</th>
                     <th>Progress</th>
-                    <th>Actions</th>
+                    <th>Release Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,7 +50,7 @@ content = @`
                             </td>
                             <td>
                                 <a href="/${company}/dashboard/${project.getTitle().trim().toLowerCase().replace(" ", "-")}?projectId=${project.getId()}"
-                                   class="btn-details">Details</a>
+                                   class="btn-details">${project.getReleaseDate() != null ? project.getReleaseDate().toString() : "-"}</a>
                             </td>
                         </tr>
                     @endfor

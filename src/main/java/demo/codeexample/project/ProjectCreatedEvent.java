@@ -9,7 +9,7 @@ public record ProjectCreatedEvent(
         String title,
         Set<Long> employeesId,
         LocalDate releaseDate,
-        Long companyId,
+        String companyName,
         LocalDateTime recruitingDeadline,
         LocalDateTime recordingDeadline,
         LocalDateTime editingDeadline

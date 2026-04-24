@@ -43,10 +43,13 @@ public class ProjectEntity {
     private Genre genre;
 
     @Column(nullable = false)
-    private Long companyId;
+    private String companyName;
+
+    @Column(nullable = false)
+    private boolean completed;
 
     public ProjectEntity(Long id, String title, String description, LocalDate releaseDate,
-                         Set<Long> employeesId, Category category, Genre genre, Long companyId){
+                         Set<Long> employeesId, Category category, Genre genre, String companyName, boolean completed){
         this.id = id;
         this.title = title;
         this.description = description;
@@ -54,7 +57,8 @@ public class ProjectEntity {
         this.employeesId = employeesId;
         this.category = category;
         this.genre = genre;
-        this.companyId = companyId;
+        this.companyName = companyName;
+        this.completed = completed;
     }
 
 

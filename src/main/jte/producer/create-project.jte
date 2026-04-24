@@ -22,7 +22,7 @@ content = @`
             <label class="form-label">Project Title</label>
             <input type="text" name="title" class="form-input" required>
 
-            <input type="hidden" name="companyId" value="1">
+            <input type="hidden" name="companyName" value="${company}">
 
             <label class="form-label">Category</label>
             <select name="category" class="form-input" required>
@@ -90,7 +90,12 @@ content = @`
             <label class="form-label">Description</label>
             <textarea name="description" class="form-input" rows="5"></textarea>
 
-            <button type="submit" class="btn-primary">Create Project</button>
+            <label class="form-label">Project Media (Images/PDFs)</label>
+            <input type="file" id="projectFiles" class="form-input" multiple accept="image/*,application/pdf">
+            <div id="uploadStatus" style="margin-top: 10px; font-size: 0.9rem;"></div>
+
+            <button type="submit" class="btn-primary" id="submitBtn">Create Project & Upload</button>
+<%--            <button type="submit" class="btn-primary">Create Project</button>--%>
         </form>
     </div>
 </main>
@@ -157,6 +162,82 @@ content = @`
             document.querySelectorAll('.dropdown-suggestions').forEach(d => d.style.display = 'none');
         }
     });
+</script>
+<script>
+    const currentCompany = "${company}"
+    @raw
+    document.querySelector('form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const btn = document.getElementById('submitBtn');
+        const status = document.getElementById('uploadStatus');
+        btn.disabled = true;
+        status.style.color = "inherit"; // Återställ färg
+        status.innerText = "Creating project...";
+
+        try {
+            // 1. Create project via AJAX
+            // Use URLSearchParams to simulate a normal form-entry
+            const formData = new URLSearchParams(new FormData(this));
+
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData, // Spring reads this via @ModelAttribute
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.text();
+                throw new Error("Could not create one project: " + errorData);
+            }
+
+            const project = await response.json();
+            const projectId = project.id;
+
+            // 2. Handle files
+            const fileInput = document.getElementById('projectFiles');
+            const files = fileInput.files;
+
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    status.innerText = `Uploading file ${i + 1} of ${files.length}: ${file.name}...`;
+
+                    // A. Get Presigned URL
+                    const urlRes = await fetch(`/${currentCompany}/api/files/upload-url?fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`);
+                    const { url } = await urlRes.json();
+
+                    // B. Upload to S3
+                    await fetch(url, {
+                        method: 'PUT',
+                        body: file,
+                        headers: { 'Content-Type': file.type }
+                    });
+
+                    // C. Callback to server to save in S3File-table
+                    await fetch(`/${currentCompany}/api/files/callback?projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`, {
+                        method: 'POST'
+                    });
+                }
+            }
+
+            status.style.color = "green";
+            status.innerText = "Project and files uploaded successfully! Redirecting...";
+
+            setTimeout(() => {
+                window.location.href = `/${currentCompany}/dashboard/current`;
+            }, 1500);
+
+        } catch (err) {
+            console.error(err);
+            status.style.color = "red";
+            status.innerText = "Error: " + err.message;
+            btn.disabled = false;
+        }
+    });
+    @endraw
 </script>
 `
 )

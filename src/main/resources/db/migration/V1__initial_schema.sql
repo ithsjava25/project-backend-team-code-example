@@ -1,3 +1,14 @@
+CREATE TABLE company(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    company_name VARCHAR(200) NOT NULL UNIQUE,
+    -- Address --
+    city VARCHAR(100) NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    street_number VARCHAR(20) NOT NULL,
+    zip_code VARCHAR(20) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE
+);
+
 CREATE TABLE users(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
@@ -25,7 +36,10 @@ CREATE TABLE project(
     release_date DATE,
     category VARCHAR(10) NOT NULL,
     genre VARCHAR(50) NOT NULL,
-    company_id BIGINT NOT NULL
+    company_name VARCHAR(200) NOT NULL,
+    completed BOOLEAN NOT NULL DEFAULT FALSE,
+
+    FOREIGN KEY (company_name) references company(company_name)
 );
 
 CREATE TABLE project_employees(
@@ -55,16 +69,6 @@ CREATE TABLE comment(
     created_at TIMESTAMP NOT NULL
 );
 
-CREATE TABLE company(
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    company_name VARCHAR(200) NOT NULL,
-    -- Address --
-    city VARCHAR(100) NOT NULL,
-    street VARCHAR(255) NOT NULL,
-    street_number VARCHAR(20) NOT NULL,
-    zip_code VARCHAR(20) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE
-);
 
 CREATE TABLE logger(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -73,6 +77,7 @@ CREATE TABLE logger(
     user_id BIGINT NOT NULL,
     project_id BIGINT NOT NULL,
     entity_type VARCHAR(255),
-    entity_id BIGINT NOT NULL
+    entity_id BIGINT NOT NULL,
+    created_at DATETIME(6)
 );
 
