@@ -128,14 +128,6 @@ public class ProjectService implements ProjectUseCase {
         var user = userLookup.findById(userId)
                 .orElseThrow(() -> new IllegalStateException("User not found: " + userId));
 
-        if (user.getRole() == Role.ADMIN || user.getRole() == Role.PRODUCER) {
-            return repository.findAll().stream()
-                    .filter(project -> project.getEmployeesId() != null
-                            && project.getEmployeesId().contains(userId))
-                    .map(project -> mapper.map(project, ProjectDto.class))
-                    .toList();
-        }
-
         return repository.findAll().stream()
                 .filter(project -> project.getEmployeesId() != null
                         && project.getEmployeesId().contains(userId))
