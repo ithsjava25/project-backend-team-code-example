@@ -4,7 +4,6 @@ import demo.codeexample.auth.CurrentUserLookup;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
-import demo.codeexample.project.application.out.SecurityPort;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -33,19 +32,23 @@ public class ProjectController {
         var currentUser = currentUserLookup.getCurrentUser()
                 .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
+        model.addAttribute("projects", projectUseCase.findProjectsForUser(currentUser.getId()));
+        model.addAttribute("company", companyName);
 
-        model.addAttribute("projects", projects);
+//        model.addAttribute("projects", projects);
         return "producer/dashboard";
     }
 
     @GetMapping("/dashboard/current")
     @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
     public String dashboardNotCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
-        var projects = projectUseCase.findAllNotCompleteProjectsByCompany(companyName);
+//        var projects = projectUseCase.findAllNotCompleteProjectsByCompany(companyName);
 
+        var currentUser = currentUserLookup.getCurrentUser()
+                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
+//        model.addAttribute("projects", projects);
         model.addAttribute("projects", projectUseCase.findProjectsForUser(currentUser.getId()));
-        model.addAttribute("projects", projects);
         model.addAttribute("company", companyName);
         return "producer/dashboard";
     }
