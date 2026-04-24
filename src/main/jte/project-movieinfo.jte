@@ -11,8 +11,8 @@
             <style>
                 
                 .movie-info-page {
-                    background: linear-gradient(to bottom, rgba(20, 2, 39, 0.3), #140227),
-                    url('/${company}/api/files/project-poster/${project.getId()}');
+                    background: linear-gradient(to bottom, rgba(20, 2, 39, 0.3), #140227)@if(project != null),
+                    url('/${company}/api/files/project-poster/${project.getId()}')@endif;
                     background-size: cover;
                     background-position: center;
                     background-attachment: fixed;
@@ -117,7 +117,7 @@
                             <span style="color: #64748b;">|</span>
                             <span style="color: #ec4899;">${String.valueOf(project.getGenre())}</span>
                             <span style="color: #64748b;">|</span>
-                            <span style="color: #cbd5e1;">${project.getReleaseDate().toString()}</span>
+                            <span style="color: #cbd5e1;">${project.getReleaseDate().toString(): "TBA"}</span>
                         </div>
 
                         <div class="main-details-card">
@@ -146,10 +146,6 @@
                             </span>
                         </div>
                     </div>
-
-
-                    </div>
-
                 </div>
             @endif
         </div>
