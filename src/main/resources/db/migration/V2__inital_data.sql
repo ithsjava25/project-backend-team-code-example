@@ -21,17 +21,13 @@ INSERT INTO project VALUES
 
 INSERT INTO users VALUES
     (null, 'Admin', 'System', 'admin@hexagonal.com', '$2a$12$3UjYpLZtkxLTRTmfzKaq4u9FLA253tB3t1K2XHeCyyjxRV/jcBHO.', 'ADMIN', true, false, '2026-01-01 01:00:00', null  ),
-
     (null, 'Anna', 'Ziafar', 'anna.ziafar@hexagonal.com', '$2a$12$xx3CDLetuKz.s5YY4uj.ueyFOqID0soxE6kA6QNyB8BPsPzTZGZ66', 'PRODUCER', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Fredrik', 'Mohlen', 'fredrik.Mohlen@hexagonal.com', '$2a$12$YzLw10lFBu6v1BFYmShlTOuoHoTnPJsh8MNcxOtOovXrT0eXEhC.W', 'RECRUITER', true, false, '2026-01-01 01:00:00', null  ),
-    (null. 'Maria', 'Lind', 'maria.lind@hexagonal.com', '$2a$12$o8UVvcgkLrRmFSXB3QVjF.fDajJxMMij19rU8z/OpNnCeyqltTt2W', 'RECRUITER', true, false, '2026-01-01 01:00:00', null ),
+    (null, 'Maria', 'Lind', 'maria.lind@hexagonal.com', '$2a$12$o8UVvcgkLrRmFSXB3QVjF.fDajJxMMij19rU8z/OpNnCeyqltTt2W', 'RECRUITER', true, false, '2026-01-01 01:00:00', null ),
     (null, 'Mikhalis', 'Dragoutas', 'mikhalis.dragoutas@hexagonal.com', '$2a$12$M1VqLXiIBktYao5I.Q/eVeHXlGFXMp0wO4OUBm7DCAA8beQ01ucRi', 'DIRECTOR', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Johan', 'Johansson', 'johan.johansson@hexagonal.com', '$2a$12$f8Zg06pn5JO4i41GoAj6Zu6R8eMuLgYbnKs0SVKTllVuo2dgwieXG', 'DIRECTOR', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Stelle', 'Simonlatser', 'stelle.simonlatser@hexagonal.com', '$2a$12$V59/QnBo9umJdfOZEtKkOuIzJyo5U4D5Qsgwhdw6pdLWyMyXfakIu', 'EDITOR', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Sven', 'Svensson', 'sven.svensson@hexagonal.com', '$2a$12$.pEuGFiOIkJShwxTEZFk.eqI.C5b1IqBsKfqFe5fqwBhuVSRumCGq', 'EDITOR', true, false, '2026-01-01 01:00:00', null  ),
-
-
-
     (null, 'Eric', 'Phu', 'eric.phu@chihuahua.com', '$2a$12$gbWSoduEuHEFLootTi3DXub1sdDjTB4HQmLvhIYPabL/lUnAzV6mq', 'PRODUCER', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Joe', 'Doe', 'joe.doe@chihuahua.com', '$2a$12$uLLNFxtrWI2y18qqS5ZpSeNGCwpIvmkQHvkRvprhdRXtEdO8s6a5O', 'RECRUITER', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Mary', 'Poppins', 'mary.poppins@chihuahua.com', '$2a$12$6sElLKMWkJ02kSfg6a9buuod4aqlDmOC.kIlV3iUw/BiG51Rba1Te', 'RECRUITER', true, false, '2026-01-01 01:00:00', null  ),
