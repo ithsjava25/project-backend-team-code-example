@@ -117,7 +117,7 @@
                             <span style="color: #64748b;">|</span>
                             <span style="color: #ec4899;">${String.valueOf(project.getGenre())}</span>
                             <span style="color: #64748b;">|</span>
-                            <span style="color: #cbd5e1;">${project.getReleaseDate().toString(): "TBA"}</span>
+                            <span style="color: #cbd5e1;">${project.getReleaseDate().toString()}</span>
                         </div>
 
                         <div class="main-details-card">
