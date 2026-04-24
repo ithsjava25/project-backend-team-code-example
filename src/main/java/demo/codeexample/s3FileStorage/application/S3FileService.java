@@ -69,6 +69,27 @@ public class S3FileService implements S3FileLookup {
         s3Client.deleteObject(deleteObjectRequest);
     }
 
+//    private String buildPath(String company, String projectTitle, Long projectId, String fileName) {
+//        // Replace spaces with underscores and remove special characters from title
+//        String safeTitle = projectTitle.replaceAll("[^a-zA-Z0-9]", "_");
+//        return String.format("%s/%s%d/%s", company, safeTitle, projectId, fileName);
+//    }
+//
+//    public String generatePresignedUploadUrl2(String company, String projectTitle, Long projectId, String fileName, String contentType) {
+//        String fullPath = buildPath(company, projectTitle, projectId, fileName);
+//
+//        PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
+//                .signatureDuration(Duration.ofMinutes(10))
+//                .putObjectRequest(objectRequest -> objectRequest
+//                        .bucket(BUCKET_NAME)
+//                        .key(fullPath)
+//                        .contentType(contentType)
+//                        .build())
+//                .build();
+//
+//        return s3Presigner.presignPutObject(presignRequest).url().toString();
+//    }
+
     public String generatePresignedUploadUrl(String fileName, String contentType) {
         PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
                 .signatureDuration(Duration.ofMinutes(10))
@@ -93,6 +114,16 @@ public class S3FileService implements S3FileLookup {
         PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
         return presignedRequest.url().toString();
     }
+
+//    public void saveFileMetadata2(String company, String projectTitle, Long projectId, String fileName, String contentType) {
+//        String fullPath = buildPath(company, projectTitle, projectId, fileName);
+//
+//        S3File s3File = new S3File();
+//        s3File.setProjectId(projectId);
+//        s3File.setFileKey(fullPath); // We save the full path so download-url works automatically
+//        s3File.setContentType(contentType);
+//        s3FileRepository.saveAndFlush(s3File);
+//    }
 
     public void saveFileMetadata(Long projectId, String fileKey, String contentType) {
 

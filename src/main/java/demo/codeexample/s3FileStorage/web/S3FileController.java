@@ -45,6 +45,18 @@ public class S3FileController {
         String url = s3Service.generatePresignedUploadUrl(fileName, contentType);
         return Map.of("url", url);
     }
+   // @GetMapping("/api/files/upload-url")
+//    @ResponseBody
+//    public Map<String, String> getUploadUrl(
+//            @RequestParam String company,
+//            @RequestParam String projectTitle,
+//            @RequestParam Long projectId,
+//            @RequestParam String fileName,
+//      //      @RequestParam String contentType) {
+//
+//       // String url = s3Service.generatePresignedUploadUrl(company, projectTitle, projectId, fileName, contentType);
+//        //return Map.of("url", url);
+//    //}
 
     @GetMapping("/api/files/download-url")
     @ResponseBody
@@ -129,5 +141,17 @@ public class S3FileController {
         s3Service.saveFileMetadata(projectId, fileName, contentType);
 
         return Map.of("status", "success", "message", "Callback received for " + fileName);
+    }
+    //@PostMapping("/api/files/callback")
+    @ResponseBody
+    public Map<String, String> uploadCallback(
+            @RequestParam String company,
+            @RequestParam String projectTitle,
+            @RequestParam Long projectId,
+            @RequestParam String fileName,
+            @RequestParam String contentType) {
+
+      //  s3Service.saveFileMetadata(company, projectTitle, projectId, fileName, contentType);
+        return Map.of("status", "success");
     }
 }
