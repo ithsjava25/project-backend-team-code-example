@@ -53,7 +53,8 @@
                         <div class="dropdown-divider"></div>
 
                         <a href="/${company}" class="dropdown-item logout">
-                            Logout
+                            <span class="logout-icon">⇥</span>
+                            <span>Logout</span>
                         </a>
                     </div>
                 </div>
