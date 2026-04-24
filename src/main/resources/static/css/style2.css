@@ -285,7 +285,7 @@ main{
     position: relative;
     display: inline-flex;
     align-items: center;
-    margin-left: 12px;
+    margin-left: 20px;
     cursor: pointer;
 }
 
@@ -293,7 +293,7 @@ main{
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: #5b6ee1;
+    background: #6a1b9a;
     color: white;
     font-weight: 700;
     font-size: 18px;
@@ -301,7 +301,8 @@ main{
     align-items: center;
     justify-content: center;
     border: 2px solid rgba(255, 255, 255, 0.7);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+
 }
 
 .user-tooltip {
@@ -341,40 +342,13 @@ main{
     overflow-wrap: break-word;
 }
 
-.user-menu {
-    position: relative;
-    margin-left: 20px;
-    cursor: pointer;
-}
+/*.user-dropdown {*/
 
-.user-avatar {
-    width: 40px;
-    height: 40px;
-    background: #6366f1;
-    color: white;
-    font-weight: 700;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    cursor: pointer;
-}
+/*    border-radius: 10px;*/
 
-.user-dropdown {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background: white;
-    color: black;
-    border-radius: 10px;
-    width: 260px;
-    min-width: 220px;
-    padding: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    display: none;
-    z-index: 100;
-}
+/*    padding: 20px;*/
+
+/*}*/
 
 .user-dropdown {
     position: absolute;
@@ -407,7 +381,6 @@ main{
 }
 
 .user-info {
-    margin-bottom: 10px;
     margin: 0 0 14px 0;
 }
 
@@ -446,7 +419,7 @@ main{
     align-items: center;
     gap: 12px;
     padding: 10px 0;
-    color: #e11d48;
+    color: #6366f1;
     font-weight: 700;
     text-decoration: none;
 }
