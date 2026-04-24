@@ -24,7 +24,6 @@ public class S3FileController {
     public String filesPage(Model model) {
 
         model.addAttribute("isAuthenticated", true);
-
         return "files";
     }
 
@@ -53,6 +52,7 @@ public class S3FileController {
         String url = s3Service.generatePresignedDownloadUrl(fileName);
         return Map.of("url", url);
     }
+
     @GetMapping("/api/files/project-poster/{projectId}")
     public String getProjectPoster(@PathVariable Long projectId) {
         try {
@@ -81,6 +81,39 @@ public class S3FileController {
             log.error("Krasch vid hämtning av bild för projekt " + projectId, e);
             return "redirect:/images/Hexagonalt_filmproduktionslogotyp.png"; // Vid fel, visa placeholder istället för att ge 500
         }
+    }
+
+    @GetMapping("/api/files/project-media/{projectId}")
+    @ResponseBody
+    public List<Map<String, String>> getProjectMedia(@PathVariable Long projectId) {
+        var keys = s3Service.findFileKeysByProjectId(projectId);
+
+        return keys.stream().map(key -> {
+            // 1. Generera URL:en och rör den inte mer (ingen toLowerCase här!)
+            String url = s3Service.generatePresignedDownloadUrl(key);
+
+            // 2. Extrahera filändelsen från 'key' för att använda i din switch
+            String extension = "";
+            int lastDot = key.lastIndexOf('.');
+            if (lastDot > 0) {
+                extension = key.substring(lastDot + 1).toLowerCase();
+            }
+
+            // 3. Din switch-sats för att bestämma typ
+            String type = switch (extension) {
+                case "mp4", "webm" -> "video";
+                case "pdf"         -> "pdf";
+                case "txt"         -> "text";
+                case "jpg", "jpeg", "png", "gif" -> "image"; // Du kan vara specifik eller köra default
+                default            -> "image";
+            };
+
+            return Map.of(
+                    "url", url,
+                    "type", type,
+                    "name", key
+            );
+        }).toList();
     }
 
     @PostMapping("/api/files/callback")

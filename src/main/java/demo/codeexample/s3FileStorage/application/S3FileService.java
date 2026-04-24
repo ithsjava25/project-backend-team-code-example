@@ -75,7 +75,6 @@ public class S3FileService implements S3FileLookup {
                 .putObjectRequest(objectRequest -> objectRequest
                         .bucket(BUCKET_NAME)
                         .key(fileName)
-                        .contentType(contentType)
                         .build())
                 .build();
 

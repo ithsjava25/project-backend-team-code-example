@@ -25,14 +25,43 @@ content = @`
                     <p>${currentProject.getDescription()}</p>
                 </div>
 
-                <div class="card media-placeholder">
-                    <h2>Media Assets</h2>
-                    <div class="placeholder-box">
-                        <img class="card-image" src="/${company}/api/files/project-poster/${currentProject.getId()}"
-                             alt="${currentProject.getTitle()}"
-                             style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
+                <div class="card media-card">
+                    <div class="media-header">
+                        <h2>Media Assets</h2>
+                        <label for="detailFiles" class="btn-upload-media"> Upload Media </label>
+                        <input type="file" id="detailFiles" multiple style="display: none;" accept=".png, .jpg, .jpeg, .pdf, video/*">
+                    </div>
+
+                    <div id="detailStatus" style="margin-top: 10px; font-weight: bold;"></div>
+
+                    <div id="trailer-section" class="media-section" style="display: none;">
+                        <video id="project-trailer" controls class="video-player">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    <div id="gallery-section" class="media-section" style="display: none;">
+                        <h3>Gallery</h3>
+                        <div class="image-grid" id="image-gallery"></div>
+                    </div>
+
+                    <div id="docs-section" class="media-section" style="display: none;">
+                        <h3>Documents</h3>
+                        <div class="doc-list" id="document-list"></div>
                     </div>
                 </div>
+
+<%--                <div class="card media-placeholder">--%>
+<%--                    <h2>Media Assets</h2>--%>
+<%--                    <label for="detailFiles" class="btn-upload-media"> Upload Media </label>--%>
+<%--                    <input type="file" id="detailFiles" multiple style="display: none;" accept=".png, .jpg, .jpeg, .pdf, video/*">--%>
+<%--                    <div id="detailStatus" style="margin-top: 10px; font-weight: bold;"></div>--%>
+<%--                    <div class="placeholder-box">--%>
+<%--                        <img class="card-image" src="/${company}/api/files/project-poster/${currentProject.getId()}"--%>
+<%--                             alt="${currentProject.getTitle()}"--%>
+<%--                             style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
             </section>
 
             <aside class="sidebar">
@@ -170,6 +199,115 @@ content = @`
             background: linear-gradient(45deg, #333, #666);
             border-radius: 50%;
         }
+
+        .btn-upload-media {
+            background: transparent;
+            color: var(--accent-purple);
+            border: 1px solid var(--accent-purple);
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-upload-media:hover {
+            background: var(--accent-purple);
+            color: white;
+            /* Här skapas lyskraften (glow) */
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.6), 0 0 5px rgba(99, 102, 241, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .media-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .media-section {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .video-player {
+            width: 100%;
+            max-height: 400px;
+            border-radius: 12px;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .image-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        .doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .doc-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .doc-link:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
     </style>
+
+    <script src="/js/file-upload.js"></script>
+    <script>
+        const fileInput = document.getElementById('detailFiles');
+        if (fileInput) {
+            fileInput.addEventListener('change', async function() {
+                if (this.files.length === 0) return;
+                const status = document.getElementById('detailStatus');
+
+                try {
+                    await uploadFiles("${currentProject.getId()}", "${company}", 'detailFiles', 'detailStatus');
+
+                    setTimeout(() => {
+                        location.reload();
+                    }, 800);
+                } catch (err) {
+                    console.error(err);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMedia("${company}", "${currentProject.getId()}");
+        });
+    </script>
 `
 )
