@@ -344,6 +344,8 @@ main{
     display: flex;
     align-items: center;
     justify-content: center;
+    border: none;
+    cursor: pointer;
 }
 
 .user-dropdown {
@@ -360,7 +362,11 @@ main{
     z-index: 100;
 }
 
-.user-menu:hover .user-dropdown {
+.user-dropdown {
+    display: none;
+}
+
+.user-dropdown.show {
     display: block;
 }
 

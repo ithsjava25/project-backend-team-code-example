@@ -33,11 +33,11 @@
 
             @if(currentUser != null)
                 <div class="user-menu">
-                    <div class="user-avatar">
-                        ${currentUser.getFirstName().substring(0,1)}
-                    </div>
+                    <button class="user-avatar" type="button" id="userMenuButton">
+                        ${currentUser.getFirstName().substring(0,1).toUpperCase()}
+                    </button>
 
-                    <div class="user-dropdown">
+                    <div class="user-dropdown" id="userDropdown">
                         <div class="user-info">
                             <div class="user-name">
                                 ${currentUser.getFirstName()} ${currentUser.getLastName()}
@@ -65,4 +65,25 @@
         ${content}
     </main>
 </body>
+
+<script>
+    const userMenuButton = document.getElementById("userMenuButton");
+    const userDropdown = document.getElementById("userDropdown");
+
+    if (userMenuButton && userDropdown) {
+        userMenuButton.addEventListener("click", function (event) {
+            event.stopPropagation();
+            userDropdown.classList.toggle("show");
+        });
+
+        document.addEventListener("click", function () {
+            userDropdown.classList.remove("show");
+        });
+
+        userDropdown.addEventListener("click", function (event) {
+            event.stopPropagation();
+        });
+    }
+</script>
+
 </html>
