@@ -28,10 +28,6 @@ public class UserDto {
         return (first + " " + last).trim();
     }
 
-    public String getRoleName() {
-        return role != null ? role.name() : "";
-    }
-
     public String getRoleDisplayName() {
         if (role == null) {
             return "";

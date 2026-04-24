@@ -49,7 +49,7 @@
                                 ${currentUser.getEmail()}
                             </div>
                             <div class="user-role">
-                                ${currentUser.getRole()}
+                                ${currentUser.getRoleDisplayName()}
                             </div>
                         </div>
 
