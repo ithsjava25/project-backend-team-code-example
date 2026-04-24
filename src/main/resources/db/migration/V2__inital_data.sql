@@ -31,8 +31,8 @@ INSERT INTO users VALUES
     (null, 'Eric', 'Phu', 'eric.phu@chihuahua.com', '$2a$12$gbWSoduEuHEFLootTi3DXub1sdDjTB4HQmLvhIYPabL/lUnAzV6mq', 'PRODUCER', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Joe', 'Doe', 'joe.doe@chihuahua.com', '$2a$12$uLLNFxtrWI2y18qqS5ZpSeNGCwpIvmkQHvkRvprhdRXtEdO8s6a5O', 'RECRUITER', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Mary', 'Poppins', 'mary.poppins@chihuahua.com', '$2a$12$6sElLKMWkJ02kSfg6a9buuod4aqlDmOC.kIlV3iUw/BiG51Rba1Te', 'RECRUITER', true, false, '2026-01-01 01:00:00', null  ),
-    (null, 'Jane', 'Smith', 'jane.smith@hexagonal.com', '$2a$12$L7VEd848NY3qwd7wM2Slze4mhQy5sD6ULs966pKisn4ISsY8FJsfe', 'DIRECTOR', true, false, '2026-01-01 01:00:00', null  ),
-    (null, 'Glen', 'Star', 'glen.star@hexagonal.com', '$2a$12$7aBthZV0ADMEgYOFWYCkGOq5.L/K73UmvlzBuGHKpLHKtgNRxc9Ru', 'DIRECTOR', true, false, '2026-01-01 01:00:00', null  ),
+    (null, 'Jane', 'Smith', 'jane.smith@hihuahua.com', '$2a$12$L7VEd848NY3qwd7wM2Slze4mhQy5sD6ULs966pKisn4ISsY8FJsfe', 'DIRECTOR', true, false, '2026-01-01 01:00:00', null  ),
+    (null, 'Glen', 'Star', 'glen.star@hihuahua.com', '$2a$12$7aBthZV0ADMEgYOFWYCkGOq5.L/K73UmvlzBuGHKpLHKtgNRxc9Ru', 'DIRECTOR', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Bob', 'Brown', 'bob.brown@chihuahua.com', '$2a$12$kXkzk2UvS9I0HItnaeq/quMz/YnwxhOkG/vAp.E6Z8Ts8cGimHpni', 'EDITOR', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Robert', 'Moon', 'robert.moon@chihuahua.com', '$2a$12$yunIqKRp92LZuG03QMTD..mD1W78M4PjAW4w4GMjcewIne15V8MHW', 'EDITOR', true, false, '2026-01-01 01:00:00', null  );
 
