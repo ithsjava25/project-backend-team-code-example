@@ -21,7 +21,6 @@ public class ProjectController {
 
     private final ProjectUseCase projectUseCase;
     private final UserLookup userLookup;
-    private final SecurityPort securityPort;
 
     @GetMapping("/dashboard/completed")
     public String dashboardCompletedProjects(@ModelAttribute("company") String companyName, Model model) {

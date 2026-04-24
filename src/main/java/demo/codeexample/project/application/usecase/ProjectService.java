@@ -26,19 +26,17 @@ public class ProjectService implements ProjectUseCase {
 
     private final ProjectRepositoryPort repository;
     private final UserPort userPort;
-    private final CompanyPort companyPort;
     private final ProjectEventPort projectEventPort;
     private final SecurityPort securityPort;
     private final ModelMapper mapper;
     private final LoggerLookup logger;
 
     public ProjectService(ProjectRepositoryPort repository, UserPort userPort,
-                          ProjectEventPort projectEventPort, SecurityPort securityPort, CompanyPort companyPort, ModelMapper mapper, LoggerLookup logger) {
+                          ProjectEventPort projectEventPort, SecurityPort securityPort, ModelMapper mapper, LoggerLookup logger) {
         this.repository = repository;
         this.userPort = userPort;
         this.projectEventPort = projectEventPort;
         this.securityPort = securityPort;
-        this.companyPort = companyPort;
         this.mapper = mapper;
         this.logger = logger;
     }
