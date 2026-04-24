@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 public class LoggerService implements LoggerLookup{
 
     private final LoggerRepository loggerRepository;
-    private final MessageSource messageSource;
 
     @Override
     public void log(LoggerAction action, Long userId, String entityType, Long entityId, Long projectId, String message) {
