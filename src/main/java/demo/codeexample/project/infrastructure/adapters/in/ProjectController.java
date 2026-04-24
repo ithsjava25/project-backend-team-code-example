@@ -7,6 +7,7 @@ import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,17 +57,15 @@ public class ProjectController {
 
     @PostMapping("/projects")
     @Transactional
-    @ResponseBody // Vi svarar med JSON så JavaScriptet kan läsa ID:t
+    @ResponseBody // Respond with JSON so that JavaScriptet can read the ID
     public ResponseEntity<?> createProject(@ModelAttribute("projectDto") @Valid CreateProjectDto dto) {
         try {
             var newProject = projectUseCase.createProject(dto);
 
-            // 2. Kontrollera att vi fick ett ID
             if (newProject == null || newProject.getId() == null) {
                 return ResponseEntity.status(500).body("Project was saved without Id. Check database");
             }
 
-            // 3. Skicka tillbaka ID:t till JavaScriptet
             return ResponseEntity.ok(Map.of("id", newProject.getId()));
 
         } catch (Exception e) {

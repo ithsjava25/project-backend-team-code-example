@@ -47,7 +47,7 @@ content = @`
                             </td>
                             <td>
                                 <a href="/${company}/dashboard/${project.getTitle().trim().toLowerCase().replace(" ", "-")}?projectId=${project.getId()}"
-                                   class="btn-details">${project.getReleaseDate().toString()}</a>
+                                   class="btn-details">${project.getReleaseDate() != null ? project.getReleaseDate().toString() : "-"}</a>
                             </td>
                         </tr>
                     @endfor

@@ -174,13 +174,13 @@ content = @`
         status.innerText = "Creating project...";
 
         try {
-            // 1. Skapa projektet via AJAX
-            // Vi använder URLSearchParams för att simulera ett vanligt formulärinskick
+            // 1. Create project via AJAX
+            // Use URLSearchParams to simulate a normal form-entry
             const formData = new URLSearchParams(new FormData(this));
 
             const response = await fetch(this.action, {
                 method: 'POST',
-                body: formData, // Spring läser detta via @ModelAttribute
+                body: formData, // Spring reads this via @ModelAttribute
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
@@ -194,7 +194,7 @@ content = @`
             const project = await response.json();
             const projectId = project.id;
 
-            // 2. Hantera filer
+            // 2. Handle files
             const fileInput = document.getElementById('projectFiles');
             const files = fileInput.files;
 
@@ -203,18 +203,18 @@ content = @`
                     const file = files[i];
                     status.innerText = `Uploading file ${i + 1} of ${files.length}: ${file.name}...`;
 
-                    // A. Hämta Presigned URL
+                    // A. Get Presigned URL
                     const urlRes = await fetch(`/${currentCompany}/api/files/upload-url?fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`);
                     const { url } = await urlRes.json();
 
-                    // B. Ladda upp till S3
+                    // B. Upload to S3
                     await fetch(url, {
                         method: 'PUT',
                         body: file,
                         headers: { 'Content-Type': file.type }
                     });
 
-                    // C. Callback till servern för att spara i S3File-tabellen
+                    // C. Callback to server to save in S3File-table
                     await fetch(`/${currentCompany}/api/files/callback?projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`, {
                         method: 'POST'
                     });
@@ -225,7 +225,7 @@ content = @`
             status.innerText = "Project and files uploaded successfully! Redirecting...";
 
             setTimeout(() => {
-                window.location.href = `/${currentCompany}/dashboard`;
+                window.location.href = `/${currentCompany}/dashboard/current`;
             }, 1500);
 
         } catch (err) {
