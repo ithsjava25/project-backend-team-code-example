@@ -37,7 +37,7 @@
             @if(currentUser != null)
                 <div class="user-menu">
                     <button class="user-avatar" type="button" id="userMenuButton">
-                        ${currentUser.getFirstName().substring(0,1).toUpperCase()}
+                        ${currentUser.getInitial()}
                     </button>
 
                     <div class="user-dropdown" id="userDropdown">
