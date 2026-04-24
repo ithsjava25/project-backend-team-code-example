@@ -28,7 +28,9 @@ content = @`
                 <div class="card media-placeholder">
                     <h2>Media Assets</h2>
                     <div class="placeholder-box">
-                        <span>Video & Image Gallery Coming Soon</span>
+                        <img class="card-image" src="/${company}/api/files/project-poster/${currentProject.getId()}"
+                             alt="${currentProject.getTitle()}"
+                             style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
                     </div>
                 </div>
             </section>
