@@ -30,6 +30,36 @@ INSERT INTO users VALUES
     (null, 'Joe', 'Doe', 'joe.doe@chihuahua.com', '$2a$12$uLLNFxtrWI2y18qqS5ZpSeNGCwpIvmkQHvkRvprhdRXtEdO8s6a5O', 'RECRUITER', true, false, '2026-01-01 01:00:00', null  ),
     (null, 'Jane', 'Smith', 'jane.smith@hexagonal.com', '$2a$12$L7VEd848NY3qwd7wM2Slze4mhQy5sD6ULs966pKisn4ISsY8FJsfe', 'DIRECTOR', true, false, '2026-01-01 01:00:00', null  );
 
+INSERT INTO project_employees VALUES
+    (1, 3),
+    (1, 5),
+    (1, 4),
+    (2, 3),
+    (2, 5),
+    (2, 4),
+    (3, 8),
+    (3, 9),
+    (3, 4),
+    (4, 8),
+    (4, 5),
+    (4, 4),
+    (5, 3),
+    (5, 5),
+    (5, 7),
+    (6, 3),
+    (6, 5),
+    (6, 4),
+    (7, 8),
+    (7, 5),
+    (7, 4),
+    (8, 3),
+    (8, 5),
+    (8, 4),
+    (9, 3),
+    (9, 9),
+    (9, 4);
+
+
 INSERT INTO task VALUES
     (null, 'RECRUITING', 'RECRUIT PEOPLE', '2026-01-01 12:00:00', 'CREATED', 1, 2),
     (null, 'RECORDING', 'RECORD MOVIE', '2026-01-02 12:00:00', 'ASSIGNED', 1, 4);
