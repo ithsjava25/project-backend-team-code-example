@@ -28,7 +28,7 @@
             </a>
 
         <div class="nav-links">
-            <a href="/${company}/dashboard" class="active-tab">Completed Projects</a>
+            <a href="/${company}/dashboard/completed" class="active-tab">Completed Projects</a>
             <a href="/${company}/projects/new" class="login-button">New Project</a>
 
             @if(currentUser != null)
