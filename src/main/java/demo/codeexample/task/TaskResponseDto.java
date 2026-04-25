@@ -1,7 +1,6 @@
 package demo.codeexample.task;
 
 import demo.codeexample.comment.CommentDto;
-import demo.codeexample.task.domain.Task;
 import demo.codeexample.task.domain.TaskStatus;
 import demo.codeexample.task.domain.TaskType;
 import lombok.AllArgsConstructor;

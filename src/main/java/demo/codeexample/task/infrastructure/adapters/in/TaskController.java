@@ -1,21 +1,15 @@
 package demo.codeexample.task.infrastructure.adapters.in;
 import demo.codeexample.comment.CommentLookup;
-import demo.codeexample.comment.CreateCommentDto;
 import demo.codeexample.task.TaskResponseDto;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.domain.Task;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 

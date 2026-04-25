@@ -5,11 +5,9 @@ import demo.codeexample.comment.CommentDto;
 import demo.codeexample.comment.CreateCommentDto;
 import demo.codeexample.comment.application.CommentService;
 import demo.codeexample.company.TenantContext;
-import jakarta.validation.Valid;
 import lombok.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 

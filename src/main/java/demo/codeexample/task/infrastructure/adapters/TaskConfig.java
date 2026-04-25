@@ -2,9 +2,7 @@ package demo.codeexample.task.infrastructure.adapters;
 
 import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
-//import demo.codeexample.task.application.ports.out.CommentPort;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
-//import demo.codeexample.task.application.ports.out.TaskSecurityPort;
 import demo.codeexample.task.application.ports.out.TaskUserPort;
 import demo.codeexample.task.application.ports.usecase.TaskService;
 import demo.codeexample.task.infrastructure.adapters.in.ProjectEventListenerAdapter;
