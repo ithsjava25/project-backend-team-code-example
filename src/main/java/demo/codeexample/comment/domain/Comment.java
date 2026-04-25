@@ -29,6 +29,9 @@ public class Comment {
     @Column(nullable = false)
     private Long userId;
 
+    @Column(nullable = false)
+    private String userName;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

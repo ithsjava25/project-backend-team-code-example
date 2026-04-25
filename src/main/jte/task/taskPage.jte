@@ -56,7 +56,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; color: #94a3b8; font-size: 0.85rem;">
             <span>
                 <img src="/images/user-icon.png" style="width: 12px; opacity: 0.5; margin-right: 4px;">
-                User #${comment.getUserId()}
+                ${comment.getUserName()}
             </span>
 
                             <span>${comment.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("MMM dd, HH:mm"))}</span>
