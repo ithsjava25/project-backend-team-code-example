@@ -9,10 +9,10 @@ import lombok.Setter;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
 public class Comment {
 
     @Id
@@ -30,17 +30,10 @@ public class Comment {
     private Long userId;
 
     @Column(nullable = false, updatable = false)
-    private Instant createdAt;
-
-    public Comment(String content, Long userId) {
-        this.content = content;
-        this.userId = userId;
-    }
+    private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = Instant.now();
+        this.createdAt = LocalDateTime.now();
     }
-
-
 }

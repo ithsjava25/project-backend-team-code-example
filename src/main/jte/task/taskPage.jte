@@ -56,9 +56,11 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; color: #94a3b8; font-size: 0.85rem;">
             <span>
                 <img src="/images/user-icon.png" style="width: 12px; opacity: 0.5; margin-right: 4px;">
-                User #${comment.getWriterId()}
+                User #${comment.getUserId()}
             </span>
+
                             <span>${comment.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("MMM dd, HH:mm"))}</span>
+
                         </div>
                     </div>
                 @endfor
@@ -66,6 +68,7 @@
         </div>
 
         <form action="/${task.getId()}/comments" method="post" style="margin-top: 2rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
+            <input type="hidden" name="taskId" value="${task.getId()}">
             <textarea name="content" rows="3" placeholder="Add a comment..." required
                       style="width: 100%; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;"></textarea>
             <button type="submit" class="login-button" style="margin-top: 1rem; border: none; cursor: pointer;">Post</button>
