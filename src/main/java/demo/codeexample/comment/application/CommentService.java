@@ -4,6 +4,7 @@ import demo.codeexample.comment.CommentLookup;
 import demo.codeexample.comment.domain.CommentRepository;
 import demo.codeexample.comment.CreateCommentDto;
 import demo.codeexample.comment.domain.Comment;
+import demo.codeexample.security.UserAuthHelper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
@@ -19,16 +20,17 @@ public class CommentService implements CommentLookup {
 
     private final CommentRepository commentRepository;
     private final ModelMapper modelMapper;
-    //private final "Some kind of Authorization service" with saved user
+    private final UserAuthHelper userAuthHelper;
 
     //Add
-    public CommentDto createComment(CreateCommentDto createCommentDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        assert authentication != null;
-        Long creatorId = Long.parseLong(authentication.getName());
+    public CommentDto createComment(CreateCommentDto dto) {
+        Long writedId = userAuthHelper.getCurrentUserId();
 
-        Comment commentEntity = modelMapper.map(createCommentDto, Comment.class);
-        commentEntity.setUserId(creatorId);
+        Comment commentEntity = new Comment();
+        commentEntity.setContent(dto.getContent());
+        commentEntity.setTaskId(dto.getTaskId());
+        commentEntity.setUserId(writedId);
+
         commentRepository.save(commentEntity);
 
         return modelMapper.map(commentEntity, CommentDto.class);
@@ -36,13 +38,13 @@ public class CommentService implements CommentLookup {
 
     @Override // Implementing the method from your Facade
     public List<CommentDto> getCommentsForTask(long taskId) {
-        // Use a repository method to find comments by Task ID
+
         return commentRepository.findAllByTaskIdOrderByCreatedAtDesc(taskId).stream()
                 .map(entity -> modelMapper.map(entity, CommentDto.class))
                 .toList();
     }
 
-    @Override // Implementing the method from your Facade
+    @Override
     public void deleteComment(long commentId) {
         commentRepository.deleteById(commentId);
     }

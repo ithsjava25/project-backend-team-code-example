@@ -1,6 +1,5 @@
 package demo.codeexample.task.application.ports.usecase;
 
-import demo.codeexample.exceptions.UserNotFoundException;
 import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.shared.LoggerAction;
 import demo.codeexample.shared.Role;
@@ -11,9 +10,6 @@ import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.domain.Task;
 import demo.codeexample.task.domain.TaskType;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.modulith.events.ApplicationModuleListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,11 +22,12 @@ public class TaskService implements TaskUseCase {
     private final LoggerLookup logger;
     private final TaskUserPort userPort;
 
+
     public TaskService(TaskRepositoryPort taskRepository, TaskUserPort userPort, LoggerLookup logger) {
             this.taskRepository = taskRepository;
             this.userPort = userPort;
             this.logger = logger;
-        }
+    }
 
         public void handleProjectCreated (ProjectCreatedEvent event){
             Long recruiterId = findByRole(event.employeesId(), Role.RECRUITER);
@@ -82,13 +79,4 @@ public class TaskService implements TaskUseCase {
             );
             return savedTask;
         }
-    @Override
-    public void addComment(Long taskId, String content, Long writerId) {
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
-
-        task.addComment(content, writerId);
-
-        taskRepository.save(task);
-    }
 }

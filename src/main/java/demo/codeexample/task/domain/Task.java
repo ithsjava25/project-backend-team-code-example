@@ -22,4 +22,8 @@ public class Task {
     private final Long projectId ;
     private Long userId ;
 
+
+    public void addComment(String content, Long writerId) {
+
+    }
 }
