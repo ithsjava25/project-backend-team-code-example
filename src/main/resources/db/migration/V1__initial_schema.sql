@@ -67,7 +67,7 @@ CREATE TABLE comment(
     task_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     user_name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    created_at DATETIME(6) NOT NULL
 );
 
 

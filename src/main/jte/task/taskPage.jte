@@ -35,7 +35,7 @@
 
     <div class="table-card" style="padding: 2rem; margin-bottom: 2rem;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 style="margin: 0; color: #1e293b;">${task.getTitle()}</h2>
+            <h2 style="margin: 0; color: #1e293b;">${task.getTaskType()}</h2>
             <span class="badge" style="background: #6366f1; color: white; padding: 6px 14px; border-radius: 20px; font-weight: 600;">
                 ${task.getStatus().name()}
             </span>
