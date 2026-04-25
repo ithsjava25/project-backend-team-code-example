@@ -16,7 +16,6 @@ import java.util.List;
 public class TaskResponseDto {
     private Long id;
     private TaskType taskType;
-    private String title;
     private String description;
     private TaskStatus status;
     private LocalDateTime deadline;
