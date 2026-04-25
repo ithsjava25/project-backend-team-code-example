@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class CreateCommentDto {
     private Long taskId;
     private Long writerId;
+    private String userName;
 
     @NotBlank(message = "Comment can't be empty.")
     @Size(max = 300, message = "Can't be more than 300 characters.")

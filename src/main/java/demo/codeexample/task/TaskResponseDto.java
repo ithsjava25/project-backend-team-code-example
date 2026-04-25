@@ -16,13 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 public class TaskResponseDto {
     private Long id;
-    private TaskType taskType; // Add this!
+    private TaskType taskType;
     private String title;
     private String description;
     private TaskStatus status;
     private LocalDateTime deadline;
     private Long projectId;
     private Long userId;
+    private String userName;
     private List<CommentDto> comments;
     private String projectName;
 }

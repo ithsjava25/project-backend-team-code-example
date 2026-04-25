@@ -26,4 +26,12 @@ public class UserAuthHelper {
         }
         return null;
     }
+    public String getCurrentUserName() {
+        Long userId = getCurrentUserId();
+        if (userId == null) return "System";
+
+        return userLookup.findById(userId)
+                .map(u -> u.getFirstName() + " " + u.getLastName())
+                .orElse("Unknown User (" + userId + ")");
+    }
 }
