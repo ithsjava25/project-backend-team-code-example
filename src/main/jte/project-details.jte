@@ -6,12 +6,12 @@
 title = currentProject.getTitle(),
 company = company,
 content = @`
-    <div class="project-container">
+    <div class="project-container" data-company="${company}" data-project-id="${currentProject.getId()}">
+
         <header class="project-header">
             <div class="header-content">
+                <span class="genre-badge">${currentProject.getGenre().toString()}</span>
                 <h1>${currentProject.getTitle()}</h1>
-                <span class="category-badge">${currentProject.getCategory().toString()}</span>
-                <p class="genre-tag">${currentProject.getGenre().toString()}</p>
             </div>
             <div class="header-actions">
                 <a href="/${company}/dashboard/current" class="btn-back">← Back to Dashboard</a>
@@ -51,17 +51,6 @@ content = @`
                     </div>
                 </div>
 
-<%--                <div class="card media-placeholder">--%>
-<%--                    <h2>Media Assets</h2>--%>
-<%--                    <label for="detailFiles" class="btn-upload-media"> Upload Media </label>--%>
-<%--                    <input type="file" id="detailFiles" multiple style="display: none;" accept=".png, .jpg, .jpeg, .pdf, video/*">--%>
-<%--                    <div id="detailStatus" style="margin-top: 10px; font-weight: bold;"></div>--%>
-<%--                    <div class="placeholder-box">--%>
-<%--                        <img class="card-image" src="/${company}/api/files/project-poster/${currentProject.getId()}"--%>
-<%--                             alt="${currentProject.getTitle()}"--%>
-<%--                             style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
             </section>
 
             <aside class="sidebar">
@@ -114,6 +103,12 @@ content = @`
             padding: 0 20px;
         }
 
+        .header-content{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
         .project-header {
             display: flex;
             justify-content: space-between;
@@ -123,7 +118,7 @@ content = @`
             padding-bottom: 20px;
         }
 
-        .category-badge {
+        .genre-badge {
             background: rgba(99, 102, 241, 0.1);
             color: var(--accent-purple);
             padding: 4px 12px;
@@ -131,9 +126,10 @@ content = @`
             font-size: 0.8rem;
             border: 1px solid var(--accent-purple);
             text-transform: uppercase;
+            width: fit-content;
         }
 
-        h1 { font-size: 3rem; margin: 10px 0; font-weight: 800; }
+        h1 { font-size: 3rem; margin: 0; font-weight: 800; }
         h2 { color: var(--accent-purple); font-size: 1.2rem; margin-bottom: 15px; }
 
         .project-grid {
@@ -148,17 +144,6 @@ content = @`
             padding: 25px;
             border: 1px solid rgba(255,255,255,0.05);
             margin-bottom: 20px;
-        }
-
-        .placeholder-box {
-            height: 300px;
-            background: rgba(0,0,0,0.2);
-            border: 2px dashed rgba(255,255,255,0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-dim);
         }
 
         .btn-back {
@@ -185,20 +170,6 @@ content = @`
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
         }
 
-        .employee-list { list-style: none; padding: 0; }
-        .employee-list li {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .avatar {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(45deg, #333, #666);
-            border-radius: 50%;
-        }
 
         .btn-upload-media {
             background: transparent;
@@ -268,46 +239,8 @@ content = @`
             gap: 8px;
         }
 
-        .doc-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 6px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .doc-link:hover {
-            background: rgba(99, 102, 241, 0.1);
-        }
     </style>
 
-    <script src="/js/file-upload.js"></script>
-    <script>
-        const fileInput = document.getElementById('detailFiles');
-        if (fileInput) {
-            fileInput.addEventListener('change', async function() {
-                if (this.files.length === 0) return;
-                const status = document.getElementById('detailStatus');
-
-                try {
-                    await uploadFiles("${currentProject.getId()}", "${company}", 'detailFiles', 'detailStatus');
-
-                    setTimeout(() => {
-                        location.reload();
-                    }, 800);
-                } catch (err) {
-                    console.error(err);
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadMedia("${company}", "${currentProject.getId()}");
-        });
-    </script>
+    <script src="/js/media.js"></script>
 `
 )

@@ -15,7 +15,7 @@ content = @`
     <p class="subtitle">Start a new film production by filling in the details below.</p>
 
     <div class="form-card">
-        <form action="/${company}/projects" method="post">
+        <form action="/${company}/projects" method="post" id="create-project-form" data-company="${company}">
 
             <label class="form-label">Project Title</label>
             <input type="text" name="title" class="form-input" required>
@@ -162,47 +162,7 @@ content = @`
     });
 </script>
 
-<script src="/js/file-upload.js"></script>
-<script>
-    const currentCompany = "${company}"
-    @raw
-    document.querySelector('form').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-
-        try {
-            // 1. Create project via AJAX
-            // Use URLSearchParams to simulate a normal form-entry
-            const formData = new URLSearchParams(new FormData(this));
-            const response = await fetch(this.action, {
-                method: 'POST',
-                body: formData, // Spring reads this via @ModelAttribute
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            });
-
-            if (!response.ok) {
-                const errorData = await response.text();
-                throw new Error("Could not create one project: " + errorData);
-            }
-
-            const project = await response.json();
-
-            await uploadFiles(project.id, currentCompany, 'projectFiles', 'uploadStatus');
-
-            setTimeout(() => {
-                window.location.href = `/${currentCompany}/dashboard/current`;
-            }, 1500);
-
-        } catch (err) {
-            console.error(err);
-            btn.disabled = false;
-        }
-    });
-    @endraw
-</script>
+<script src="/js/media.js"></script>
 `
 )
 

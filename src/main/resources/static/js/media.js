@@ -78,3 +78,60 @@ async function loadMedia(company, projectId) {
         console.error("Kunde inte ladda media", err);
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // LOGIC FOR PROJECT-DETAILS
+    const projectView = document.querySelector('.project-container');
+    if (projectView) {
+        const company = projectView.dataset.company;
+        const projectId = projectView.dataset.projectId;
+
+        if (company && projectId) loadMedia(company, projectId);
+
+        const fileInput = document.getElementById('detailFiles');
+        if (fileInput) {
+            fileInput.addEventListener('change', async function() {
+                if (this.files.length === 0) return;
+                try {
+                    await uploadFiles(projectId, company, 'detailFiles', 'detailStatus');
+                    setTimeout(() => location.reload(), 800);
+                } catch (err) { console.error(err); }
+            });
+        }
+    }
+
+    // LOGIC FOR CREATE-PROJECT
+    const createForm = document.getElementById('create-project-form');
+    if (createForm) {
+        const company = createForm.dataset.company;
+
+        createForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+
+            try {
+                const formData = new URLSearchParams(new FormData(this));
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                });
+
+                if (!response.ok) throw new Error("Kunde inte skapa projekt");
+
+                const project = await response.json();
+
+                await uploadFiles(project.id, company, 'projectFiles', 'uploadStatus');
+
+                setTimeout(() => {
+                    window.location.href = `/${company}/dashboard/current`;
+                }, 1500);
+            } catch (err) {
+                console.error(err);
+                btn.disabled = false;
+            }
+        });
+    }
+});
