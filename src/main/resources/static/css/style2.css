@@ -1,3 +1,7 @@
+/* ==========================================================================
+   CONFIG & VARIABLES
+   ========================================================================== */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
 
 :root {
@@ -11,6 +15,9 @@
     --side-padding: 5%;
 }
 
+/* ==========================================================================
+   BASE LAYOUT
+   ========================================================================== */
 body {
     background-color: var(--bg-dark);
     background-image: radial-gradient(circle at 10% 10%, #1e133a 0%, #0b0714 50%);
@@ -21,59 +28,39 @@ body {
     min-height: 100vh;
 }
 
-/* NAVBAR */
+main {
+    width: 100%;
+    margin: auto;
+    padding: 0 var(--side-padding);
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   NAVIGATION
+   ========================================================================== */
 .navbar {
     background-color: var(--nav-bg);
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 1.2rem var(--side-padding);
     position: sticky;
     top: 0;
     z-index: 1000;
     border-bottom: 2px solid var(--primary-purple);
     box-sizing: border-box;
-    width: 100%;
-    justify-content: space-between;
 }
 
-/* LOGO STYLING */
-.logo-link {
-    text-decoration: none;
-}
-
-.logo-container {
-    display: flex;
-    align-items: center;
-}
-
+.logo-container { display: flex; align-items: center; }
 .logo-img {
-    width: 65px;
-    height: 65px;
+    width: 65px; height: 65px;
     filter: drop-shadow(0 0 8px var(--accent-purple));
 }
 
-.brand-wrapper {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-}
+.brand-wrapper { display: flex; flex-direction: column; line-height: 1; }
+.brand-main { font-weight: 900; font-size: 1.4rem; letter-spacing: -0.5px; }
+.brand-sub { font-weight: 400; font-size: 0.75rem; color: var(--accent-purple); letter-spacing: 2px; text-transform: uppercase; }
 
-.brand-main {
-    font-weight: 900;
-    font-size: 1.4rem;
-    color: white;
-    letter-spacing: -0.5px;
-}
-
-.brand-sub {
-    font-weight: 400;
-    font-size: 0.75rem;
-    color: var(--accent-purple);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-/* NAV LINKS */
 .nav-links a {
     color: #94a3b8;
     text-decoration: none;
@@ -89,22 +76,9 @@ body {
     padding-bottom: 5px;
 }
 
-.login-button {
-    border: 1px solid var(--accent-purple);
-    padding: 8px 20px;
-    border-radius: 8px;
-    background: rgba(163, 102, 255, 0.1);
-}
-
-/* DASHBOARD CONTENT */
-main{
-    width: 100%;
-    margin: auto;
-    padding: 0 var(--side-padding);
-    box-sizing: border-box;
-}
-
-
+/* ==========================================================================
+   TYPOGRAPHY & UI ELEMENTS
+   ========================================================================== */
 .page-title {
     font-size: 2.8rem;
     font-weight: 900;
@@ -114,14 +88,20 @@ main{
     -webkit-text-fill-color: transparent;
 }
 
-.subtitle {
-    color: #94a3b8;
-    font-weight: 400;
-    margin-bottom: 3rem;
+.subtitle { color: #94a3b8; margin-bottom: 3rem; }
+
+.badge {
+    color: var(--accent-purple);
+    border: 1px solid var(--glass-border);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    background: rgba(163, 102, 255, 0.1);
 }
 
-
-/* PROJECT TABLE */
+/* ==========================================================================
+   TABLES (PROJECTS)
+   ========================================================================== */
 .table-card {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -131,12 +111,7 @@ main{
     overflow: hidden;
 }
 
-.project-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0 15px;
-}
-
+.project-table { width: 100%; border-collapse: collapse; }
 
 .project-table th {
     text-align: left;
@@ -148,103 +123,37 @@ main{
     letter-spacing: 1.5px;
 }
 
-.project-row {
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.project-row:hover{
-    cursor: pointer;
+.project-row { transition: all 0.3s ease; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.project-row:hover {
     background-color: rgba(255, 255, 255, 0.05);
-    transform: scale(1.02);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-    border-color: white;
-    z-index: 10;
-    position: relative;
+    transform: scale(1.01);
 }
 
-.project-row td {
-    padding: 1.2rem 1.5rem;
-    border-bottom: 1px solid white;
-    color: white;
-}
+.project-row td { padding: 1.2rem 1.5rem; }
 
-
-/* PROGRESS BAR */
-.progress-container {
-    width: 120px;
-    height: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-}
-
+/* Progress */
+.progress-container { width: 120px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; }
 .progress-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
-    box-shadow: 0 0 15px var(--accent-purple);
+    box-shadow: 0 0 10px var(--accent-purple);
     border-radius: 10px;
 }
 
-.badge {
-    color: var(--accent-purple);
-    border: 1px solid var(--glass-border);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    background: rgba(163, 102, 255, 0.1);
-}
-
-.project-name {
-    font-weight: 700;
-    color: white;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 4rem !important;
-    color: #94a3b8;
-}
-/* ACTION BUTTON */
-.btn-details {
-    display: inline-block;
-    background: transparent;
-    color: white;
-    text-decoration: none;
-    justify-content: center;
-
-    width: auto;
-    min-width: 90px;
-    padding: 8px 15px;
-
-    border: 1px solid var(--accent-purple);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-
-.btn-details:hover {
-    background: var(--accent-purple);
-    box-shadow: 0 0 20px var(--accent-purple);
-}
-
+/* ==========================================================================
+   FORMS & INPUTS
+   ========================================================================== */
 .form-card {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 2.5rem;
     backdrop-filter: blur(10px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     max-width: 700px;
     margin: 0 auto;
 }
 
-.form-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #cbd5e1;
-    font-size: 0.9rem;
-}
+.form-label { display: block; margin-bottom: 0.4rem; color: #cbd5e1; font-size: 0.9rem; }
 
 .form-input {
     width: 100%;
@@ -252,11 +161,15 @@ main{
     margin-bottom: 1.8rem;
     border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.1);
-    background: rgb(255 255 255);
+    background: white;
     color: #0e0e0e;
     font-size: 1rem;
+    box-sizing: border-box;
 }
 
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
 .btn-primary {
     width: 100%;
     padding: 14px;
@@ -268,9 +181,75 @@ main{
     cursor: pointer;
     transition: 0.3s;
 }
+.btn-primary:hover { box-shadow: 0 0 20px var(--accent-purple); }
 
-.btn-primary:hover {
-    box-shadow: 0 0 20px var(--accent-purple);
+.btn-details {
+    padding: 8px 15px;
+    border: 1px solid var(--accent-purple);
+    border-radius: 8px;
+    background: transparent;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
 }
+.btn-details:hover { background: var(--accent-purple); box-shadow: 0 0 15px var(--accent-purple); }
+
+/* ==========================================================================
+   CUSTOM DROPDOWN
+   ========================================================================== */
+.select-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white !important;
+    color: #0e0e0e !important;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.1);
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+task-group {
+    position: relative;
+    margin-bottom: 1.8rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-suggestions {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: #150a24;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    max-height: 250px;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+}
+
+.item {
+    padding: 14px 18px;
+    color: white;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+}
+
+.item:hover {
+    background: rgba(163, 102, 255, 0.15);
+    color: var(--accent-purple);
+    padding-left: 24px;
+    box-shadow: inset 0 0 15px rgba(163, 102, 255, 0.2);
+    text-shadow: 0 0 8px rgba(163, 102, 255, 0.6);
+}
+
+.item:last-child { border-bottom: none; }
+.dropdown-arrow { color: var(--primary-purple); font-size: 0.7rem; }
 
 
