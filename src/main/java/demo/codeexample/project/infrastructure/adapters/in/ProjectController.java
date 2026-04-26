@@ -3,6 +3,7 @@ package demo.codeexample.project.infrastructure.adapters.in;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
+import demo.codeexample.project.application.out.SecurityPort;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -33,6 +34,7 @@ public class ProjectController {
     public String dashboardNotCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
         var projects = projectUseCase.findAllNotCompleteProjectsByCompany(companyName);
 
+
         model.addAttribute("projects", projects);
         return "producer/dashboard";
     }
@@ -52,6 +54,23 @@ public class ProjectController {
 
         model.addAttribute("currentProject", currentProject);
         return "project-details";
+    }
+
+    @GetMapping("/{title}/info/{projectId}")
+    public String projectInfo(@PathVariable String title, @PathVariable Long projectId, Model model) {
+        try {
+            ProjectDto project = projectUseCase.getProjectDetails(projectId);
+
+            model.addAttribute("project", project);
+            String companyName = project.getCompanyName();
+            model.addAttribute("company", companyName != null ? companyName.toLowerCase(java.util.Locale.ROOT) : "");
+        } catch (jakarta.persistence.EntityNotFoundException e) {
+            model.addAttribute("project", null);
+            model.addAttribute("company", "");
+
+        }
+
+        return "project-movieinfo";
     }
 
 
