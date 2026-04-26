@@ -55,10 +55,13 @@
 
                         <div class="dropdown-divider"></div>
 
-                        <a href="/${company}" class="dropdown-item logout">
-                            <span class="logout-icon">⇥</span>
-                            <span>Logout</span>
-                        </a>
+                        <form action="/${company}/logout" method="post" class="logout-form">
+                            <button type="submit" class="dropdown-item logout">
+                                <span class="logout-icon">↪</span>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+
                     </div>
                 </div>
             @endif
@@ -88,6 +91,12 @@
             event.stopPropagation();
         });
     }
+
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
 </script>
 
 </html>
