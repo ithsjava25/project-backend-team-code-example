@@ -1,5 +1,6 @@
 @param String error
 @param String company = ""
+@param String redirect
 
 @template.layout(
 title = "Log in",
@@ -43,6 +44,11 @@ content = @`
                 <button type="submit" class="btn btn-primary w-100 mb-3">
                     Sign In
                 </button>
+
+                @if(redirect != null)
+                    <input type="hidden" name="redirect" value="${redirect}">
+                @endif
+
             </form>
 
             <!-- Divider -->

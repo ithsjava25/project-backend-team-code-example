@@ -2,7 +2,6 @@ package demo.codeexample.config;
 
 import demo.codeexample.security.JwtAuthenticationFilter;
 import demo.codeexample.security.OAuth2LoginSuccessHandler;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -49,39 +48,42 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(
-                                        "/",
-                                        "/*",
-                                        "/aboutUs",
-                                        "/*/aboutUs",
-                                        "/login",
-                                        "/*/login",
+                                        "/", "/*",
+                                        "/aboutUs", "/*/aboutUs",
+                                        "/login", "/*/login",
                                         "/login/change-password",
-                                        "/logout",
-                                        "/*/logout",
-                                        "/css/**",
-                                        "/js/**",
-                                        "/images/**",
-                                        "/favicon.ico",
+                                        "/logout", "/*/logout",
+                                        "/css/**","/js/**", "/images/**", "/favicon.ico",
+                                        "/api/auth/**",
+                                        "/api/users/**",
                                         "/api/auth/login",
                                         "/oauth2/**",
-                                        "/login/oauth2/**",
-                                        "/api/auth/**",
-                                        "/api/users/**"
+                                        "/login/oauth2/**"
                                 ).permitAll()
                                 .anyRequest()
                                 .authenticated()
                         // everything else requires a valid token
                 )
 
-                // ↓ Returns 401 instead of redirecting to Google login
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.setContentType("application/json");
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getWriter().write(
-                                    "{\"status\": 401, \"error\": \"Unauthorized\", " +
-                                            "\"message\": \"Authentication required\"}"
-                            );
+                            String uri = request.getRequestURI();
+                            String query = request.getQueryString();
+
+                            String targetUrl = uri + (query != null ? "?" + query : "");
+
+                            String[] parts = uri.split("/");
+                            String company = parts.length > 1 ? parts[1] : "";
+
+                            String loginUrl = company.isBlank()
+                                    ? "/login"
+                                    : "/" + company + "/login";
+
+                            response.sendRedirect(loginUrl + "?redirect=" +
+                                    java.net.URLEncoder.encode(
+                                            targetUrl,
+                                            java.nio.charset.StandardCharsets.UTF_8
+                                    ));
                         })
                 )
 
