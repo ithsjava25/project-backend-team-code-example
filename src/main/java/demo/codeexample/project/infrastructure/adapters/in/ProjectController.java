@@ -92,7 +92,6 @@ public class ProjectController {
         return "project-movieinfo";
     }
 
-
     @PostMapping("/projects")
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCER')")
@@ -113,4 +112,3 @@ public class ProjectController {
         }
     }
 }
-
