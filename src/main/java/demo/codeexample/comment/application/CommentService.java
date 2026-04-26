@@ -22,13 +22,13 @@ public class CommentService implements CommentLookup {
 
     //Add
     public CommentDto createComment(CreateCommentDto dto) {
-        Long writedId = userAuthHelper.getCurrentUserId();
+        Long writerId = userAuthHelper.getCurrentUserId();
         String userName = userAuthHelper.getCurrentUserName();
 
         Comment commentEntity = new Comment();
         commentEntity.setContent(dto.getContent());
         commentEntity.setTaskId(dto.getTaskId());
-        commentEntity.setUserId(writedId);
+        commentEntity.setUserId(writerId);
         commentEntity.setUserName(userName);
 
         commentRepository.save(commentEntity);

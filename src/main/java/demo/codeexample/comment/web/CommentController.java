@@ -30,15 +30,8 @@ RedirectAttributes redirectAttributes){
                     }
                 commentService.createComment(createCommentDto);
 
-        // Add the ID to the redirect attributes
         redirectAttributes.addAttribute("taskId", createCommentDto.getTaskId());
 
         return "redirect:/" + TenantContext.getTenant() + "/{taskId}/view";
-    }
-
-    @GetMapping
-    public String list(Model model){
-        model.addAttribute("comments", commentService.getAllComments() );
-        return "comment/commentList";
     }
 }
