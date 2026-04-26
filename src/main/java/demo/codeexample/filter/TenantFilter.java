@@ -13,7 +13,7 @@ public class TenantFilter implements HandlerInterceptor {
 
     private static final Set<String> NON_TENANT_ROOTS = Set.of(
             "api",
-            "css", "js", "images", "oauth2", "login",
+            "css", "js", "images", "oauth2", "login", "logout",
             "aboutUs", "error", "favicon.ico", "actuator"
             );
 
