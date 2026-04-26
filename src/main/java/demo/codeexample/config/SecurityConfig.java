@@ -48,23 +48,26 @@ public class SecurityConfig {
                 // Don't create server-side sessions — JWT is stateless
 
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/").permitAll()
-
-                                .requestMatchers("/api/auth/**").permitAll()
-
-                                .requestMatchers("/login").permitAll()  // login is public
-
-                                .requestMatchers("/login/change-password").permitAll()
-                                // ↑ must be accessible — user has token in cookie but might
-
-                                .requestMatchers("/oauth2/**").permitAll()
-                                .requestMatchers("/login/oauth2/**").permitAll()
-                                // ↑ OAuth2 callback must be public!
-
-                                .requestMatchers("/api/users/**").authenticated()
-                                // only admins can manage users
-
-                                .anyRequest().authenticated()
+                                .requestMatchers(
+                                        "/",
+                                        "/*",
+                                        "/login",
+                                        "/*/login",
+                                        "/login/change-password",
+                                        "/logout",
+                                        "/*/logout",
+                                        "/css/**",
+                                        "/js/**",
+                                        "/images/**",
+                                        "/favicon.ico",
+                                        "/api/auth/login",
+                                        "/oauth2/**",
+                                        "/login/oauth2/**",
+                                        "/api/auth/**",
+                                        "/api/users/**"
+                                ).permitAll()
+                                .anyRequest()
+                                .authenticated()
                         // everything else requires a valid token
                 )
 
@@ -80,7 +83,6 @@ public class SecurityConfig {
                         })
                 )
 
-
                 .addFilterBefore(jwtAuthFilter,
                         UsernamePasswordAuthenticationFilter.class)
 
@@ -88,6 +90,12 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                                 .successHandler(oAuth2LoginSuccessHandler)
                         // runs your handler after Google login succeeds
+                )
+
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .deleteCookies("jwt")
+                        .logoutSuccessUrl("/login")
                 );
 
         return http.build();
