@@ -38,11 +38,43 @@ public class TaskService implements TaskUseCase {
                     TaskStatus.ASSIGNED, event.recruitingDeadline(), event.projectId(), recruiterId);
 
             createTask(TaskType.RECORDING, "Record movie for " + event.title(),
-                    TaskStatus.ASSIGNED, event.recordingDeadline(), event.projectId(), directorId);
+                    TaskStatus.PENDING, event.recordingDeadline(), event.projectId(), directorId);
 
             createTask(TaskType.EDITING, "Editing scenes for " + event.title(),
-                    TaskStatus.ASSIGNED, event.editingDeadline(), event.projectId(), editorId);
+                    TaskStatus.PENDING, event.editingDeadline(), event.projectId(), editorId);
         }
+
+        public void acceptTask(Long taskId) {
+        Task task = taskRepository.findById(taskId).orElse(null);
+        if (task.getStatus() != TaskStatus.ASSIGNED) {
+            throw new IllegalStateException("Previous task is not completed.");
+            }
+        task.setStatus(TaskStatus.IN_PROGRESS);
+        taskRepository.save(task);
+        }
+
+    public void completeTask(Long taskId) {
+        Task currentTask = taskRepository.findById(taskId).orElseThrow();
+        currentTask.setStatus(TaskStatus.COMPLETED);
+        taskRepository.save(currentTask);
+
+        TaskType nextType = getNextTaskType(currentTask.getTaskType());
+        if (nextType != null) {
+            taskRepository.findByProjectIdAndTaskType(currentTask.getProjectId(), nextType)
+                    .ifPresent(nextTask -> {
+                        nextTask.setStatus(TaskStatus.ASSIGNED);
+                        taskRepository.save(nextTask);
+                    });
+        }
+    }
+    private TaskType getNextTaskType(TaskType current) {
+        return switch (current) {
+            case RECRUITING -> TaskType.RECORDING;
+            case RECORDING -> TaskType.EDITING;
+            case EDITING -> null;
+        };
+    }
+
         private Long findByRole (Set < Long > ids, Role role){
             return ids.stream()
                     .filter(id -> userPort.hasRole(id, role))
@@ -63,7 +95,6 @@ public class TaskService implements TaskUseCase {
         @Override
         public Task createTask (TaskType taskType, String description, TaskStatus status,
                 LocalDateTime deadline, Long projectId, Long userId){
-
             String employeeName = userPort.getEmployeeFullName(userId);
 
             Task task = new Task(null, taskType, description, status, deadline, projectId, userId);
