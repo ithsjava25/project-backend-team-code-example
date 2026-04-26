@@ -6,7 +6,7 @@
 title = currentProject.getTitle(),
 company = company,
 content = @`
-    <div class="project-container" data-company="${company}" data-project-id="${currentProject.getId()}">
+    <div class="project-container" data-company="${company}" data-project-id="${currentProject.getId()}" data-project-title="${currentProject.getTitle()}">
 
         <header class="project-header">
             <div class="header-content">

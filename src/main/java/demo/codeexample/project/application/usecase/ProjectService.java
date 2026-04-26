@@ -77,14 +77,14 @@ public class ProjectService implements ProjectUseCase {
         Long currentUserId = securityPort.getCurrentUserId();
         String creatorName = securityPort.getCurrentUserName();
 
-        logger.log(
-                LoggerAction.PROJECT_CREATED,
-                currentUserId,
-                "PROJECT",
-                project.getId(),
-                project.getId(),
-                "New project created: " + project.getTitle() + ". Created by: " + creatorName
-        );
+//        logger.log(
+//                LoggerAction.PROJECT_CREATED,
+//                currentUserId,
+//                "PROJECT",
+//                project.getId(),
+//                project.getId(),
+//                "New project created: " + project.getTitle() + ". Created by: " + creatorName
+//        );
 
         ProjectCreatedEvent event = new ProjectCreatedEvent(
                 project.getId(),

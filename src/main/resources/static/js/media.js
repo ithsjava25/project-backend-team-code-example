@@ -1,4 +1,4 @@
-async function uploadFiles(projectId, company, fileInputId, statusId){
+async function uploadFiles(projectId, company, projectTitle, fileInputId, statusId){
     const fileInput = document.getElementById(fileInputId);
     const status = document.getElementById(statusId);
     const files = fileInput.files;
@@ -11,7 +11,7 @@ async function uploadFiles(projectId, company, fileInputId, statusId){
         if(status) status.innerText = `Uploading ${i + 1}/${files.length}: ${file.name}...`;
 
         try{
-            const urlRes = await fetch(`/${company}/api/files/upload-url?fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`);
+            const urlRes = await fetch(`/${company}/api/files/upload-url?company=${encodeURIComponent(company)}&projectTitle=${encodeURIComponent(projectTitle)}&projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`);
             const { url } = await urlRes.json();
 
             await fetch(url, {
@@ -20,7 +20,7 @@ async function uploadFiles(projectId, company, fileInputId, statusId){
                 headers: { 'Content-Type': file.type}
             });
 
-            await fetch(`/${company}/api/files/callback?projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`, {
+            await fetch(`/${company}/api/files/callback?company=${encodeURIComponent(company)}&projectTitle=${encodeURIComponent(projectTitle)}&projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`, {
                 method: 'POST'
             });
 
@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (projectView) {
         const company = projectView.dataset.company;
         const projectId = projectView.dataset.projectId;
+        const projectTitle = projectView.dataset.projectTitle;
 
         if (company && projectId) loadMedia(company, projectId);
 
@@ -94,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fileInput.addEventListener('change', async function() {
                 if (this.files.length === 0) return;
                 try {
-                    await uploadFiles(projectId, company, 'detailFiles', 'detailStatus');
+                    await uploadFiles(projectId, company, projectTitle, 'detailFiles', 'detailStatus');
                     setTimeout(() => location.reload(), 800);
                 } catch (err) { console.error(err); }
             });
@@ -123,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const project = await response.json();
 
-                await uploadFiles(project.id, company, 'projectFiles', 'uploadStatus');
+                await uploadFiles(project.id, company, project.title, 'projectFiles', 'uploadStatus');
 
                 setTimeout(() => {
                     window.location.href = `/${company}/dashboard/current`;
