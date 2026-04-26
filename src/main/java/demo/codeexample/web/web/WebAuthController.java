@@ -38,6 +38,7 @@ public class WebAuthController {
             response.addHeader("Set-Cookie", result.cookie());
             return safeRedirect(redirect, result.redirect());
         }
+
         return result.redirect();
     }
 
@@ -47,6 +48,14 @@ public class WebAuthController {
         }
 
         if (!redirect.startsWith("/") || redirect.startsWith("//")) {
+            return fallback;
+        }
+
+        if (redirect.contains("\\") ||
+                redirect.contains("\r") ||
+                redirect.contains("\n") ||
+                redirect.contains("http:") ||
+                redirect.contains("https:")) {
             return fallback;
         }
 
