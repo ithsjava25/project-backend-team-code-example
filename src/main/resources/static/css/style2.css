@@ -30,9 +30,11 @@ body {
 
 main {
     width: 100%;
-    margin: auto;
-    padding: 0 var(--side-padding);
+    padding: 2rem var(--side-padding); /* Samma sidopadding som .navbar */
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Gör att barnen (som .form-card) fyller ut bredden */
 }
 
 /* ==========================================================================
@@ -144,13 +146,13 @@ main {
    FORMS & INPUTS
    ========================================================================== */
 .form-card {
+    box-sizing: border-box;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 2.5rem;
     backdrop-filter: blur(10px);
-    max-width: 700px;
-    margin: 0 auto;
+    width: 100%;
 }
 
 .form-label { display: block; margin-bottom: 0.4rem; color: #cbd5e1; font-size: 0.9rem; }
@@ -212,7 +214,7 @@ main {
     margin-bottom: 1rem;
 }
 
-task-group {
+.task-group {
     position: relative;
     margin-bottom: 1.8rem;
     display: flex;
@@ -221,6 +223,7 @@ task-group {
 
 .dropdown-suggestions {
     position: absolute;
+    top: 100%;
     left: 0;
     width: 100%;
     z-index: 1000;
