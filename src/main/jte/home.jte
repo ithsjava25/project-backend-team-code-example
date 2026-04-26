@@ -24,6 +24,7 @@ content = @`
 
             <div class="movie-row">
                 @for(ProjectDto project : projects)
+                 <a href="/${company}/${project.getTitle().replace(" ", "-")}/info/${project.getId()}" style="text-decoration: none; color: inherit;">
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
                             <img class="card-image" src="/${company}/api/files/project-poster/${project.getId()}"
@@ -34,6 +35,7 @@ content = @`
                             <span class="project-title">${project.getTitle()} </span>
                         </div>
                     </div>
+                 </a>
                 @endfor
             </div>
 
@@ -47,14 +49,19 @@ content = @`
 
             <div class="movie-row" >
                 @for(ProjectDto film : films)
+                <a href="/${company}/${film.getTitle().replace(" ", "-")}/info/${film.getId()}">
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
-                            <img class="card-image" src="" alt="${film.getTitle()}" />
+                            <img class="card-image"
+                                     src="/${company}/api/files/project-poster/${film.getId()}"
+                                     alt="${film.getTitle()}"
+                                     style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
                         </div>
                         <div class="movie-info">
                             <span class="project-title">${film.getTitle()} </span>
                         </div>
                     </div>
+                </a>
                 @endfor
             </div>
 
@@ -68,14 +75,19 @@ content = @`
 
             <div class="movie-row" >
                 @for(ProjectDto serie : series)
+                <a href="/${company}/${serie.getTitle().replace(" ", "-")}/info/${serie.getId()}" class="card-link">
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
-                            <img class="card-image" src="" alt="${serie.getTitle()}" />
+                            <img class="card-image"
+                                     src="/${company}/api/files/project-poster/${serie.getId()}"
+                                     alt="${serie.getTitle()}"
+                                     style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
                         </div>
                         <div class="movie-info">
                             <span class="project-title">${serie.getTitle()} </span>
                         </div>
                     </div>
+                </a>
                 @endfor
             </div>
 
