@@ -28,11 +28,11 @@ public class SecurityConfig {
     }
 
     private static final Set<String> NON_TENANT_ROOTS = Set.of(
-            "api", "css", "js", "images", "oauth2", "login",
+            "api", "css", "js", "images", "oauth2", "login", "logout",
             "aboutUs", "error", "favicon.ico", "actuator"
     );
 
-    private String resolveTenantFromRequest(String uri) {
+    private String resolveTenantFromUri(String uri) {
         String[] parts = uri.split("/");
 
         if (parts.length <= 1) {
@@ -41,11 +41,25 @@ public class SecurityConfig {
 
         String firstSegment = parts[1];
 
+        if (firstSegment == null || firstSegment.isBlank()) {
+            return "";
+        }
+
         if (NON_TENANT_ROOTS.contains(firstSegment)) {
             return "";
         }
 
         return firstSegment;
+    }
+
+    private String safeRelativeTarget(String uri, String query) {
+        String targetUrl = uri + (query != null ? "?" + query : "");
+
+        if (!targetUrl.startsWith("/") || targetUrl.startsWith("//")) {
+            return "/";
+        }
+
+        return targetUrl;
     }
 
     @Bean
@@ -95,13 +109,8 @@ public class SecurityConfig {
                             String uri = request.getRequestURI();
                             String query = request.getQueryString();
 
-                            String targetUrl = uri + (query != null ? "?" + query : "");
-
-                            if (!targetUrl.startsWith("/") || targetUrl.startsWith("//")) {
-                                targetUrl = "/";
-                            }
-
-                            String company = resolveTenantFromRequest(uri);
+                            String targetUrl = safeRelativeTarget(uri, query);
+                            String company = resolveTenantFromUri(uri);
 
                             String loginUrl = company.isBlank()
                                     ? "/login"
