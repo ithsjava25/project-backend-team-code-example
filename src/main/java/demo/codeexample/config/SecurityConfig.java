@@ -1,5 +1,6 @@
 package demo.codeexample.config;
 
+import demo.codeexample.company.TenantContext;
 import demo.codeexample.security.JwtAuthenticationFilter;
 import demo.codeexample.security.OAuth2LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +25,27 @@ public class SecurityConfig {
                           OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
+    }
+
+    private static final Set<String> NON_TENANT_ROOTS = Set.of(
+            "api", "css", "js", "images", "oauth2", "login",
+            "aboutUs", "error", "favicon.ico", "actuator"
+    );
+
+    private String resolveTenantFromRequest(String uri) {
+        String[] parts = uri.split("/");
+
+        if (parts.length <= 1) {
+            return "";
+        }
+
+        String firstSegment = parts[1];
+
+        if (NON_TENANT_ROOTS.contains(firstSegment)) {
+            return "";
+        }
+
+        return firstSegment;
     }
 
     @Bean
@@ -58,7 +82,8 @@ public class SecurityConfig {
                                         "/api/users/**",
                                         "/api/auth/login",
                                         "/oauth2/**",
-                                        "/login/oauth2/**"
+                                        "/login/oauth2/**",
+                                        "/*/*/info/*"  // <-- not goo solution. Temporary!
                                 ).permitAll()
                                 .anyRequest()
                                 .authenticated()
@@ -72,8 +97,11 @@ public class SecurityConfig {
 
                             String targetUrl = uri + (query != null ? "?" + query : "");
 
-                            String[] parts = uri.split("/");
-                            String company = parts.length > 1 ? parts[1] : "";
+                            if (!targetUrl.startsWith("/") || targetUrl.startsWith("//")) {
+                                targetUrl = "/";
+                            }
+
+                            String company = resolveTenantFromRequest(uri);
 
                             String loginUrl = company.isBlank()
                                     ? "/login"

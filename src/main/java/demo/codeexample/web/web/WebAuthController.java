@@ -36,12 +36,21 @@ public class WebAuthController {
 
         if (result.success()) {
             response.addHeader("Set-Cookie", result.cookie());
-
-            if (redirect != null && !redirect.isBlank()) {
-                return "redirect:" + redirect;
-            }
+            return safeRedirect(redirect, result.redirect());
         }
         return result.redirect();
+    }
+
+    private String safeRedirect(String redirect, String fallback) {
+        if (redirect == null || redirect.isBlank()) {
+            return fallback;
+        }
+
+        if (!redirect.startsWith("/") || redirect.startsWith("//")) {
+            return fallback;
+        }
+
+        return "redirect:" + redirect;
     }
 
     @GetMapping("/login/change-password")
