@@ -12,24 +12,24 @@ title = "Create",
 company = company,
 currentUser = currentUser,
 content = @`
-<main class="container">
-    <h1 class="page-title">Create New Project</h1>
-    <p class="subtitle">Start a new film production by filling in the details below.</p>
+    <main class="container">
+        <h1 class="page-title">Create New Project</h1>
+        <p class="subtitle">Start a new film production by filling in the details below.</p>
 
-    <div class="form-card">
-        <form action="/${company}/projects" method="post">
+        <div class="form-card">
+            <form id="createProjectForm" action="/${company}/projects" method="post">
 
-            <label class="form-label">Project Title</label>
-            <input type="text" name="title" class="form-input" required>
+                <label class="form-label">Project Title</label>
+                <input type="text" name="title" class="form-input" required>
 
-            <input type="hidden" name="companyName" value="${company}">
+                <input type="hidden" name="companyName" value="${company}">
 
-            <label class="form-label">Category</label>
-            <select name="category" class="form-input" required>
-                @for(var c : Category.values())
-                    <option value="${c.name()}">${c.name()}</option>
-                @endfor
-            </select>
+                <label class="form-label">Category</label>
+                <select name="category" class="form-input" required>
+                    @for(var c : Category.values())
+                        <option value="${c.name()}">${c.name()}</option>
+                    @endfor
+                </select>
 
             <label class="form-label">Release Date</label>
             <input type="date"
@@ -95,7 +95,6 @@ content = @`
             <div id="uploadStatus" style="margin-top: 10px; font-size: 0.9rem;"></div>
 
             <button type="submit" class="btn-primary" id="submitBtn">Create Project & Upload</button>
-<%--            <button type="submit" class="btn-primary">Create Project</button>--%>
         </form>
     </div>
 </main>
@@ -164,9 +163,10 @@ content = @`
     });
 </script>
 <script>
-    const currentCompany = "${company}"
+    const currentCompany = "${company}";
     @raw
-    document.querySelector('form').addEventListener('submit', async function(e) {
+    // document.querySelector('form').addEventListener('submit', async function(e) {
+    document.getElementById('createProjectForm').addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const btn = document.getElementById('submitBtn');
@@ -241,5 +241,3 @@ content = @`
 </script>
 `
 )
-
-

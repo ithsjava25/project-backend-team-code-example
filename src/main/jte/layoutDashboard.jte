@@ -74,29 +74,31 @@
 </body>
 
 <script>
-    const userMenuButton = document.getElementById("userMenuButton");
-    const userDropdown = document.getElementById("userDropdown");
+    (() => {
+        const userMenuButton = document.getElementById("userMenuButton");
+        const userDropdown = document.getElementById("userDropdown");
 
-    if (userMenuButton && userDropdown) {
-        userMenuButton.addEventListener("click", function (event) {
-            event.stopPropagation();
-            userDropdown.classList.toggle("show");
-        });
+        if (userMenuButton && userDropdown) {
+            userMenuButton.addEventListener("click", function (event) {
+                event.stopPropagation();
+                userDropdown.classList.toggle("show");
+            });
 
-        document.addEventListener("click", function () {
-            userDropdown.classList.remove("show");
-        });
+            document.addEventListener("click", function () {
+                userDropdown.classList.remove("show");
+            });
 
-        userDropdown.addEventListener("click", function (event) {
-            event.stopPropagation();
-        });
-    }
-
-    window.addEventListener("pageshow", function (event) {
-        if (event.persisted) {
-            window.location.reload();
+            userDropdown.addEventListener("click", function (event) {
+                event.stopPropagation();
+            });
         }
-    });
+
+        window.addEventListener("pageshow", function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    })();
 </script>
 
 </html>
