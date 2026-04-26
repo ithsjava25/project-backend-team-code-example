@@ -93,7 +93,6 @@ public class SecurityConfig {
                                         "/logout", "/*/logout",
                                         "/css/**","/js/**", "/images/**", "/favicon.ico",
                                         "/api/auth/**",
-                                        "/api/users/**",
                                         "/api/auth/login",
                                         "/oauth2/**",
                                         "/login/oauth2/**",
