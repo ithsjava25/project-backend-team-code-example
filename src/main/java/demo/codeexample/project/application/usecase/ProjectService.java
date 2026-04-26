@@ -123,23 +123,17 @@ public class ProjectService implements ProjectUseCase {
                 .orElseThrow(() -> new EntityNotFoundException("Project not found: " + projectId));
     }
 
+
     @Override
     public List<ProjectDto> findProjectsForUser(Long userId, String companyName) {
-        var user = userLookup.findById(userId)
-                .orElseThrow(() -> new IllegalStateException("User not found: " + userId));
+        List<ProjectDto> currentProjects =
+                findProjectsForUserAndStatus(userId, companyName, false);
 
-        var companyProjects = repository.findAllProjectsBelongingToCompany(companyName, false);
+        List<ProjectDto> completedProjects =
+                findProjectsForUserAndStatus(userId, companyName, true);
 
-        if (user.getRole() == Role.ADMIN || user.getRole() == Role.PRODUCER) {
-            return companyProjects.stream()
-                    .map(project -> mapper.map(project, ProjectDto.class))
-                    .toList();
-        }
-
-        return companyProjects.stream()
-                .filter(project -> project.getEmployeesId() != null
-                        && project.getEmployeesId().contains(userId))
-                .map(project -> mapper.map(project, ProjectDto.class))
+        return java.util.stream.Stream
+                .concat(currentProjects.stream(), completedProjects.stream())
                 .toList();
     }
 
