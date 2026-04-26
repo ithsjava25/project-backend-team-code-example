@@ -95,7 +95,7 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .deleteCookies("jwt")
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/")
                 );
 
         return http.build();

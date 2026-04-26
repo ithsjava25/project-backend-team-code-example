@@ -59,6 +59,6 @@ public class WebAuthController {
                 "jwt=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict"
         );
 
-        return "redirect:/" + TenantContext.getTenant() + "/login";
+        return "redirect:/" + TenantContext.getTenant() + "";
     }
 }
