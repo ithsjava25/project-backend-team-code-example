@@ -393,7 +393,7 @@ main{
 .user-email {
     font-size: 14px;
     color: #666;
-    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .user-role {
