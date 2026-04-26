@@ -35,12 +35,10 @@ public class WebAuthController {
         return result.redirect();
     }
 
-
     @GetMapping("/login/change-password")
     @ResponseBody
     public String changePasswordPage(@RequestParam(required = false) String error,
                                      @RequestParam(required = false) String success) {
-
 
         return "auth/change-password";
     }
@@ -54,4 +52,13 @@ public class WebAuthController {
         return webAuthService.handleChangePassword(currentPassword, newPassword, confirmPassword, jwtToken);
     }
 
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        response.setHeader(
+                "Set-Cookie",
+                "jwt=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict"
+        );
+
+        return "redirect:/" + TenantContext.getTenant() + "/login";
+    }
 }
