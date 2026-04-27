@@ -17,8 +17,8 @@ public class FilterConfig {
         registration.addUrlPatterns(
                 "/dashboard/*",
                 "/projects/*",
-                "*/login",
-                "*/login/*",
+                "/*/login",
+                "/*/login/*",
                 "/login/*",
                 "/logout",
                 "/*/logout"
