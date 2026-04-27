@@ -5,6 +5,7 @@ import demo.codeexample.security.JwtAuthenticationFilter;
 import demo.codeexample.security.OAuth2LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -95,13 +96,18 @@ public class SecurityConfig {
                                         "/api/auth/**",
                                         "/api/auth/login",
                                         "/oauth2/**",
-                                        "/login/oauth2/**",
-                                        "/*/*/info/*"  // <-- not goo solution. Temporary!
+                                        "/login/oauth2/**"
+//                                        "/*/*/info/*"  // <-- not goo solution. Temporary!
+                                ).permitAll()
+                                .requestMatchers(HttpMethod.GET,
+                                        "/api/files/**",
+                                        "/*/api/files/**"
                                 ).permitAll()
                                 .anyRequest()
                                 .authenticated()
                         // everything else requires a valid token
                 )
+
 
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
