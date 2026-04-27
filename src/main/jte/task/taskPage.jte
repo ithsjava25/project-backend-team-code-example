@@ -32,7 +32,7 @@
 <main class="container">
     <header class="dashboard-header">
         <h1 class="page-title">Task Details</h1>
-        <a href="/dashboard" style="color: #6366f1; text-decoration: none;">&larr; Back to Dashboard</a>
+        <a href="/${company}/dashboard/current" style="color: #6366f1; text-decoration: none;">&larr; Back to Dashboard</a>
     </header>
 
     <div class="table-card" style="padding: 2rem;">
