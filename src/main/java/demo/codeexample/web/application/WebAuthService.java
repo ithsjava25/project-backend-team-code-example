@@ -40,16 +40,16 @@ public class WebAuthService {
             return prefix + "/login";
         }
         if (!passwordsMatch(newPassword, confirmPassword)) {
-            return encodeRedirect(prefix + "/change-password",
+            return encodeRedirect(prefix + "/login/change-password",
                     "Passwords do not match");
         }
         try {
             changePassword(currentPassword, newPassword, jwtToken);
-            return prefix + "/change-password" +
+            return prefix + "/login/change-password" +
                     "?success=Password+changed+successfully!";
 
         } catch (Exception e) {
-            return encodeRedirect(prefix + "/change-password", "Could not change password");
+            return encodeRedirect(prefix + "/login/change-password", "Could not change password");
         }
     }
 
@@ -73,7 +73,7 @@ public class WebAuthService {
         String prefix = getRedirectPrefix();
 
         if (response.isPasswordResetRequired()) {
-            return prefix + "/change-password";
+            return prefix + "/login/change-password";
         }
 
         return switch (response.getRole()) {
