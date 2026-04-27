@@ -27,5 +27,17 @@ public class SecurityAdapter implements SecurityPort {
                 .map(u -> u.getFirstName() + " " + u.getLastName())
                 .orElse("Unknown User (" + userId + ")");
     }
+    @Override
+    public boolean hasRole(String role) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) return false;
+
+        String roleWithPrefix = "ROLE_" + role;
+
+        return auth.getAuthorities().stream()
+                .anyMatch(grantedAuthority ->
+                        grantedAuthority.getAuthority().equals(roleWithPrefix) ||
+                                grantedAuthority.getAuthority().equals(role));
+    }
 
 }
