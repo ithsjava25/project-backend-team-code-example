@@ -7,8 +7,6 @@ title = project != null ? project.getTitle() : "Not Found",
 company = company,
 bodyClass = "movie-info-page",
 content = @`
-    <link rel="stylesheet" href="/css/home/project.css">
-
     @if(project != null)
         <style>
             :root {

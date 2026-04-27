@@ -312,5 +312,4 @@ content = @`
 
     <script src="/js/media.js"></script>
 `
-
 )

@@ -24,7 +24,7 @@ content = @`
 
             <div class="movie-row">
                 @for(ProjectDto project : projects)
-                 <a href="/${company}/${project.getTitle().replace(" ", "-")}/info/${project.getId()}" style="text-decoration: none; color: inherit;">
+                 <a href="/${company}/${project.getTitle().replace(" ", "-")}/${project.getId()}" style="text-decoration: none; color: inherit;">
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
                             <img class="card-image" src="/${company}/api/files/${project.getId()}/project/cover"
@@ -49,7 +49,7 @@ content = @`
 
             <div class="movie-row" >
                 @for(ProjectDto film : films)
-                <a href="/${company}/${film.getTitle().replace(" ", "-")}/info/${film.getId()}">
+                <a href="/${company}/${film.getTitle().replace(" ", "-")}/${film.getId()}">
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
                             <img class="card-image"
@@ -75,7 +75,7 @@ content = @`
 
             <div class="movie-row" >
                 @for(ProjectDto serie : series)
-                <a href="/${company}/${serie.getTitle().replace(" ", "-")}/info/${serie.getId()}" class="card-link">
+                <a href="/${company}/${serie.getTitle().replace(" ", "-")}/${serie.getId()}" class="card-link">
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
                             <img class="card-image"

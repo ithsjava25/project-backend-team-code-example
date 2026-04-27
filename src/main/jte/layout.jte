@@ -1,8 +1,8 @@
 @import gg.jte.Content
-@param String title
 @param Content content
 @param String company
 @param String bodyClass = ""
+@param String title
 
 <!DOCTYPE html>
 <html lang="sv">
@@ -22,7 +22,7 @@
     </div>
     <ul class="nav-links">
         <li><a href="/${company}">Home</a></li>
-        <li><a href="/${company}/projects">Projects</a></li>
+        <button type="button" class="nav-link-btn" id="category-trigger"> Categories <span class="dropdown-arrow">▼</span></button>
         <li><a href="/${company}/aboutUs">About Us</a></li>
         <li><a href="/${company}/login" class="btn-login">Login</a></li>
     </ul>
@@ -36,5 +36,6 @@
     <p>&copy; 2026 Hexagonal Film Productions. Created By Students of Duck Academy.</p>
 </footer>
 
+<script src="/js/drop-down.js"></script>
 </body>
 </html>

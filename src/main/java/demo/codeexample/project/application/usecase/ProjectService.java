@@ -93,7 +93,7 @@ public class ProjectService implements ProjectUseCase {
         }
         userPort.validateEmployees(projectDto.getEmployeesId());
 
-        if(isDeadlinesInOrder(projectDto.recruitingDeadline(), projectDto.recordingDeadline(), projectDto.editingDeadline())){
+        if(isDeadlinesInOrder(projectDto.getRecruitingDeadline(), projectDto.getRecordingDeadline(), projectDto.getEditingDeadline())){
             Project project = repository.save(projectDto);
 
             Long currentUserId = securityPort.getCurrentUserId();
@@ -108,26 +108,15 @@ public class ProjectService implements ProjectUseCase {
 //                "New project created: " + project.getTitle() + ". Created by: " + creatorName
 //        );
 
-        ProjectCreatedEvent event = new ProjectCreatedEvent(
-                project.getId(),
-                project.getTitle(),
-                project.getEmployeesId(),
-                project.getReleaseDate(),
-                project.getCompanyName(),
-                projectDto.getRecruitingDeadline(),
-                projectDto.getRecordingDeadline(),
-                projectDto.getEditingDeadline()
-        );
-        projectEventPort.publish(event);
             ProjectCreatedEvent event = new ProjectCreatedEvent(
                     project.getId(),
                     project.getTitle(),
                     project.getEmployeesId(),
                     project.getReleaseDate(),
                     project.getCompanyName(),
-                    projectDto.recruitingDeadline(),
-                    projectDto.recordingDeadline(),
-                    projectDto.editingDeadline()
+                    projectDto.getRecruitingDeadline(),
+                    projectDto.getRecordingDeadline(),
+                    projectDto.getEditingDeadline()
             );
             projectEventPort.publish(event);
 

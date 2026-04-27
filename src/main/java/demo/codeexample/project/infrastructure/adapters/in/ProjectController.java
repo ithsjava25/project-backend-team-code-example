@@ -35,7 +35,6 @@ public class ProjectController {
 
         model.addAttribute("projects",
                 projectUseCase.findCompletedProjectsForUser(currentUser.getId(), companyName));
-        model.addAttribute("company", companyName);
 
         return "producer/dashboard";
     }
@@ -47,8 +46,6 @@ public class ProjectController {
                 .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
         model.addAttribute("projects", projectUseCase.findCurrentProjectsForUser(currentUser.getId(), companyName));
-        model.addAttribute("company", companyName);
-
         return "producer/dashboard";
     }
 
@@ -74,18 +71,13 @@ public class ProjectController {
         return "project-details";
     }
 
-    @GetMapping("/{title}/info/{projectId}")
+    @GetMapping("/{title}/{projectId}")
     public String projectInfo(@PathVariable String title, @PathVariable Long projectId, Model model) {
         try {
             ProjectDto project = projectUseCase.getProjectDetails(projectId);
-
             model.addAttribute("project", project);
-            String companyName = project.getCompanyName();
-            model.addAttribute("company", companyName != null ? companyName.toLowerCase(java.util.Locale.ROOT) : "");
         } catch (jakarta.persistence.EntityNotFoundException e) {
             model.addAttribute("project", null);
-            model.addAttribute("company", "");
-
         }
 
         return "project-movieinfo";
@@ -99,7 +91,7 @@ public class ProjectController {
     public ResponseEntity<?> createProject(@ModelAttribute("project") @Valid CreateProjectDto dto,
                                            BindingResult bindingResult) {
 
-        if (!projectUseCase.isDeadlinesInOrder(dto.recruitingDeadline(), dto.recordingDeadline(), dto.editingDeadline())) {
+        if (!projectUseCase.isDeadlinesInOrder(dto.getRecruitingDeadline(), dto.getRecordingDeadline(), dto.getEditingDeadline())) {
             bindingResult.rejectValue("recruitingDeadline", "error.order", "Recruiting must be before other tasks.");
             bindingResult.rejectValue("recordingDeadline", "error.order", "Recording must be after recruiting.");
             bindingResult.rejectValue("editingDeadline", "error.order", "Editing must be after recording.");
@@ -132,9 +124,7 @@ public class ProjectController {
 
     @PostMapping("/projects/{projectId}/finalize")
     public String finalizeProject(@PathVariable Long projectId) {
-
         projectUseCase.finalizeProject(projectId);
-
         ProjectDto project = projectUseCase.getProjectDetails(projectId);
 
         return "redirect:/producer/dashboard/" + project.getTitle() + "?projectId=" + projectId;
