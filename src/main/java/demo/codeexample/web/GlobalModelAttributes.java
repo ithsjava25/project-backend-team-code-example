@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice(basePackages = {
         "demo.codeexample.project.infrastructure.adapters.in",
-        "demo.codeexample.web.web"
+        "demo.codeexample.web.web",
+        "demo.codeexample.s3FileStorage.web",
+        "demo.codeexample.company.web",
+        "demo.codeexample.comment.web",
+        "demo.codeexample.task.infrastructure.adapters.in"
 })
 @RequiredArgsConstructor
 public class GlobalModelAttributes {
