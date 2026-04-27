@@ -2,18 +2,18 @@ package demo.codeexample.web;
 
 import demo.codeexample.auth.CurrentUserLookup;
 import demo.codeexample.user.UserDto;
-import org.springframework.stereotype.Controller;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-@ControllerAdvice(annotations = Controller.class)
+@ControllerAdvice(basePackages = {
+        "demo.codeexample.project.infrastructure.adapters.in",
+        "demo.codeexample.web.web"
+})
+@RequiredArgsConstructor
 public class GlobalModelAttributes {
 
     private final CurrentUserLookup currentUserLookup;
-
-    public GlobalModelAttributes(CurrentUserLookup currentUserLookup) {
-        this.currentUserLookup = currentUserLookup;
-    }
 
     @ModelAttribute("currentUser")
     public UserDto currentUser() {
