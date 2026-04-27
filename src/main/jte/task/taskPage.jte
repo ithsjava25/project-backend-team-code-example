@@ -3,6 +3,7 @@
 @import demo.codeexample.task.TaskResponseDto
 @param TaskResponseDto task
 @param Long currentUserId
+@param String company
 
 <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +108,7 @@
             @endif
         </div>
 
-        <form action="/${task.getId()}/comments" method="post" style="margin-top: 2rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
+        <form action="/${company}/${task.getId()}/comments" method="post" style="margin-top: 2rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
             <input type="hidden" name="taskId" value="${task.getId()}">
             <textarea name="content" rows="3" placeholder="Add a comment..." required
                       style="width: 100%; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;"></textarea>
