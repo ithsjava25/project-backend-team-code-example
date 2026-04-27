@@ -24,4 +24,6 @@ public interface ProjectUseCase extends ProjectLookup {
     Project createProject(CreateProjectDto projectDto);
 
     ProjectDto getProjectDetails(Long projectId);
+
+    void finalizeProject(Long projectId);
 }

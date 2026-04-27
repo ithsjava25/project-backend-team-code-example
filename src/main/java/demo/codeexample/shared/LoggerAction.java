@@ -2,10 +2,10 @@ package demo.codeexample.shared;
 
 public enum LoggerAction {
     PROJECT_CREATED,
-    PROJECT_UPDATED,
+    PROJECT_COMPLETED,
     STATUS_CHANGED,
-    USER_ASSIGNED,
     TASK_CREATED,
+    TASK_COMPLETED,
     COMMENT_ADDED,
     FILE_UPLOADED
 }

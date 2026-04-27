@@ -4,7 +4,9 @@ import demo.codeexample.comment.CommentLookup;
 import demo.codeexample.comment.domain.CommentRepository;
 import demo.codeexample.comment.CreateCommentDto;
 import demo.codeexample.comment.domain.Comment;
+import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.security.UserAuthHelper;
+import demo.codeexample.shared.LoggerAction;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -19,19 +21,28 @@ public class CommentService implements CommentLookup {
     private final CommentRepository commentRepository;
     private final ModelMapper modelMapper;
     private final UserAuthHelper userAuthHelper;
+    private final LoggerLookup logger;
 
     //Add
     public CommentDto createComment(CreateCommentDto dto) {
-        Long writedId = userAuthHelper.getCurrentUserId();
+        Long writerId = userAuthHelper.getCurrentUserId();
         String userName = userAuthHelper.getCurrentUserName();
 
         Comment commentEntity = new Comment();
         commentEntity.setContent(dto.getContent());
         commentEntity.setTaskId(dto.getTaskId());
-        commentEntity.setUserId(writedId);
+        commentEntity.setUserId(writerId);
         commentEntity.setUserName(userName);
 
-        commentRepository.save(commentEntity);
+        Comment savedComment =commentRepository.save(commentEntity);
+        logger.log(
+                LoggerAction.COMMENT_ADDED,
+                writerId,
+                "TASK",
+                savedComment.getId(),
+                dto.getTaskId(),
+                "User " + userName + " added a comment to task " + dto.getTaskId()
+        );
 
         return modelMapper.map(commentEntity, CommentDto.class);
     }

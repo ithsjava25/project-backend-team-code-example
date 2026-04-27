@@ -39,7 +39,8 @@ public class TaskEntity {
     private Long userId;
 
 
-    public TaskEntity (TaskType taskType, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
+    public TaskEntity (Long Id, TaskType taskType, String description, TaskStatus status, LocalDateTime deadline, Long projectId, Long userId) {
+        this.id = Id;
         this.taskType = taskType;
         this.description = description;
         this.status = status;
