@@ -27,7 +27,7 @@ content = @`
                  <a href="/${company}/${project.getTitle().replace(" ", "-")}/${project.getId()}" style="text-decoration: none; color: inherit;">
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
-                            <img class="card-image" src="/${company}/api/files/${project.getId()}/project/cover"
+                            <img class="card-image" src="/api/files/${project.getId()}/project/cover"
                                  alt="${project.getTitle()}"
                                  style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
                         </div>
@@ -49,11 +49,11 @@ content = @`
 
             <div class="movie-row" >
                 @for(ProjectDto film : films)
-                <a href="/${company}/${film.getTitle().replace(" ", "-")}/${film.getId()}">
+                <a href="/${film.getTitle().replace(" ", "-")}/${film.getId()}">
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
                             <img class="card-image"
-                                     src="/${company}/api/files/${film.getId()}/project/cover"
+                                     src="/api/files/${film.getId()}/project/cover"
                                      alt="${film.getTitle()}"
                                      style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
                         </div>
@@ -75,11 +75,11 @@ content = @`
 
             <div class="movie-row" >
                 @for(ProjectDto serie : series)
-                <a href="/${company}/${serie.getTitle().replace(" ", "-")}/${serie.getId()}" class="card-link">
+                <a href="/${serie.getTitle().replace(" ", "-")}/${serie.getId()}" class="card-link">
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
                             <img class="card-image"
-                                     src="/${company}/api/files/${serie.getId()}/project/cover"
+                                     src="/api/files/${serie.getId()}/project/cover"
                                      alt="${serie.getTitle()}"
                                      style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
                         </div>

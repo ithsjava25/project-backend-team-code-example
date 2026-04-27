@@ -4,7 +4,7 @@ function deleteFile(fileKey) {
 
     if (!confirm('This file will be permanently deleted. Do you wish to proceed?')) return;
 
-    fetch(`/${company}/api/files/delete?fileKey=${encodeURIComponent(fileKey)}&company=${company}`, {
+    fetch(`/api/files/delete?fileKey=${encodeURIComponent(fileKey)}&company=${company}`, {
         method: 'DELETE'
     })
         .then(response => {
@@ -48,7 +48,7 @@ async function uploadFiles(projectId, company, projectTitle, fileInputId, status
         if(status) status.innerText = `Uploading ${i + 1}/${files.length}: ${file.name}...`;
 
         try{
-            const urlRes = await fetch(`/${company}/api/files/upload-url?company=${encodeURIComponent(company)}&projectTitle=${encodeURIComponent(projectTitle)}&projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`);
+            const urlRes = await fetch(`/api/files/upload-url?company=${encodeURIComponent(company)}&projectTitle=${encodeURIComponent(projectTitle)}&projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`);
             const { url } = await urlRes.json();
 
             await fetch(url, {
@@ -57,7 +57,7 @@ async function uploadFiles(projectId, company, projectTitle, fileInputId, status
                 headers: { 'Content-Type': file.type}
             });
 
-            await fetch(`/${company}/api/files/callback?company=${encodeURIComponent(company)}&projectTitle=${encodeURIComponent(projectTitle)}&projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`, {
+            await fetch(`/api/files/callback?company=${encodeURIComponent(company)}&projectTitle=${encodeURIComponent(projectTitle)}&projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`, {
                 method: 'POST'
             });
 
@@ -74,7 +74,7 @@ async function uploadFiles(projectId, company, projectTitle, fileInputId, status
 
 async function loadMedia(company, projectId) {
     try {
-        const res = await fetch(`/${company}/api/files/project-media/${projectId}`);
+        const res = await fetch(`/api/files/project-media/${projectId}`);
         if (!res.ok) return;
 
         const mediaItems = await res.json();

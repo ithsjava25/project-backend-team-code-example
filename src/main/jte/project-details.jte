@@ -18,7 +18,7 @@ content = @`
                 <h1>${currentProject.getTitle()}</h1>
             </div>
             <div class="header-actions">
-                <a href="/${company}/dashboard/current" class="btn-back">← Back to Dashboard</a>
+                <a href="/dashboard/current" class="btn-back">← Back to Dashboard</a>
             </div>
         </header>
 
@@ -77,7 +77,7 @@ content = @`
                     This project is officially COMPLETED.
                 </div>
             @else
-                <form action="/${company}/projects/${currentProject.getId()}/finalize" method="post">
+                <form action="/projects/${currentProject.getId()}/finalize" method="post">
                     <button type="submit"
                             class="login-button"
                             style="background: #6366f1; width: auto; padding: 0.8rem 2rem;"
@@ -88,17 +88,7 @@ content = @`
             @endif
         </div>
 
-<%--                <div class="card team-card">--%>
-<%--                    <h2>Team Members</h2>--%>
-<%--                    <ul class="employee-list">--%>
-<%--                        @for(var empId : currentProject.getEmployeesId())--%>
-<%--                            <li>--%>
-<%--                                <div class="avatar"></div>--%>
-<%--                                <span>User ID: ${empId}</span>--%>
-<%--                            </li>--%>
-<%--                        @endfor--%>
-<%--                    </ul>--%>
-<%--                </div>--%>
+
             </aside>
         </div>
 
@@ -240,18 +230,6 @@ content = @`
             gap: 15px;
         }
 
-        /*.image-grid img {*/
-        /*    width: 100%;*/
-        /*    height: 120px;*/
-        /*    object-fit: cover;*/
-        /*    border-radius: 8px;*/
-        /*    transition: transform 0.2s;*/
-        /*    cursor: pointer;*/
-        /*}*/
-
-        /*.image-grid img:hover {*/
-        /*    transform: scale(1.05);*/
-        /*}*/
 
         .doc-list {
             display: flex;
