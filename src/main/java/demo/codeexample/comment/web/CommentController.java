@@ -8,31 +8,32 @@ import demo.codeexample.company.TenantContext;
 import jakarta.validation.Valid;
 import lombok.*;
 import org.springframework.stereotype.*;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/comments")
 public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping
-        public String create(@Valid @ModelAttribute CreateCommentDto createCommentDto,
-BindingResult bindingResult,
-RedirectAttributes redirectAttributes){
-                if (bindingResult.hasErrors()) {
-                        redirectAttributes.addAttribute("taskId", createCommentDto.getTaskId());
-                        return "redirect:/" + TenantContext.getTenant() + "/{taskId}/view";
-                    }
-                commentService.createComment(createCommentDto);
+    @PostMapping("/{taskId}/comments")
+    public String create(@PathVariable Long taskId,
+                         @Valid @ModelAttribute CreateCommentDto createCommentDto,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
 
-        // Add the ID to the redirect attributes
-        redirectAttributes.addAttribute("taskId", createCommentDto.getTaskId());
+        createCommentDto.setTaskId(taskId);
 
-        return "redirect:/" + TenantContext.getTenant() + "/{taskId}/view";
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addAttribute("taskId", taskId);
+            return "redirect:/tasks/{taskId}/view";
+        }
+
+        commentService.createComment(createCommentDto);
+
+        redirectAttributes.addAttribute("taskId", taskId);
+        return "redirect:/{company}/tasks/{taskId}/view";
     }
 }
