@@ -17,8 +17,11 @@ public class FilterConfig {
         registration.addUrlPatterns(
                 "/dashboard/*",
                 "/projects/*",
+                "*/login",
+                "*/login/*",
                 "/login/*",
-                "/logout"
+                "/logout",
+                "/*/logout"
         );
 
         registration.setOrder(1);
