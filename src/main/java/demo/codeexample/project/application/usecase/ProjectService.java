@@ -74,7 +74,7 @@ public class ProjectService implements ProjectUseCase {
 
     @Override
     public Project createProject(CreateProjectDto projectDto) {
-        userPort.validateEmployees(projectDto.employeesId());
+        userPort.validateEmployees(projectDto.getEmployeesId());
 
         Project project = repository.save(projectDto);
         Long currentUserId = securityPort.getCurrentUserId();
@@ -95,9 +95,9 @@ public class ProjectService implements ProjectUseCase {
                 project.getEmployeesId(),
                 project.getReleaseDate(),
                 project.getCompanyName(),
-                projectDto.recruitingDeadline(),
-                projectDto.recordingDeadline(),
-                projectDto.editingDeadline()
+                projectDto.getRecruitingDeadline(),
+                projectDto.getRecordingDeadline(),
+                projectDto.getEditingDeadline()
         );
         projectEventPort.publish(event);
 
@@ -115,8 +115,7 @@ public class ProjectService implements ProjectUseCase {
 
         project.setCompleted(true);
 
-        CreateProjectDto updateDto = mapper.map(project, CreateProjectDto.class);
-        repository.save(updateDto);
+        repository.save(project);
 
         String currentUserName = securityPort.getCurrentUserName();
         logger.log(
