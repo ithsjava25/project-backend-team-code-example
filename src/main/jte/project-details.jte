@@ -1,12 +1,12 @@
 @import demo.codeexample.project.ProjectDto
 @import demo.codeexample.task.TaskResponseDto
-@import demo.codeexample.user.UserDto
+@import demo.codeexample.task.TaskSummaryDto;import demo.codeexample.user.UserDto
 @import java.util.List
 
 @param ProjectDto currentProject
 @param String company
 @param UserDto currentUser
-@param List<TaskResponseDto> tasks
+@param List<TaskSummaryDto> tasks
 
 @template.layoutDashboard(
 title = currentProject.getTitle(),

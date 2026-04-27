@@ -6,6 +6,7 @@ import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.TaskLookup;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.task.TaskResponseDto;
+import demo.codeexample.task.TaskSummaryDto;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -39,6 +40,7 @@ public class ProjectController {
 
         model.addAttribute("projects",
                 projectUseCase.findCompletedProjectsForUser(currentUser.getId(), companyName));
+        model.addAttribute("company", companyName);
 
         return "producer/dashboard";
     }
@@ -49,7 +51,10 @@ public class ProjectController {
         var currentUser = currentUserLookup.getCurrentUser()
                 .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
-        model.addAttribute("projects", projectUseCase.findCurrentProjectsForUser(currentUser.getId(), companyName));
+        model.addAttribute("projects",
+                projectUseCase.findCurrentProjectsForUser(currentUser.getId(), companyName));
+        model.addAttribute("company", companyName);
+
         return "producer/dashboard";
     }
 
@@ -59,6 +64,8 @@ public class ProjectController {
         var users = userLookup.findAll();
 
         model.addAttribute("users", users);
+        model.addAttribute("company", companyName);
+
         return "producer/create-project";
     }
 
@@ -71,9 +78,12 @@ public class ProjectController {
                                      Model model){
         ProjectDto currentProject = projectUseCase.getProjectDetails(projectId);
 
-        List<TaskResponseDto> tasks = taskLookup.getTasksByProjectId(projectId);
+        List<TaskSummaryDto> tasks = taskLookup.getTasksByProjectId(projectId);
 
         model.addAttribute("currentProject", currentProject);
+        model.addAttribute("company", companyName);
+        model.addAttribute("tasks", tasks);
+
         return "project-details";
     }
 
@@ -88,7 +98,6 @@ public class ProjectController {
 
         return "project-movieinfo";
     }
-
 
     @PostMapping("/projects")
     @Transactional
