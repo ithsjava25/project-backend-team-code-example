@@ -2,11 +2,10 @@ package demo.codeexample.project;
 
 import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
-import demo.codeexample.shared.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

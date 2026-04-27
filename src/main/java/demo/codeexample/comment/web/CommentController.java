@@ -35,10 +35,4 @@ RedirectAttributes redirectAttributes){
 
         return "redirect:/" + TenantContext.getTenant() + "/{taskId}/view";
     }
-
-    @GetMapping
-    public String list(Model model){
-        model.addAttribute("comments", commentService.getAllComments() );
-        return "comment/commentList";
-    }
 }
