@@ -7,15 +7,18 @@ import demo.codeexample.user.*;
 import demo.codeexample.user.domain.User;
 import demo.codeexample.user.domain.UserRepository;
 import demo.codeexample.user.infrastructure.EmailService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,8 @@ public class UserService implements UserLookup, UserAuthPort {
     private final ModelMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Override
     public List<UserDto> findAll() {
@@ -148,6 +153,7 @@ public class UserService implements UserLookup, UserAuthPort {
     }
 
     @Override
+    @Transactional
     public UserDto resetPassword(Long id) {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
@@ -167,7 +173,8 @@ public class UserService implements UserLookup, UserAuthPort {
                     tempPassword
             );
         } catch (Exception e) {
-            System.err.println("Failed to send reset email: " + e.getMessage());
+            log.error("Failed to send reset email for user id {}", id, e);
+            throw new IllegalStateException("Failed to send reset email", e);
         }
 
         return mapper.map(saved, UserDto.class);
@@ -220,7 +227,19 @@ public class UserService implements UserLookup, UserAuthPort {
     // PRIVATE HELPERS
     // ─────────────────────────────────────────
 
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+    private static final String TEMP_PASSWORD_CHARS =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+
     private String generateTempPassword() {
-        return UUID.randomUUID().toString().substring(0, 8);
+        int length = 14;
+
+        StringBuilder password = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int index = SECURE_RANDOM.nextInt(TEMP_PASSWORD_CHARS.length());
+            password.append(TEMP_PASSWORD_CHARS.charAt(index));
+        }
+
+        return password.toString();
     }
 }
