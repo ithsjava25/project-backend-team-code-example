@@ -4,6 +4,7 @@ import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.project.ProjectDto;
+import demo.codeexample.project.TaskLookup;
 import demo.codeexample.project.application.out.ProjectEventPort;
 import demo.codeexample.project.application.out.SecurityPort;
 import demo.codeexample.shared.Category;
@@ -16,7 +17,9 @@ import demo.codeexample.shared.Role;
 import demo.codeexample.user.UserLookup;
 import demo.codeexample.shared.LoggerAction;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,20 +32,20 @@ public class ProjectService implements ProjectUseCase {
     private final SecurityPort securityPort;
     private final ModelMapper mapper;
     private final LoggerLookup logger;
+    private final TaskLookup taskLookup;
     private final UserLookup userLookup;
 
     public ProjectService(ProjectRepositoryPort repository, UserPort userPort,
-                          ProjectEventPort projectEventPort, SecurityPort securityPort, ModelMapper mapper,
-                          LoggerLookup logger, UserLookup userLookup) {
+                          ProjectEventPort projectEventPort, SecurityPort securityPort, ModelMapper mapper, LoggerLookup logger, TaskLookup taskLookup, UserLookup userLookup) {
         this.repository = repository;
         this.userPort = userPort;
         this.projectEventPort = projectEventPort;
         this.securityPort = securityPort;
         this.mapper = mapper;
         this.logger = logger;
+        this.taskLookup = taskLookup;
         this.userLookup = userLookup;
     }
-
 
     @Override
     public List<ProjectDto> findAllCompletedProjectsByCompany(String companyName) {
@@ -74,7 +77,10 @@ public class ProjectService implements ProjectUseCase {
 
     @Override
     public Project createProject(CreateProjectDto projectDto) {
-        userPort.validateEmployees(projectDto.employeesId());
+        if (!securityPort.hasRole("PRODUCER")) {
+            throw new AccessDeniedException("Only a Producer can create projects.");
+        }
+        userPort.validateEmployees(projectDto.getEmployeesId());
 
         Project project = repository.save(projectDto);
         Long currentUserId = securityPort.getCurrentUserId();
@@ -95,13 +101,43 @@ public class ProjectService implements ProjectUseCase {
                 project.getEmployeesId(),
                 project.getReleaseDate(),
                 project.getCompanyName(),
-                projectDto.recruitingDeadline(),
-                projectDto.recordingDeadline(),
-                projectDto.editingDeadline()
+                projectDto.getRecruitingDeadline(),
+                projectDto.getRecordingDeadline(),
+                projectDto.getEditingDeadline()
         );
         projectEventPort.publish(event);
 
         return project;
+    }
+
+    @Override
+    @Transactional
+    public void finalizeProject(Long projectId) {
+        if (!securityPort.hasRole("PRODUCER")) {
+            throw new AccessDeniedException("Only a Producer can finalize projects.");
+        }
+
+
+        if (!taskLookup.isFinalTaskComplete(projectId)) {
+            throw new IllegalStateException("Cannot finalize: The Editing task is not complete.");
+        }
+
+        Project project = repository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found: " + projectId));
+
+        project.setCompleted(true);
+
+        repository.save(project);
+
+        String currentUserName = securityPort.getCurrentUserName();
+        logger.log(
+                LoggerAction.PROJECT_COMPLETED,
+                securityPort.getCurrentUserId(),
+                "PROJECT",
+                projectId,
+                projectId,
+                "Project '" + project.getTitle() + "' marked as COMPLETED by " + currentUserName
+        );
     }
 
     @Override

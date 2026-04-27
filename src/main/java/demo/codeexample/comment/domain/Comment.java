@@ -6,13 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
 public class Comment {
 
     @Id
@@ -29,18 +29,14 @@ public class Comment {
     @Column(nullable = false)
     private Long userId;
 
-    @Column(nullable = false, updatable = false)
-    private Instant createdAt;
+    @Column(nullable = false)
+    private String userName;
 
-    public Comment(String content, Long userId) {
-        this.content = content;
-        this.userId = userId;
-    }
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = Instant.now();
+        this.createdAt = LocalDateTime.now(ZoneOffset.UTC);
     }
-
-
 }

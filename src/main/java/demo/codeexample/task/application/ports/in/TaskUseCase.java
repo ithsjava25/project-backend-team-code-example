@@ -22,4 +22,7 @@ public interface TaskUseCase {
     Task createTask(TaskType taskType, String description, TaskStatus status,
                     LocalDateTime deadline, Long projectId, Long userId);
 
+    void acceptTask(Long taskId);
+
+    void completeTask(Long taskId);
 }
