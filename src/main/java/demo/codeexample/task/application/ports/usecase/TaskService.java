@@ -41,13 +41,13 @@ public class TaskService implements TaskUseCase {
             Long editorId = findByRole(event.employeesId(), Role.EDITOR);
 
             createTask(TaskType.RECRUITING, "Recruit for " + event.title(),
-                    TaskStatus.COMPLETED, event.recruitingDeadline(), event.projectId(), recruiterId);
+                    TaskStatus.ASSIGNED, event.recruitingDeadline(), event.projectId(), recruiterId);
 
             createTask(TaskType.RECORDING, "Record movie for " + event.title(),
-                    TaskStatus.COMPLETED, event.recordingDeadline(), event.projectId(), directorId);
+                    TaskStatus.PENDING, event.recordingDeadline(), event.projectId(), directorId);
 
             createTask(TaskType.EDITING, "Editing scenes for " + event.title(),
-                    TaskStatus.COMPLETED, event.editingDeadline(), event.projectId(), editorId);
+                    TaskStatus.PENDING, event.editingDeadline(), event.projectId(), editorId);
         }
 
         public void acceptTask(Long taskId) {
