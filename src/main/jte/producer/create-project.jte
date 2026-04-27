@@ -4,23 +4,25 @@
 @import java.util.List
 
 @param List<UserDto> users
+@param UserDto currentUser
 @param String company
 
 @template.layoutDashboard(
 title = "Create",
 company = company,
+currentUser = currentUser,
 content = @`
-<main class="container">
-    <h1 class="page-title">Create New Project</h1>
-    <p class="subtitle">Start a new film production by filling in the details below.</p>
+    <main class="container">
+        <h1 class="page-title">Create New Project</h1>
+        <p class="subtitle">Start a new film production by filling in the details below.</p>
 
-    <div class="form-card">
-        <form action="/${company}/projects" method="post" id="create-project-form" data-company="${company}">
+        <div class="form-card">
+            <form id="createProjectForm" action="/${company}/projects" method="post">
 
-            <label class="form-label">Project Title</label>
-            <input type="text" name="title" class="form-input" required>
+                <label class="form-label">Project Title</label>
+                <input type="text" name="title" class="form-input" required>
 
-            <input type="hidden" name="companyName" value="${company}">
+                <input type="hidden" name="companyName" value="${company}">
 
             <label class="form-label">Category</label>
             <div class="task-group" style="position: relative;">
@@ -104,6 +106,146 @@ content = @`
     </div>
 </main>
 
+<script>
+
+    const allUsers = [
+        @for(var u : users)
+        { id: "${u.getId()}", name: "${u.getFirstName()} ${u.getLastName()}", role: "${u.getRole()}" },
+        @endfor
+    ];
+
+    document.querySelectorAll('.worker-search').forEach(input => {
+        const container = input.parentElement;
+        const suggestionBox = container.querySelector('.dropdown-suggestions');
+        const hiddenInput = container.querySelector('input[type="hidden"]');
+        const targetRole = input.getAttribute('data-role');
+
+        input.addEventListener('input', function() {
+            const val = this.value.toLowerCase();
+            hiddenInput.value = '';
+            suggestionBox.innerHTML = '';
+
+            if (!val) {
+                suggestionBox.style.display = 'none';
+                return;
+            }
+
+
+            const matches = allUsers.filter(u =>
+                u.name.toLowerCase().includes(val) && u.role === targetRole
+            );
+
+            for (let i = 0; i < matches.length; i++) {
+                const matchObj = matches[i];
+                const div = document.createElement('div');
+                div.className = 'worker-item';
+                div.textContent = matchObj.name;
+
+                div.onclick = function() {
+                    input.value = matchObj.name;
+                    hiddenInput.value = matchObj.id;
+                    suggestionBox.style.display = 'none';
+                };
+                suggestionBox.appendChild(div);
+            }
+            suggestionBox.style.display = matches.length > 0 ? 'block' : 'none';
+        });
+    });
+
+        const teamSearch = document.getElementById('teamSearch');
+        if (teamSearch) {
+                teamSearch.addEventListener('input', function() {
+                        const term = this.value.toLowerCase();
+                        document.querySelectorAll('.team-member-item').forEach(item => {
+                                const name = item.innerText.toLowerCase();
+                                item.style.display = name.includes(term) ? 'flex' : 'none';
+                            });
+                    });
+            }
+
+    document.addEventListener('click', e => {
+        if (!e.target.classList.contains('worker-search')) {
+            document.querySelectorAll('.dropdown-suggestions').forEach(d => d.style.display = 'none');
+        }
+    });
+</script>
+<script>
+    const currentCompany = "${company}";
+    @raw
+    // document.querySelector('form').addEventListener('submit', async function(e) {
+    document.getElementById('createProjectForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const btn = document.getElementById('submitBtn');
+        const status = document.getElementById('uploadStatus');
+        btn.disabled = true;
+        status.style.color = "inherit"; // Återställ färg
+        status.innerText = "Creating project...";
+
+        try {
+            // 1. Create project via AJAX
+            // Use URLSearchParams to simulate a normal form-entry
+            const formData = new URLSearchParams(new FormData(this));
+
+            const response = await fetch(this.action, {
+                method: 'POST',
+                body: formData, // Spring reads this via @ModelAttribute
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.text();
+                throw new Error("Could not create one project: " + errorData);
+            }
+
+            const project = await response.json();
+            const projectId = project.id;
+
+            // 2. Handle files
+            const fileInput = document.getElementById('projectFiles');
+            const files = fileInput.files;
+
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    status.innerText = `Uploading file ${i + 1} of ${files.length}: ${file.name}...`;
+
+                    // A. Get Presigned URL
+                    const urlRes = await fetch(`/${currentCompany}/api/files/upload-url?fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`);
+                    const { url } = await urlRes.json();
+
+                    // B. Upload to S3
+                    await fetch(url, {
+                        method: 'PUT',
+                        body: file,
+                        headers: { 'Content-Type': file.type }
+                    });
+
+                    // C. Callback to server to save in S3File-table
+                    await fetch(`/${currentCompany}/api/files/callback?projectId=${projectId}&fileName=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`, {
+                        method: 'POST'
+                    });
+                }
+            }
+
+            status.style.color = "green";
+            status.innerText = "Project and files uploaded successfully! Redirecting...";
+
+            setTimeout(() => {
+                window.location.href = `/${currentCompany}/dashboard/current`;
+            }, 1500);
+
+        } catch (err) {
+            console.error(err);
+            status.style.color = "red";
+            status.innerText = "Error: " + err.message;
+            btn.disabled = false;
+        }
+    });
+    @endraw
+</script>
 <script src="/js/form.js"></script>
 <script src="/js/media.js"></script>
 `

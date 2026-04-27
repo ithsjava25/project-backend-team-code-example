@@ -21,5 +21,4 @@ public class Task {
     private LocalDateTime deadline ;
     private final Long projectId ;
     private Long userId ;
-
 }

@@ -2,7 +2,6 @@ package demo.codeexample.project;
 
 import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;

@@ -1,13 +1,16 @@
 @import demo.codeexample.project.ProjectDto
+@import demo.codeexample.user.UserDto
 @import java.util.List
 
 @param List<ProjectDto> projects
 @param String company
+@param UserDto currentUser
 
 
 @template.layoutDashboard(
 title = "Dashboard",
 company = company,
+currentUser = currentUser,
 content = @`
     <h1 class="page-title">Producer Dashboard</h1>
 

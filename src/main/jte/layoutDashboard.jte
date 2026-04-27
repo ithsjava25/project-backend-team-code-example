@@ -1,7 +1,11 @@
 @import gg.jte.Content
+@import demo.codeexample.user.UserDto
+
 @param Content content
 @param String company
 @param String title
+@param UserDto currentUser
+
 
 <!DOCTYPE html>
 <html lang="sv">
@@ -21,15 +25,78 @@
                 </div>
             </a>
 
-            <div class="nav-links">
-                <a href="/${company}/dashboard/completed" class="active-tab">Completed Projects</a>
+        <div class="nav-links">
+            <a href="/${company}/dashboard/completed" class="active-tab">Completed Projects</a>
+
+            @if(currentUser != null && (currentUser.getRole().name().equals("ADMIN") || currentUser.getRole().name().equals("PRODUCER")))
                 <a href="/${company}/projects/new" class="login-button">New Project</a>
-                <a href="/${company}">Logout</a>
-            </div>
+            @endif
+
+            @if(currentUser != null)
+                <div class="user-menu">
+                    <button class="user-avatar" type="button" id="userMenuButton">
+                        ${currentUser.getInitial()}
+                    </button>
+
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-info">
+                            <div class="user-name">
+                                ${currentUser.getFirstName()} ${currentUser.getLastName()}
+                            </div>
+                            <div class="user-email">
+                                ${currentUser.getEmail()}
+                            </div>
+                            <div class="user-role">
+                                ${currentUser.getRoleDisplayName()}
+                            </div>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+
+                        <form action="/${company}/logout" method="post" class="logout-form">
+                            <button type="submit" class="dropdown-item logout">
+                                <span class="logout-icon">↪</span>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            @endif
+        </div>
     </nav>
 
     <main>
         ${content}
     </main>
 </body>
+
+<script>
+    (() => {
+        const userMenuButton = document.getElementById("userMenuButton");
+        const userDropdown = document.getElementById("userDropdown");
+
+        if (userMenuButton && userDropdown) {
+            userMenuButton.addEventListener("click", function (event) {
+                event.stopPropagation();
+                userDropdown.classList.toggle("show");
+            });
+
+            document.addEventListener("click", function () {
+                userDropdown.classList.remove("show");
+            });
+
+            userDropdown.addEventListener("click", function (event) {
+                event.stopPropagation();
+            });
+        }
+
+        window.addEventListener("pageshow", function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    })();
+</script>
+
 </html>

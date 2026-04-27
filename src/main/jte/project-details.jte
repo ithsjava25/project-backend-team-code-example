@@ -1,10 +1,14 @@
 @import demo.codeexample.project.ProjectDto
+@import demo.codeexample.user.UserDto
+
 @param ProjectDto currentProject
 @param String company
+@param UserDto currentUser 
 
 @template.layoutDashboard(
 title = currentProject.getTitle(),
 company = company,
+currentUser = currentUser,
 content = @`
     <div class="project-container" data-company="${company}" data-project-id="${currentProject.getId()}" data-project-title="${currentProject.getTitle()}">
 
@@ -66,6 +70,23 @@ content = @`
                         </div>
                     </div>
                 </div>
+        <div class="project-actions" style="margin-top: 2rem; padding: 2rem; border-top: 1px solid #e2e8f0;">
+            @if(currentProject.isCompleted())
+                <div style="color: #10b981; font-weight: bold; display: flex; align-items: center;">
+                    <span style="font-size: 1.5rem; margin-right: 10px;">🏆</span>
+                    This project is officially COMPLETED.
+                </div>
+            @else
+                <form action="/${company}/projects/${currentProject.getId()}/finalize" method="post">
+                    <button type="submit"
+                            class="login-button"
+                            style="background: #6366f1; width: auto; padding: 0.8rem 2rem;"
+                            onclick="return confirm('Are you sure you want to finalize this project? This will close all production.')">
+                        Complete Project
+                    </button>
+                </form>
+            @endif
+        </div>
 
 <%--                <div class="card team-card">--%>
 <%--                    <h2>Team Members</h2>--%>
@@ -80,7 +101,6 @@ content = @`
 <%--                </div>--%>
             </aside>
         </div>
-    </div>
 
     <style>
         :root {
@@ -292,4 +312,5 @@ content = @`
 
     <script src="/js/media.js"></script>
 `
+
 )

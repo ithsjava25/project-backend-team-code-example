@@ -1,5 +1,6 @@
 package demo.codeexample.project.infrastructure.adapters.in;
 
+import demo.codeexample.auth.CurrentUserLookup;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.in.ProjectUseCase;
@@ -7,6 +8,7 @@ import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,34 +25,49 @@ public class ProjectController {
 
     private final ProjectUseCase projectUseCase;
     private final UserLookup userLookup;
+    private final CurrentUserLookup currentUserLookup;
 
     @GetMapping("/dashboard/completed")
+    @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
     public String dashboardCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
-        var projects = projectUseCase.findAllCompletedProjectsByCompany(companyName);
+        var currentUser = currentUserLookup.getCurrentUser()
+                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
-        model.addAttribute("projects", projects);
+        model.addAttribute("projects",
+                projectUseCase.findCompletedProjectsForUser(currentUser.getId(), companyName));
+        model.addAttribute("company", companyName);
+
         return "producer/dashboard";
     }
 
     @GetMapping("/dashboard/current")
-    public String dashboardNotCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
-        var projects = projectUseCase.findAllNotCompleteProjectsByCompany(companyName);
+    @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
+    public String dashboardCurrentProjects(@ModelAttribute("company") String companyName, Model model) {
+        var currentUser = currentUserLookup.getCurrentUser()
+                .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
-        model.addAttribute("projects", projects);
+        model.addAttribute("projects", projectUseCase.findCurrentProjectsForUser(currentUser.getId(), companyName));
+        model.addAttribute("company", companyName);
+
         return "producer/dashboard";
     }
 
     @GetMapping("/projects/new")
-    public String createProjectPage(Model model) {
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCER')")
+    public String createProjectPage(@ModelAttribute("company") String companyName, Model model) {
         var users = userLookup.findAll();
-        model.addAttribute("users", users);
 
+        model.addAttribute("users", users);
         return "producer/create-project";
     }
 
 
     @GetMapping("/dashboard/{title}")
-    public String showProjectDetails(@PathVariable String title, @RequestParam Long projectId, Model model){
+    @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
+    public String showProjectDetails(@PathVariable String title,
+                                     @RequestParam Long projectId,
+                                     @ModelAttribute("company") String companyName,
+                                     Model model){
         ProjectDto currentProject = projectUseCase.getProjectDetails(projectId);
 
         model.addAttribute("currentProject", currentProject);
@@ -77,7 +94,8 @@ public class ProjectController {
 
     @PostMapping("/projects")
     @Transactional
-    @ResponseBody
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCER')")
+    @ResponseBody // Respond with JSON so that JavaScriptet can read the ID
     public ResponseEntity<?> createProject(@ModelAttribute("project") @Valid CreateProjectDto dto,
                                            BindingResult bindingResult) {
 
@@ -110,6 +128,16 @@ public class ProjectController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Java Error: " + e.getMessage());
         }
+    }
+
+    @PostMapping("/projects/{projectId}/finalize")
+    public String finalizeProject(@PathVariable Long projectId) {
+
+        projectUseCase.finalizeProject(projectId);
+
+        ProjectDto project = projectUseCase.getProjectDetails(projectId);
+
+        return "redirect:/producer/dashboard/" + project.getTitle() + "?projectId=" + projectId;
     }
 }
 

@@ -1,14 +1,12 @@
 package demo.codeexample.task.infrastructure.adapters;
 
 import demo.codeexample.logger.LoggerLookup;
-import demo.codeexample.project.application.out.UserPort;
+import demo.codeexample.security.UserAuthHelper;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.application.ports.out.TaskUserPort;
 import demo.codeexample.task.application.ports.usecase.TaskService;
-import demo.codeexample.task.domain.Task;
 import demo.codeexample.task.infrastructure.adapters.in.ProjectEventListenerAdapter;
-import demo.codeexample.user.UserLookup;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -18,8 +16,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class TaskConfig {
 
     @Bean
-    public TaskService taskService(TaskRepositoryPort taskRepositoryPort, TaskUserPort userPort, LoggerLookup logger) {
-        return new TaskService(taskRepositoryPort, userPort, logger);
+    public TaskService taskService(TaskRepositoryPort taskRepositoryPort, TaskUserPort userPort, LoggerLookup logger, UserAuthHelper userAuthHelper ) {
+        return new TaskService(taskRepositoryPort, userPort, logger, userAuthHelper);
     }
     @Bean
     public ProjectEventListenerAdapter projectEventListenerAdapter(TaskUseCase taskUseCase) {

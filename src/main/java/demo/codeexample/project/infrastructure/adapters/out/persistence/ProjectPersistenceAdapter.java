@@ -70,6 +70,23 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
     }
 
     @Override
+    public Project save(Project project) {
+        ProjectEntity entity = new ProjectEntity(
+                project.getId(),
+                project.getTitle(),
+                project.getDescription(),
+                project.getReleaseDate(),
+                project.getEmployeesId(),
+                project.getCategory(),
+                project.getGenre(),
+                project.getCompanyName(),
+                project.isCompleted()
+        );
+        ProjectEntity savedEntity = jpaRepository.save(entity);
+        return toDomain(savedEntity);
+    }
+
+    @Override
     public Optional<Project> findById(Long id) {
         return jpaRepository.findById(id)
                 .map(this::toDomain);
@@ -86,6 +103,7 @@ public class ProjectPersistenceAdapter implements ProjectRepositoryPort {
                 .category(entity.getCategory())
                 .genre(entity.getGenre())
                 .companyName(entity.getCompanyName())
+                .completed(entity.isCompleted())
                 .build();
     }
 }

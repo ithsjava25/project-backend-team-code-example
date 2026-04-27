@@ -27,4 +27,12 @@ public interface ProjectUseCase extends ProjectLookup {
     Project createProject(CreateProjectDto projectDto);
 
     ProjectDto getProjectDetails(Long projectId);
+
+    void finalizeProject(Long projectId);
+
+    List<ProjectDto> findProjectsForUser(Long userId, String companyName);
+
+    List<ProjectDto> findCurrentProjectsForUser(Long userId, String companyName);
+
+    List<ProjectDto> findCompletedProjectsForUser(Long userId, String companyName);
 }

@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 public class UserAuthDto {
 
     private Long id;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;          // ← password hash — auth use only!
     private Role role;

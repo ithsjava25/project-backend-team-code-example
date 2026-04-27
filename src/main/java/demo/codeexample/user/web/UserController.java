@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@PreAuthorize("hasRole('ADMIN')")
 public class UserController {
 
     private final UserService userService;
@@ -24,7 +25,6 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> createUser(
             @Valid @RequestBody CreateUserDto request) {
         UserDto created = userService.createUser(request);
@@ -32,14 +32,14 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCER')")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.findAll());
         // ↑ was getAllUsers()
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'DIRECTOR') or #id == authentication.principal")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCER')")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(
                 userService.findById(id)
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/role")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN') or (hasRole('PRODUCER') and #newRole != T(demo.codeexample.shared.Role).ADMIN)")
     public ResponseEntity<UserDto> updateRole(@PathVariable Long id,
                                               @RequestBody Role newRole) {
         return ResponseEntity.ok(userService.updateRole(id, newRole));
@@ -59,5 +59,11 @@ public class UserController {
     public ResponseEntity<Void> deactivateUser(@PathVariable Long id) {
         userService.deactivateUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/reset-password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserDto> resetPassword(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.resetPassword(id));
     }
 }

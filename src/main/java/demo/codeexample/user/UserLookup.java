@@ -28,4 +28,6 @@ public interface UserLookup {
 
     void deactivateUser(Long id);
 
+    UserDto resetPassword(Long id);
+
 }

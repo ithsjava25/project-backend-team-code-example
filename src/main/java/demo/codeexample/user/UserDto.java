@@ -14,4 +14,26 @@ public class UserDto {
     private Role role;
     private boolean active;
     private boolean passwordResetRequired;
+
+    public String getInitial() {
+        if (firstName != null && !firstName.isBlank()) {
+            return firstName.substring(0, 1).toUpperCase();
+        }
+        return "?";
+    }
+
+    public String getFullName() {
+        String first = firstName != null ? firstName : "";
+        String last = lastName != null ? lastName : "";
+        return (first + " " + last).trim();
+    }
+
+    public String getRoleDisplayName() {
+        if (role == null) {
+            return "";
+        }
+
+        String lower = role.name().toLowerCase();
+        return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
+    }
 }

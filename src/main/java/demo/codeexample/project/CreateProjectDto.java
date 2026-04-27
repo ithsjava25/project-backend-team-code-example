@@ -2,48 +2,51 @@ package demo.codeexample.project;
 
 import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
-import demo.codeexample.shared.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.*;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public record CreateProjectDto(
-        @NotBlank(message = "Project must have a title.")
-        String title,
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class CreateProjectDto {
 
-        String description,
+    @NotBlank(message = "Title is required")
+    private String title;
 
-        @DateTimeFormat(pattern = "yyyy-MM-dd") // För <input type="date">
-        LocalDate releaseDate,
+    @NotBlank(message = "Description is required")
+    private String description;
 
-        @NotNull(message = "There must be people working on the project.")
-        Set<Long> employeesId,
+    @NotNull(message = "Release date is required")
+    private LocalDate releaseDate;
 
-        @NotNull(message = "Choose a category!")
-        Category category,
+    private Set<Long> employeesId;
 
-        @NotNull(message = "Choose a genre!")
-        Genre genre,
+    @NotNull(message = "Category is required")
+    private Category category;
 
-        @NotBlank(message = "What company does the project belong to")
-        String companyName,
+    @NotNull(message = "Genre is required")
+    private Genre genre;
 
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) // För <input type="datetime-local">
-        @NotNull(message = "Choose a deadline")
-        LocalDateTime recruitingDeadline,
+    @NotBlank(message = "Company name is required")
+    private String companyName;
 
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        @NotNull(message = "Choose a deadline")
-        LocalDateTime recordingDeadline,
+    @NotNull
+    private LocalDateTime recruitingDeadline;
 
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        @NotNull(message = "Choose a deadline")
-        LocalDateTime editingDeadline
-) {}
+    @NotNull
+    private LocalDateTime recordingDeadline;
+
+    @NotNull
+    private LocalDateTime editingDeadline;
+}
 
 
 
