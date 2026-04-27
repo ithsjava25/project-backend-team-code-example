@@ -6,6 +6,7 @@ import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.TaskLookup;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.task.TaskResponseDto;
+import demo.codeexample.task.TaskSummaryDto;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -73,10 +74,11 @@ public class ProjectController {
                                      Model model){
         ProjectDto currentProject = projectUseCase.getProjectDetails(projectId);
 
-        List<TaskResponseDto> tasks = taskLookup.getTasksByProjectId(projectId);
+        List<TaskSummaryDto> tasks = taskLookup.getTasksByProjectId(projectId);
 
         model.addAttribute("currentProject", currentProject);
         model.addAttribute("company", companyName);
+        model.addAttribute("tasks", tasks);
 
         return "project-details";
     }

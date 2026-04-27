@@ -25,7 +25,7 @@ public class TaskController {
     private final ModelMapper modelMapper;
 
 
-    @GetMapping("/{taskId}/view")
+    @GetMapping("/tasks/{taskId}/view")
     public String viewTask(@PathVariable Long taskId, Model model) {
         Task task = taskUseCase.findById(taskId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
