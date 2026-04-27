@@ -56,7 +56,7 @@ CREATE TABLE task(
     task_type VARCHAR(20) NOT NULL,
     description VARCHAR(255),
     deadline DATETIME,
-    status VARCHAR(10) NOT NULL,
+    status VARCHAR(20) NOT NULL,
     project_id BIGINT NOT NULL,
     user_id BIGINT
 );

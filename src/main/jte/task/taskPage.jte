@@ -2,6 +2,7 @@
 
 @import demo.codeexample.task.TaskResponseDto
 @param TaskResponseDto task
+@param Long currentUserId
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,14 +34,53 @@
         <a href="/dashboard" style="color: #6366f1; text-decoration: none;">&larr; Back to Dashboard</a>
     </header>
 
-    <div class="table-card" style="padding: 2rem; margin-bottom: 2rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 style="margin: 0; color: #1e293b;">${task.getTaskType()}</h2>
-            <span class="badge" style="background: #6366f1; color: white; padding: 6px 14px; border-radius: 20px; font-weight: 600;">
-                ${task.getStatus().name()}
-            </span>
+    <div class="table-card" style="padding: 2rem;">
+        <div style="display: flex; justify-content: space-between;">
+            <h2>${task.getTaskType()}</h2>
+            <span class="badge status-${task.getStatus().name().toLowerCase()}">
+            ${task.getStatus()}
+        </span>
         </div>
-        <p style="color: #64748b; margin-top: 1rem;">${task.getDescription()}</p>
+
+        <div class="action-zone" style="margin-top: 2rem;">
+            @if(task.getStatus().name().equals("PENDING"))
+                <div style="background: #f1f5f9; padding: 1.5rem; border-radius: 8px; border: 1px dashed #cbd5e1;">
+                    <p style="color: #64748b; margin: 0;">
+                        <span style="font-size: 1.2rem; margin-right: 8px;">🔒</span>
+                        This stage is currently <strong>Pending</strong>.
+                        It will become available once the previous task is completed.
+                    </p>
+                </div>
+
+            @elseif(task.getStatus().name().equals("ASSIGNED"))
+                @if(task.getUserId().equals(currentUserId))
+                    <form action="/tasks/${task.getId()}/accept" method="post">
+                        <button type="submit" class="login-button" style="background: #6366f1; width: auto; padding: 0.8rem 2rem;">
+                            Accept Task
+                        </button>
+                    </form>
+                @else
+                    <p style="color: #64748b; font-style: italic;">Assigned to another worker.</p>
+                @endif
+
+            @elseif(task.getStatus().name().equals("IN_PROGRESS"))
+                @if(task.getUserId().equals(currentUserId))
+                    <form action="/tasks/${task.getId()}/complete" method="post">
+                        <button type="submit" class="login-button" style="background: #10b981; width: auto; padding: 0.8rem 2rem;">
+                            Mark as Completed
+                        </button>
+                    </form>
+                @else
+                    <p style="color: #64748b; font-style: italic;">Worker is currently recording/editing...</p>
+                @endif
+
+            @else
+                <div style="display: flex; align-items: center; color: #10b981;">
+                    <span style="font-size: 1.5rem; margin-right: 10px;">✅</span>
+                    <p style="font-weight: bold; margin: 0;">This task has been finished successfully.</p>
+                </div>
+            @endif
+        </div>
     </div>
 
     <div class="table-card" style="padding: 2rem;">

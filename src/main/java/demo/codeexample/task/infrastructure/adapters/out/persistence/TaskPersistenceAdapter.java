@@ -1,7 +1,9 @@
 package demo.codeexample.task.infrastructure.adapters.out.persistence;
 
+import demo.codeexample.project.TaskLookup;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.domain.Task;
+import demo.codeexample.task.domain.TaskStatus;
 import demo.codeexample.task.domain.TaskType;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class TaskPersistenceAdapter implements TaskRepositoryPort {
+public class TaskPersistenceAdapter implements TaskRepositoryPort, TaskLookup {
 
     private final JpaTaskRepository jpaTaskRepository;
 
@@ -59,6 +61,7 @@ public class TaskPersistenceAdapter implements TaskRepositoryPort {
 
     private TaskEntity toEntity(Task task) {
         return new TaskEntity(
+                task.getId(),
                 task.getTaskType(),
                 task.getDescription(),
                 task.getStatus(),
@@ -69,5 +72,11 @@ public class TaskPersistenceAdapter implements TaskRepositoryPort {
     }
 
 
-
+    @Override
+    public boolean isFinalTaskComplete(Long projectId) {
+        // We look for the last stage (EDITING) and check its status
+        return jpaTaskRepository.findByProjectIdAndTaskType(projectId, TaskType.EDITING)
+                .map(entity -> entity.getStatus() == TaskStatus.COMPLETED)
+                .orElse(false);
+    }
 }
