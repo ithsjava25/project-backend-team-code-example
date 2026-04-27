@@ -17,6 +17,7 @@ import demo.codeexample.shared.Role;
 import demo.codeexample.user.UserLookup;
 import demo.codeexample.shared.LoggerAction;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.AccessDeniedException;
 
@@ -110,6 +111,7 @@ public class ProjectService implements ProjectUseCase {
     }
 
     @Override
+    @Transactional
     public void finalizeProject(Long projectId) {
         if (!securityPort.hasRole("PRODUCER")) {
             throw new AccessDeniedException("Only a Producer can finalize projects.");
