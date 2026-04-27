@@ -17,7 +17,7 @@
 
 <nav class="navbar">
     <div class="navbar-content">
-        <a href="/dashboard" class="logo-link">
+        <a href="/${company}/dashboard" class="logo-link">
             <div class="logo-container">
                 <img src="/images/logo.png" alt="Logo" class="logo-img">
                 <div class="brand-wrapper">
@@ -55,7 +55,7 @@
 
             @elseif(task.getStatus().name().equals("ASSIGNED"))
                 @if(task.getUserId().equals(currentUserId))
-                    <form action="/tasks/${task.getId()}/accept" method="post">
+                    <form action="/${company}/${task.getId()}/accept" method="post">
                         <button type="submit" class="login-button" style="background: #6366f1; width: auto; padding: 0.8rem 2rem;">
                             Accept Task
                         </button>
@@ -66,7 +66,7 @@
 
             @elseif(task.getStatus().name().equals("IN_PROGRESS"))
                 @if(task.getUserId().equals(currentUserId))
-                    <form action="/tasks/${task.getId()}/complete" method="post">
+                    <form action="/${company}/${task.getId()}/complete" method="post">
                         <button type="submit" class="login-button" style="background: #10b981; width: auto; padding: 0.8rem 2rem;">
                             Mark as Completed
                         </button>
