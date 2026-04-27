@@ -43,6 +43,7 @@ public class TaskService implements TaskUseCase {
             createTask(TaskType.EDITING, "Editing scenes for " + event.title(),
                     TaskStatus.ASSIGNED, event.editingDeadline(), event.projectId(), editorId);
         }
+
         private Long findByRole (Set < Long > ids, Role role){
             return ids.stream()
                     .filter(id -> userPort.hasRole(id, role))

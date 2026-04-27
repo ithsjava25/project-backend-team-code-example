@@ -6,10 +6,13 @@ import demo.codeexample.project.ProjectLookup;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.domain.Project;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface ProjectUseCase extends ProjectLookup {
+
+    boolean isDeadlinesInOrder(LocalDateTime recruitingDeadline, LocalDateTime recordingDeadline, LocalDateTime editingDeadline);
 
     List<ProjectDto> findAllCompletedProjectsByCompany(String companyName);
 

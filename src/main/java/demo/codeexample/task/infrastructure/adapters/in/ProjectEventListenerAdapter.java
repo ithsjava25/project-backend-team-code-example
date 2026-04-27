@@ -3,7 +3,6 @@ package demo.codeexample.task.infrastructure.adapters.in;
 import demo.codeexample.project.ProjectCreatedEvent;
 import demo.codeexample.task.application.ports.in.TaskUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
 import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
 
@@ -16,5 +15,6 @@ public class ProjectEventListenerAdapter {
     @ApplicationModuleListener
     public void handle(ProjectCreatedEvent event) {
         taskUseCase.handleProjectCreated(event);
-        }
     }
+
+}

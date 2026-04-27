@@ -10,9 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,7 +35,6 @@ public class ProjectController {
     @GetMapping("/dashboard/current")
     public String dashboardNotCompletedProjects(@ModelAttribute("company") String companyName, Model model) {
         var projects = projectUseCase.findAllNotCompleteProjectsByCompany(companyName);
-
 
         model.addAttribute("projects", projects);
         return "producer/dashboard";
@@ -75,8 +77,26 @@ public class ProjectController {
 
     @PostMapping("/projects")
     @Transactional
-    @ResponseBody // Respond with JSON so that JavaScriptet can read the ID
-    public ResponseEntity<?> createProject(@ModelAttribute("projectDto") @Valid CreateProjectDto dto) {
+    @ResponseBody
+    public ResponseEntity<?> createProject(@ModelAttribute("project") @Valid CreateProjectDto dto,
+                                           BindingResult bindingResult) {
+
+        if (!projectUseCase.isDeadlinesInOrder(dto.recruitingDeadline(), dto.recordingDeadline(), dto.editingDeadline())) {
+            bindingResult.rejectValue("recruitingDeadline", "error.order", "Recruiting must be before other tasks.");
+            bindingResult.rejectValue("recordingDeadline", "error.order", "Recording must be after recruiting.");
+            bindingResult.rejectValue("editingDeadline", "error.order", "Editing must be after recording.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            var errors = bindingResult.getFieldErrors().stream()
+                    .collect(Collectors.toMap(
+                            FieldError::getField,
+                            FieldError::getDefaultMessage,
+                            (existing, replacement) -> existing
+                    ));
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         try {
             var newProject = projectUseCase.createProject(dto);
 

@@ -3,6 +3,7 @@
     --bg-color: #0a0510;
     --nav-bg: #1a0b2e;
     --accent-color: #d4af37;
+    --gradiant: linear-gradient(90deg, #ffffff, #d4af37, #ffffff);
     --primary-purple: #6a1b9a;
     --text-color: #f4f4f4;
     --side-padding: 5%;
@@ -39,16 +40,28 @@ nav {
 }
 
 .logo {
+    display: flex;
+    align-items: center;
     font-weight: 800;
     font-size: 1.6rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    background: linear-gradient(90deg, #ffffff, #d4af37, #ffffff);
+    background: var(--gradiant);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: shine 3s linear infinite;
     font-family: Orbitron, sans-serif;
+}
+
+.logo a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-img {
+    width: 65px; height: 65px;
+    filter: drop-shadow(0 0 8px var(--gradiant));
 }
 
 @keyframes shine {

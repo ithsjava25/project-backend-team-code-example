@@ -35,9 +35,9 @@ content = @`
                     <div id="detailStatus" style="margin-top: 10px; font-weight: bold;"></div>
 
                     <div id="trailer-section" class="media-section" style="display: none;">
-                        <video id="project-trailer" controls class="video-player">
-                            Your browser does not support the video tag.
-                        </video>
+                        <h3>Trailer</h3>
+                        <div id="project-trailer">
+                        </div>
                     </div>
 
                     <div id="gallery-section" class="media-section" style="display: none;">
@@ -220,23 +220,72 @@ content = @`
             gap: 15px;
         }
 
-        .image-grid img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 8px;
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
+        /*.image-grid img {*/
+        /*    width: 100%;*/
+        /*    height: 120px;*/
+        /*    object-fit: cover;*/
+        /*    border-radius: 8px;*/
+        /*    transition: transform 0.2s;*/
+        /*    cursor: pointer;*/
+        /*}*/
 
-        .image-grid img:hover {
-            transform: scale(1.05);
-        }
+        /*.image-grid img:hover {*/
+        /*    transform: scale(1.05);*/
+        /*}*/
 
         .doc-list {
             display: flex;
             flex-direction: column;
             gap: 8px;
+        }
+
+        /* Container för varje bild/media-item */
+        .media-item {
+            position: relative;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .media-item:hover {
+            transform: scale(1.05);
+        }
+
+        .media-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--danger-red);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+
+        .media-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger-red);
+            transform: scale(1.1);
         }
 
     </style>

@@ -27,7 +27,7 @@ content = @`
                  <a href="/${company}/${project.getTitle().replace(" ", "-")}/info/${project.getId()}" style="text-decoration: none; color: inherit;">
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
-                            <img class="card-image" src="/${company}/api/files/project-poster/${project.getId()}"
+                            <img class="card-image" src="/${company}/api/files/${project.getId()}/project/cover"
                                  alt="${project.getTitle()}"
                                  style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
                         </div>
@@ -53,7 +53,7 @@ content = @`
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
                             <img class="card-image"
-                                     src="/${company}/api/files/project-poster/${film.getId()}"
+                                     src="/${company}/api/files/${film.getId()}/project/cover"
                                      alt="${film.getTitle()}"
                                      style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
                         </div>
@@ -79,7 +79,7 @@ content = @`
                     <div class="movie-card-wrapper">
                         <div class="movie-card">
                             <img class="card-image"
-                                     src="/${company}/api/files/project-poster/${serie.getId()}"
+                                     src="/${company}/api/files/${serie.getId()}/project/cover"
                                      alt="${serie.getTitle()}"
                                      style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
                         </div>
@@ -98,7 +98,7 @@ content = @`
         function scrollGrid(buttonElement, direction) {
             const container = buttonElement.closest('.movie-container');
             const row = container.querySelector('.movie-row');
-            const scrollAmount = 400; // Hur många pixlar den ska rulla per klick
+            const scrollAmount = 400;
 
             row.scrollBy({
                 left: direction * scrollAmount,

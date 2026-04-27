@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. Dropdown Logic ---
     const closeAll = () => document.querySelectorAll('.dropdown-suggestions').forEach(d => d.style.display = 'none');
-
     document.addEventListener('click', closeAll);
 
     document.querySelectorAll('.select-btn').forEach(btn => {
@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     .map(u => `<div class="item" data-id="${u.id}">${u.name}</div>`)
                     .join('');
             }
-
             list.style.display = isVisible ? 'none' : 'block';
         };
 
@@ -35,4 +34,51 @@ document.addEventListener('DOMContentLoaded', () => {
             list.style.display = 'none';
         };
     });
+
+    // --- 2. Form-handler ---
+    const createForm = document.getElementById('create-project-form');
+    if (createForm) {
+        createForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            document.querySelectorAll('.error-msg').forEach(el => el.remove());
+            document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
+            const formData = new FormData(this);
+            const company = this.dataset.company;
+
+            try {
+                const response = await fetch(`/${company}/projects`, {
+                    method: 'POST',
+                    body: new URLSearchParams(formData)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    await uploadFiles(data.id, company, formData.get('title'), 'projectFiles', 'uploadStatus');
+                    window.location.href = `/${company}/dashboard/current`;
+                } else if (response.status === 400) {
+                    const errors = await response.json();
+                    displayErrors(errors);
+                }
+            } catch (err) {
+                console.error("Submit error:", err);
+            }
+        });
+    }
 });
+
+// --- 3. Show error ---
+function displayErrors(errors) {
+    for (const [fieldName, message] of Object.entries(errors)) {
+        const input = document.querySelector(`[name="${fieldName}"]`);
+        if (input) {
+            input.classList.add('input-error');
+
+            const errorSpan = document.createElement('span');
+            errorSpan.className = 'error-msg';
+            errorSpan.innerText = message;
+            input.parentNode.appendChild(errorSpan);
+        }
+    }
+}

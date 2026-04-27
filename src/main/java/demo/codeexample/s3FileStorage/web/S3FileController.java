@@ -1,6 +1,7 @@
 package demo.codeexample.s3FileStorage.web;
 
 import demo.codeexample.s3FileStorage.application.S3FileService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,25 +18,25 @@ public class S3FileController {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(S3FileController.class);
     private final S3FileService s3Service;
 
+    @Value("${S3_BUCKET_NAME}")
+    private String bucketName;
+
     public S3FileController(S3FileService s3Service) {
         this.s3Service = s3Service;
     }
-
-//    @GetMapping("/files")
-//    public String filesPage(Model model) {
-//
-//        model.addAttribute("isAuthenticated", true);
-//        return "files";
-//    }
 
     @GetMapping
     public List<String> listFiles() {
         return s3Service.listFiles();
     }
 
-    @DeleteMapping
-    public void deleteFile(@RequestParam String fileName) {
-        s3Service.deleteFile("my-bucket", fileName);
+    @DeleteMapping("/delete")
+    @Transactional
+    public ResponseEntity<Void> deleteFile(@RequestParam String company, @RequestParam String fileKey) {
+        log.info("Deleting file: {} for company: {}", fileKey, company);
+        s3Service.deleteFile(bucketName, fileKey);
+
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/upload-url")
@@ -53,15 +54,35 @@ public class S3FileController {
         return Map.of("url", url);
     }
 
-    @GetMapping("/project-poster/{projectId}")
-    public ResponseEntity<Void> getProjectPoster(@PathVariable Long projectId) {
-        String url = s3Service.getProjectPosterKey(projectId)
+    @GetMapping("/{projectId}/project/cover")
+    public ResponseEntity<Void> getProjectCover(@PathVariable Long projectId) {
+        String url = s3Service.getProjectKey(projectId, "cover")
                 .map(s3Service::generatePresignedDownloadUrl)
                 .orElse("/images/Hexagonalt_filmproduktionslogotyp.png");
 
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(url))
                 .build();
+    }
+
+    @GetMapping("/{projectId}/project/background")
+    public ResponseEntity<Void> getProjectPageBackground(@PathVariable Long projectId) {
+        String url = s3Service.getProjectKey(projectId, "background")
+                .map(s3Service::generatePresignedDownloadUrl)
+                .orElse("/images/Hexagonalt_filmproduktionslogotyp.png");
+
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(url))
+                .build();
+    }
+
+    @GetMapping("/{projectId}/project/trailer")
+    public ResponseEntity<Void> getProjectTrailer(@PathVariable Long projectId) {
+        return s3Service.getProjectKey(projectId, "trailer")
+                .map(key -> ResponseEntity.status(HttpStatus.FOUND)
+                        .location(URI.create(s3Service.generatePresignedDownloadUrl(key)))
+                        .<Void>build())
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/project-media/{projectId}")

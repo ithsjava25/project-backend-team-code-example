@@ -10,6 +10,10 @@
     --primary-purple: #6a1b9a;
     --accent-purple: #a366ff;
     --accent-pink: #ec4899;
+    --card-bg: #1a142d;
+    --text-main: #f8fafc;
+    --text-dim: #94a3b8;
+    --danger-red: #ef4444;
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(163, 102, 255, 0.2);
     --side-padding: 5%;
@@ -135,6 +139,7 @@ main {
     .project-row:hover {
         background-color: rgba(255, 255, 255, 0.05);
         transform: scale(1.01);
+        cursor: pointer;
     }
 
     .project-row td { padding: 1.2rem 1.5rem; }
@@ -262,4 +267,24 @@ main {
     .dropdown-arrow { color: var(--primary-purple); font-size: 0.7rem; }
 
 
+/* ==========================================================================
+  CUSTOM ERRORS
+  ========================================================================== */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.error-msg {
+    color: #ff4444;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.input-error {
+    border: 1px solid #ff4444 !important;
+    background-color: rgba(255, 68, 68, 0.05);
+}
 

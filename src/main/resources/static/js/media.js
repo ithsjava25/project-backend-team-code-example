@@ -1,3 +1,40 @@
+function deleteFile(fileKey) {
+    const container = document.querySelector('.project-container');
+    const company = container.getAttribute('data-company');
+
+    if (!confirm('This file will be permanently deleted. Do you wish to proceed?')) return;
+
+    fetch(`/${company}/api/files/delete?fileKey=${encodeURIComponent(fileKey)}&company=${company}`, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('Could not delete file.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function createDeleteButton(element, fileName) {
+    const container = document.createElement('div');
+    container.className = 'media-item';
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'delete-btn';
+    delBtn.innerHTML = '&times;';
+    delBtn.onclick = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        deleteFile(fileName);
+    };
+
+    container.appendChild(element);
+    container.appendChild(delBtn);
+    return container;
+}
+
 async function uploadFiles(projectId, company, projectTitle, fileInputId, statusId){
     const fileInput = document.getElementById(fileInputId);
     const status = document.getElementById(statusId);
@@ -54,15 +91,21 @@ async function loadMedia(company, projectId) {
 
         mediaItems.forEach(item => {
             if (item.type.includes('video')) {
-                videoElement.src = item.url;
                 trailerSec.style.display = 'block';
+                const video = document.createElement('video');
+                video.src = item.url;
+                video.controls = true;
+                video.className = 'video-player';
+
+                videoElement.appendChild(createDeleteButton(video, item.name, company));
             }
             else if (item.type.includes('image')) {
                 gallerySec.style.display = 'block';
                 const img = document.createElement('img');
                 img.src = item.url;
                 img.onclick = () => window.open(item.url, '_blank');
-                galleryGrid.appendChild(img);
+
+                galleryGrid.appendChild(createDeleteButton(img, item.name, company));
             }
             else if (item.type.includes('pdf') || item.type.includes('text')) {
                 docsSec.style.display = 'block';
@@ -71,7 +114,8 @@ async function loadMedia(company, projectId) {
                 link.className = 'doc-link';
                 link.target = '_blank';
                 link.innerHTML = `<span>${item.type === 'pdf' ? '📄' : '📝'}</span> ${item.name}`;
-                docList.appendChild(link);
+
+                docList.appendChild(createDeleteButton(link, item.name, company));
             }
         });
     } catch (err) {

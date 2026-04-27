@@ -1,5 +1,6 @@
 package demo.codeexample.project.application.usecase;
 
+import demo.codeexample.exceptions.DeadlineException;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.project.ProjectCreatedEvent;
@@ -7,17 +8,14 @@ import demo.codeexample.project.ProjectDto;
 import demo.codeexample.project.application.out.ProjectEventPort;
 import demo.codeexample.project.application.out.SecurityPort;
 import demo.codeexample.shared.Category;
-import demo.codeexample.project.application.out.CompanyPort;
 import demo.codeexample.project.domain.Genre;
 import demo.codeexample.project.application.in.ProjectUseCase;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.UserPort;
 import demo.codeexample.project.domain.Project;
-import demo.codeexample.shared.LoggerAction;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +37,15 @@ public class ProjectService implements ProjectUseCase {
         this.securityPort = securityPort;
         this.mapper = mapper;
         this.logger = logger;
+    }
+
+    @Override
+    public boolean isDeadlinesInOrder(LocalDateTime recruitingDeadline, LocalDateTime recordingDeadline, LocalDateTime editingDeadline) {
+        if (recruitingDeadline == null || recordingDeadline == null || editingDeadline == null) {
+            return true;
+        }
+
+        return recruitingDeadline.isBefore(recordingDeadline) && recordingDeadline.isBefore(editingDeadline);
     }
 
     @Override
@@ -73,9 +80,11 @@ public class ProjectService implements ProjectUseCase {
     public Project createProject(CreateProjectDto projectDto) {
         userPort.validateEmployees(projectDto.employeesId());
 
-        Project project = repository.save(projectDto);
-        Long currentUserId = securityPort.getCurrentUserId();
-        String creatorName = securityPort.getCurrentUserName();
+        if(isDeadlinesInOrder(projectDto.recruitingDeadline(), projectDto.recordingDeadline(), projectDto.editingDeadline())){
+            Project project = repository.save(projectDto);
+
+            Long currentUserId = securityPort.getCurrentUserId();
+            String creatorName = securityPort.getCurrentUserName();
 
 //        logger.log(
 //                LoggerAction.PROJECT_CREATED,
@@ -86,19 +95,23 @@ public class ProjectService implements ProjectUseCase {
 //                "New project created: " + project.getTitle() + ". Created by: " + creatorName
 //        );
 
-        ProjectCreatedEvent event = new ProjectCreatedEvent(
-                project.getId(),
-                project.getTitle(),
-                project.getEmployeesId(),
-                project.getReleaseDate(),
-                project.getCompanyName(),
-                projectDto.recruitingDeadline(),
-                projectDto.recordingDeadline(),
-                projectDto.editingDeadline()
-        );
-        projectEventPort.publish(event);
+            ProjectCreatedEvent event = new ProjectCreatedEvent(
+                    project.getId(),
+                    project.getTitle(),
+                    project.getEmployeesId(),
+                    project.getReleaseDate(),
+                    project.getCompanyName(),
+                    projectDto.recruitingDeadline(),
+                    projectDto.recordingDeadline(),
+                    projectDto.editingDeadline()
+            );
+            projectEventPort.publish(event);
 
-        return project;
+            return project;
+        } else {
+            throw new DeadlineException();
+
+        }
     }
 
     @Override

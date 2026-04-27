@@ -1,22 +1,22 @@
 #!/bin/sh
 
-# Stoppa skriptet om något går fel
+# Stop script if something goes wrong
 set -e
 
-echo "--- 🚀 Startar Garage Server ---"
+echo "--- 🚀 Starting Garage Server ---"
 garage server &
 
-echo "--- ⏳ Väntar på att Garage RPC ska svara... ---"
+echo "--- ⏳ Waiting for Garage RPC to respond... ---"
 until nc -z localhost 3901; do
   sleep 1
 done
 
-# Vänta tills vi faktiskt kan få kontakt med CLI
+# Wait until we get contact with CLI
 until garage status > /dev/null 2>&1; do
   sleep 1
 done
 
-echo "--- 🆔 Hämtar Node ID ---"
+echo "--- 🆔 Fetching Node ID ---"
 NODE_ID=$(garage node id | grep -oE '[0-9a-f]{64}' | head -n 1 | cut -c1-16)
 if [ -z "$NODE_ID" ]; then
     echo "❌ Failed to extract Node ID"
@@ -24,42 +24,40 @@ if [ -z "$NODE_ID" ]; then
 fi
 echo "✅ Rent Node ID: $NODE_ID"
 
-echo "--- 🔍 Kontrollerar Layout-status ---"
-# Hämta versionen och rensa bort allt utom siffror
+echo "--- 🔍 Controlling Layout-status ---"
 CURRENT_VERSION=$(garage layout show | grep -i "version:" | awk '{print $NF}' | tr -cd '0-9')
 
 if [ -z "$CURRENT_VERSION" ] || [ "$CURRENT_VERSION" = "0" ]; then
-    echo "🏗️ Ny installation detekterad. Konfigurerar allt..."
+    echo "🏗️ New installation detected. Configuring..."
 
-    # 1. Konfigurera Layout
+    # 1. Configure Layout
     garage layout assign "$NODE_ID" --capacity 10G -z dc1
     garage layout apply --version 1
 
-    # Vänta på att layouten sätter sig innan vi skapar S3-resurser
+    # Wait for layout before creating S3-resource
     sleep 3
 
-    # 2. Skapa API-nyckel
-    echo "--- 🔑 Skapar admin-nyckel ---"
+    # 2. Create API-key
+    echo "--- 🔑 Create admin-key ---"
     garage key create my-admin-key || true
     KEY_ID=$(garage key list | grep "my-admin-key" | awk '{print $1}')
     echo "S3 Access Key ID: $KEY_ID"
 
-    # 3. Skapa Bucket
-    echo "--- 📦 Skapar bucket ---"
-    garage bucket create my-bucket || true
+    # 3. Create Bucket
+    echo "--- 📦 Create bucket ---"
+    garage bucket create ${S3_BUCKET_NAME} || true
 
-    # 4. Koppla ihop dem
-    garage bucket allow my-bucket --key "$KEY_ID" --read --write --owner || true
+    # 4. Connect
+    garage bucket allow ${S3_BUCKET_NAME} --key "$KEY_ID" --read --write --owner || true
 
-    echo "✅ Förstagångskonfiguration slutförd!"
+    echo "✅ Fist time configuration completed!"
 else
-    echo "✅ Garage är redan konfigurerat (Version: $CURRENT_VERSION). Hoppar över initiering."
-    # Om du vill se ditt Key ID även vid omstart kan du köra:
+    echo "✅ Garage is already configured (Version: $CURRENT_VERSION). Hoppar över initiering."
     KEY_ID=$(garage key list | grep "my-admin-key" | awk '{print $1}')
     echo "S3 Access Key ID: $KEY_ID"
 fi
 
-echo "--- 📊 Statuskontroll ---"
+echo "--- 📊 Statuscheck ---"
 garage status
 
 echo "--- 🎉 Ready! ---"

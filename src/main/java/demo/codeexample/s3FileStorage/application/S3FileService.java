@@ -4,6 +4,7 @@ import demo.codeexample.s3FileStorage.S3FileLookup;
 import demo.codeexample.s3FileStorage.domain.S3File;
 import demo.codeexample.s3FileStorage.domain.S3FileRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -11,7 +12,6 @@ import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
-import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 import java.time.Duration;
@@ -22,7 +22,9 @@ import java.util.stream.Collectors;
 @Service
 public class S3FileService implements S3FileLookup {
 
-    private static final String BUCKET_NAME = "my-bucket";
+    @Value("${S3_BUCKET_NAME}")
+    private String bucketName;
+
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
     private final S3FileRepository s3FileRepository;
@@ -40,7 +42,7 @@ public class S3FileService implements S3FileLookup {
     public void init() {
         try {
             s3Client.putBucketCors(bucketCorsRequest -> bucketCorsRequest
-                    .bucket(BUCKET_NAME)
+                    .bucket(bucketName)
                     .corsConfiguration(conf -> conf
                             .corsRules(CORSRule.builder()
                                     .allowedOrigins(allowedOrigin)
@@ -55,19 +57,21 @@ public class S3FileService implements S3FileLookup {
     }
 
     public List<String> listFiles() {
-        return s3Client.listObjectsV2Paginator(req -> req.bucket(BUCKET_NAME))
+        return s3Client.listObjectsV2Paginator(req -> req.bucket(bucketName))
                 .contents()
                 .stream()
                 .map(S3Object::key)
                 .toList();
     }
 
+    @Transactional
     public void deleteFile(String bucket, String key) {
         DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
                 .bucket(bucket)
                 .key(key).build();
 
         s3Client.deleteObject(deleteObjectRequest);
+        s3FileRepository.deleteByFileKey(key);
     }
 
     private String buildPath(String company, String projectTitle, Long projectId, String fileName) {
@@ -84,14 +88,14 @@ public class S3FileService implements S3FileLookup {
 
 
     public String generatePresignedUploadUrl(String company, String projectTitle, Long projectId,
-            String fileName, String contentType) {
+                                             String fileName, String contentType) {
 
         String filePath = buildPath(company, projectTitle, projectId, fileName);
 
         PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
                 .signatureDuration(Duration.ofMinutes(10))
                 .putObjectRequest(objectRequest -> objectRequest
-                        .bucket(BUCKET_NAME)
+                        .bucket(bucketName)
                         .key(filePath)
                         .contentType(contentType)
                         .build())
@@ -103,7 +107,7 @@ public class S3FileService implements S3FileLookup {
     public String generatePresignedDownloadUrl(String fileName) {
         GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
                 .signatureDuration(Duration.ofMinutes(10))
-                .getObjectRequest(objectRequest -> objectRequest.bucket(BUCKET_NAME)
+                .getObjectRequest(objectRequest -> objectRequest.bucket(bucketName)
                         .key(fileName)
                         .build())
                 .build();
@@ -138,12 +142,9 @@ public class S3FileService implements S3FileLookup {
                 .collect(Collectors.toList());
     }
 
-    public Optional<String> getProjectPosterKey(Long projectId) {
-        List<String> keys = findFileKeysByProjectId(projectId);
-        if (keys == null || keys.isEmpty()) return java.util.Optional.empty();
-
-        return keys.stream()
-                .filter(key -> key.toLowerCase().contains("cover"))
-                .findFirst();
+    public Optional<String> getProjectKey(Long projectId, String searchTerm) {
+        return s3FileRepository.findFirstByProjectIdAndFileKeyContainingIgnoreCase(projectId, searchTerm)
+                .map(S3File::getFileKey);
     }
+
 }

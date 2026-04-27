@@ -16,7 +16,10 @@
 <body class="${bodyClass}">
 
 <nav>
-    <div class="logo">⬢ ${company}</div>
+    <div class="logo">
+        <img src="/images/logo.png" alt="Logo" class="logo-img">
+        <a href="/${company}">${company}</a>
+    </div>
     <ul class="nav-links">
         <li><a href="/${company}">Home</a></li>
         <li><a href="/${company}/projects">Projects</a></li>
