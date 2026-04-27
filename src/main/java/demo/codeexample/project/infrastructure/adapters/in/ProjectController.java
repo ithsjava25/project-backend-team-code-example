@@ -83,7 +83,7 @@ public class ProjectController {
 
         ProjectDto project = projectUseCase.getProjectDetails(projectId);
 
-        return "redirect:producer/dashboard/" + project.getTitle() + "?projectId=" + projectId;
+        return "redirect:/producer/dashboard/" + project.getTitle() + "?projectId=" + projectId;
     }
 }
 
