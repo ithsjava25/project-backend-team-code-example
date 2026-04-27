@@ -1,9 +1,12 @@
 @import demo.codeexample.project.ProjectDto
+@import demo.codeexample.task.TaskResponseDto
 @import demo.codeexample.user.UserDto
+@import java.util.List
 
 @param ProjectDto currentProject
 @param String company
-@param UserDto currentUser 
+@param UserDto currentUser
+@param List<TaskResponseDto> tasks
 
 @template.layoutDashboard(
 title = currentProject.getTitle(),
@@ -50,6 +53,26 @@ content = @`
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 65%;"></div>
                         </div>
+                    </div>
+                </div>
+                <div class="card tasks-card">
+                    <h2>Production Pipeline</h2>
+                    <div class="task-list">
+                        @if(tasks == null || tasks.isEmpty())
+                            <p style="color: var(--text-dim);">No tasks found.</p>
+                        @else
+                            @for(var task : tasks)
+                                <a href="/${company}/tasks/${task.getId()}/view" class="task-row-link">
+                                    <div class="task-row" style="padding: 10px; margin-bottom: 8px;">
+                                        <div class="task-meta">
+                                            <div class="status-dot status-${task.getStatus().name().toLowerCase()}"></div>
+                                            <span class="task-type" style="font-size: 0.9rem;">${task.getTaskType()}</span>
+                                        </div>
+                                        <span class="arrow">→</span>
+                                    </div>
+                                </a>
+                            @endfor
+                        @endif
                     </div>
                 </div>
         <div class="project-actions" style="margin-top: 2rem; padding: 2rem; border-top: 1px solid #e2e8f0;">

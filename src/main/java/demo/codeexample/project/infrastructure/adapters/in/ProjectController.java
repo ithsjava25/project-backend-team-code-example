@@ -3,7 +3,9 @@ package demo.codeexample.project.infrastructure.adapters.in;
 import demo.codeexample.auth.CurrentUserLookup;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
+import demo.codeexample.project.TaskLookup;
 import demo.codeexample.project.application.in.ProjectUseCase;
+import demo.codeexample.task.TaskResponseDto;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -23,6 +26,7 @@ public class ProjectController {
     private final ProjectUseCase projectUseCase;
     private final UserLookup userLookup;
     private final CurrentUserLookup currentUserLookup;
+    private final TaskLookup taskLookup;
 
     @GetMapping("/dashboard/completed")
     @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
@@ -68,6 +72,8 @@ public class ProjectController {
                                      @ModelAttribute("company") String companyName,
                                      Model model){
         ProjectDto currentProject = projectUseCase.getProjectDetails(projectId);
+
+        List<TaskResponseDto> tasks = taskLookup.getTasksByProjectId(projectId);
 
         model.addAttribute("currentProject", currentProject);
         model.addAttribute("company", companyName);
