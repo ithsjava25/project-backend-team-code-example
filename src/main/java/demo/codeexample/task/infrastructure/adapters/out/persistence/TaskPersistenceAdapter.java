@@ -1,10 +1,13 @@
 package demo.codeexample.task.infrastructure.adapters.out.persistence;
 
 import demo.codeexample.project.TaskLookup;
+import demo.codeexample.task.TaskResponseDto;
+import demo.codeexample.task.TaskSummaryDto;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.domain.Task;
 import demo.codeexample.task.domain.TaskStatus;
 import demo.codeexample.task.domain.TaskType;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,9 +18,11 @@ import java.util.stream.Collectors;
 public class TaskPersistenceAdapter implements TaskRepositoryPort, TaskLookup {
 
     private final JpaTaskRepository jpaTaskRepository;
+    private final ModelMapper mapper;
 
-    public TaskPersistenceAdapter(JpaTaskRepository jpaTaskRepository) {
+    public TaskPersistenceAdapter(JpaTaskRepository jpaTaskRepository, ModelMapper mapper) {
     this.jpaTaskRepository = jpaTaskRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -45,6 +50,21 @@ public class TaskPersistenceAdapter implements TaskRepositoryPort, TaskLookup {
         return jpaTaskRepository.findByProjectIdAndTaskType(projectId, taskType)
                 .map(this::toDomain);
     }
+
+    @Override
+    public List<TaskSummaryDto> getTasksByProjectId(Long projectId) {
+        return jpaTaskRepository.findByProjectId(projectId)
+                .stream()
+                .map(entity -> new TaskSummaryDto(
+                        entity.getId(),
+                        entity.getTaskType(),
+                        entity.getStatus(),
+                        entity.getProjectId()
+                ))
+                .toList();
+    }
+
+
 
 
     private Task toDomain(TaskEntity entity) {
