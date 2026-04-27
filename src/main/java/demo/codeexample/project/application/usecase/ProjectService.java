@@ -150,6 +150,9 @@ public class ProjectService implements ProjectUseCase {
     private List<ProjectDto> findProjectsForUserAndStatus(Long userId, String companyName, boolean completed) {
         var user = userLookup.findById(userId)
                 .orElseThrow(() -> new IllegalStateException("User not found: " + userId));
+        if (!user.isActive()) {
+            throw new IllegalStateException("User is not active: " + userId);
+        }
 
         var projects = repository.findAllProjectsBelongingToCompany(companyName, completed);
 
