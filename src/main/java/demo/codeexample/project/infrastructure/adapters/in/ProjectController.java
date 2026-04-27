@@ -75,5 +75,15 @@ public class ProjectController {
             return ResponseEntity.status(500).body("Java Error: " + e.getMessage());
         }
     }
+
+    @PostMapping("/projects/{projectId}/finalize")
+    public String finalizeProject(@PathVariable Long projectId) {
+
+        projectUseCase.finalizeProject(projectId);
+
+        ProjectDto project = projectUseCase.getProjectDetails(projectId);
+
+        return "redirect:producer/dashboard/" + project.getTitle() + "?projectId=" + projectId;
+    }
 }
 

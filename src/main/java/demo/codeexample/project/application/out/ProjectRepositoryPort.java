@@ -24,6 +24,8 @@ public interface ProjectRepositoryPort {
 
     Project save(CreateProjectDto project);
 
+    Project save(Project project);
+
     Optional<Project> findById(Long id);
 
 }
