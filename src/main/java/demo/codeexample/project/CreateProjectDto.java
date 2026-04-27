@@ -37,8 +37,14 @@ public class CreateProjectDto {
 
     @NotBlank(message = "Company name is required")
     private String companyName;
+
+    @NotNull
     private LocalDateTime recruitingDeadline;
+
+    @NotNull
     private LocalDateTime recordingDeadline;
+
+    @NotNull
     private LocalDateTime editingDeadline;
 }
 
