@@ -5,10 +5,12 @@ import demo.codeexample.comment.domain.CommentRepository;
 import demo.codeexample.comment.CreateCommentDto;
 import demo.codeexample.comment.domain.Comment;
 import demo.codeexample.logger.LoggerLookup;
+import demo.codeexample.project.TaskLookup;
 import demo.codeexample.security.UserAuthHelper;
 import demo.codeexample.shared.LoggerAction;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +29,9 @@ public class CommentService implements CommentLookup {
     public CommentDto createComment(CreateCommentDto dto) {
         Long writerId = userAuthHelper.getCurrentUserId();
         String userName = userAuthHelper.getCurrentUserName();
+        if (writerId == null) {
+            throw new AccessDeniedException("Authentication Required");
+        }
 
         Comment commentEntity = new Comment();
         commentEntity.setContent(dto.getContent());

@@ -43,7 +43,7 @@ public class TaskPersistenceAdapter implements TaskRepositoryPort, TaskLookup {
     @Override
     public Optional<Task> findByProjectIdAndTaskType(Long projectId, TaskType taskType) {
         return jpaTaskRepository.findByProjectIdAndTaskType(projectId, taskType)
-                .map(this::toDomain); // Map the entity back to your Domain Task
+                .map(this::toDomain);
     }
 
 
@@ -74,7 +74,6 @@ public class TaskPersistenceAdapter implements TaskRepositoryPort, TaskLookup {
 
     @Override
     public boolean isFinalTaskComplete(Long projectId) {
-        // We look for the last stage (EDITING) and check its status
         return jpaTaskRepository.findByProjectIdAndTaskType(projectId, TaskType.EDITING)
                 .map(entity -> entity.getStatus() == TaskStatus.COMPLETED)
                 .orElse(false);

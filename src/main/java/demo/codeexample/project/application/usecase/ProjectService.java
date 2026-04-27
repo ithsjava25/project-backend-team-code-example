@@ -16,6 +16,8 @@ import demo.codeexample.project.domain.Project;
 import demo.codeexample.shared.LoggerAction;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.AccessDeniedException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -70,6 +72,9 @@ public class ProjectService implements ProjectUseCase {
 
     @Override
     public Project createProject(CreateProjectDto projectDto) {
+        if (!securityPort.hasRole("PRODUCER")) {
+            throw new AccessDeniedException("Only a Producer can create projects.");
+        }
         userPort.validateEmployees(projectDto.getEmployeesId());
 
         Project project = repository.save(projectDto);
@@ -102,6 +107,11 @@ public class ProjectService implements ProjectUseCase {
 
     @Override
     public void finalizeProject(Long projectId) {
+        if (!securityPort.hasRole("PRODUCER")) {
+            throw new AccessDeniedException("Only a Producer can finalize projects.");
+        }
+
+
         if (!taskLookup.isFinalTaskComplete(projectId)) {
             throw new IllegalStateException("Cannot finalize: The Editing task is not complete.");
         }
