@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/role")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCER')")
+    @PreAuthorize("hasAnyRole('ADMIN') or (hasRole('PRODUCER') and #newRole != T(demo.codeexample.shared.Role).ADMIN)")
     public ResponseEntity<UserDto> updateRole(@PathVariable Long id,
                                               @RequestBody Role newRole) {
         return ResponseEntity.ok(userService.updateRole(id, newRole));
