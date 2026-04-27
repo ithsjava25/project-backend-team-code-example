@@ -1,10 +1,14 @@
 @import demo.codeexample.project.ProjectDto
+@import demo.codeexample.user.UserDto
+
 @param ProjectDto currentProject
 @param String company
+@param UserDto currentUser 
 
 @template.layoutDashboard(
 title = currentProject.getTitle(),
 company = company,
+currentUser = currentUser,
 content = @`
     <div class="project-container">
         <header class="project-header">

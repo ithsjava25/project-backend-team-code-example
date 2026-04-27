@@ -19,28 +19,53 @@ public class WebAuthController {
     private final WebAuthService webAuthService;
 
     @GetMapping("/login")
-    public String loginPage(@RequestParam(required = false) String error, Model model) {
+    public String loginPage(@RequestParam(required = false) String error,
+                            @RequestParam(required = false) String redirect,
+                            Model model) {
         model.addAttribute("error", error != null ? "Invalid email or password" : "");
+        model.addAttribute("redirect", redirect);
         return "auth/login";
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String handleLogin(@ModelAttribute LoginRequest request, HttpServletResponse response) {
+    public String handleLogin(@ModelAttribute LoginRequest request,
+                              @RequestParam(required = false) String redirect,
+                              HttpServletResponse response) {
 
         WebAuthService.LoginResult result = webAuthService.handleLogin(request);
+
         if (result.success()) {
             response.addHeader("Set-Cookie", result.cookie());
+            return safeRedirect(redirect, result.redirect());
         }
 
         return result.redirect();
     }
 
+    private String safeRedirect(String redirect, String fallback) {
+        if (redirect == null || redirect.isBlank()) {
+            return fallback;
+        }
+
+        if (!redirect.startsWith("/") || redirect.startsWith("//")) {
+            return fallback;
+        }
+
+        if (redirect.contains("\\") ||
+                redirect.contains("\r") ||
+                redirect.contains("\n") ||
+                redirect.contains("http:") ||
+                redirect.contains("https:")) {
+            return fallback;
+        }
+
+        return "redirect:" + redirect;
+    }
 
     @GetMapping("/login/change-password")
     @ResponseBody
     public String changePasswordPage(@RequestParam(required = false) String error,
                                      @RequestParam(required = false) String success) {
-
 
         return "auth/change-password";
     }
@@ -54,4 +79,13 @@ public class WebAuthController {
         return webAuthService.handleChangePassword(currentPassword, newPassword, confirmPassword, jwtToken);
     }
 
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        response.setHeader(
+                "Set-Cookie",
+                "jwt=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict"
+        );
+
+        return "redirect:/" + TenantContext.getTenant() + "";
+    }
 }

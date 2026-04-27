@@ -1,16 +1,19 @@
 package demo.codeexample.config;
 
+import demo.codeexample.company.TenantContext;
 import demo.codeexample.security.JwtAuthenticationFilter;
 import demo.codeexample.security.OAuth2LoginSuccessHandler;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +26,41 @@ public class SecurityConfig {
                           OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
+    }
+
+    private static final Set<String> NON_TENANT_ROOTS = Set.of(
+            "api", "css", "js", "images", "oauth2", "login", "logout",
+            "aboutUs", "error", "favicon.ico", "actuator"
+    );
+
+    private String resolveTenantFromUri(String uri) {
+        String[] parts = uri.split("/");
+
+        if (parts.length <= 1) {
+            return "";
+        }
+
+        String firstSegment = parts[1];
+
+        if (firstSegment == null || firstSegment.isBlank()) {
+            return "";
+        }
+
+        if (NON_TENANT_ROOTS.contains(firstSegment)) {
+            return "";
+        }
+
+        return firstSegment;
+    }
+
+    private String safeRelativeTarget(String uri, String query) {
+        String targetUrl = uri + (query != null ? "?" + query : "");
+
+        if (!targetUrl.startsWith("/") || targetUrl.startsWith("//")) {
+            return "/";
+        }
+
+        return targetUrl;
     }
 
     @Bean
@@ -48,38 +86,48 @@ public class SecurityConfig {
                 // Don't create server-side sessions — JWT is stateless
 
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/").permitAll()
-
-                                .requestMatchers("/api/auth/**").permitAll()
-
-                                .requestMatchers("/login").permitAll()  // login is public
-
-                                .requestMatchers("/login/change-password").permitAll()
-                                // ↑ must be accessible — user has token in cookie but might
-
-                                .requestMatchers("/oauth2/**").permitAll()
-                                .requestMatchers("/login/oauth2/**").permitAll()
-                                // ↑ OAuth2 callback must be public!
-
-                                .requestMatchers("/api/users/**").authenticated()
-                                // only admins can manage users
-
-                                .anyRequest().authenticated()
+                                .requestMatchers(
+                                        "/", "/*",
+                                        "/aboutUs", "/*/aboutUs",
+                                        "/login", "/*/login",
+                                        "/login/change-password",
+                                        "/logout", "/*/logout",
+                                        "/css/**","/js/**", "/images/**", "/favicon.ico",
+                                        "/api/auth/**",
+                                        "/api/auth/login",
+                                        "/oauth2/**",
+                                        "/login/oauth2/**",
+                                        "/*/*/info/*"  // <-- not goo solution. Temporary!
+                                ).permitAll()
+                                .requestMatchers(HttpMethod.GET,
+                                        "/api/files/**",
+                                        "/*/api/files/**"
+                                ).permitAll()
+                                .anyRequest()
+                                .authenticated()
                         // everything else requires a valid token
                 )
 
-                // ↓ Returns 401 instead of redirecting to Google login
+
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
-                            response.setContentType("application/json");
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getWriter().write(
-                                    "{\"status\": 401, \"error\": \"Unauthorized\", " +
-                                            "\"message\": \"Authentication required\"}"
-                            );
+                            String uri = request.getRequestURI();
+                            String query = request.getQueryString();
+
+                            String targetUrl = safeRelativeTarget(uri, query);
+                            String company = resolveTenantFromUri(uri);
+
+                            String loginUrl = company.isBlank()
+                                    ? "/login"
+                                    : "/" + company + "/login";
+
+                            response.sendRedirect(loginUrl + "?redirect=" +
+                                    java.net.URLEncoder.encode(
+                                            targetUrl,
+                                            java.nio.charset.StandardCharsets.UTF_8
+                                    ));
                         })
                 )
-
 
                 .addFilterBefore(jwtAuthFilter,
                         UsernamePasswordAuthenticationFilter.class)
@@ -88,6 +136,12 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                                 .successHandler(oAuth2LoginSuccessHandler)
                         // runs your handler after Google login succeeds
+                )
+
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .deleteCookies("jwt")
+                        .logoutSuccessUrl("/")
                 );
 
         return http.build();

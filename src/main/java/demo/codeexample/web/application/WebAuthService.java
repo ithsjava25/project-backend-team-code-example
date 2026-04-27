@@ -53,8 +53,6 @@ public class WebAuthService {
         }
     }
 
-
-
     private void changePassword(String currentPassword, String newPassword, String jwtToken) {
         ChangePasswordRequest request = new ChangePasswordRequest();
         request.setCurrentPassword(currentPassword);
@@ -105,7 +103,6 @@ public class WebAuthService {
     private String getRedirectPrefix(){
         return "redirect:/" + TenantContext.getTenant();
     }
-
 
     public record LoginResult(boolean success, String cookie, String redirect) {
 
