@@ -354,30 +354,26 @@ main{
     position: absolute;
     top: 50px;
     right: 0;
-
     background: white;
     color: black;
-
     padding: 20px 24px;
     border-radius: 12px;
-
     width: max-content;
     min-width: 240px;
     max-width: 320px;
-
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    display: none;
+    visibility: hidden;
     z-index: 100;
-
     opacity: 0;
     transform: translateY(-10px);
-    transition: all 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
 }
 
 .user-dropdown.show {
-    display: block;
+    visibility: visible;
     opacity: 1;
     transform: translateY(0);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s;
 }
 
 .user-info {
