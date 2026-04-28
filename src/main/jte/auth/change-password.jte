@@ -30,7 +30,7 @@ content = @`
             </div>
         @endif
 
-        <form method="POST" action="${company == null || company.isEmpty() ? "" : "/" + company}/change-password">
+        <form method="POST" action="${company == null || company.isEmpty() ? "" : "/" + company}/login/change-password">
             <div class="mb-3">
                 <label for="currentPassword" class="form-label">
                     Current Password
