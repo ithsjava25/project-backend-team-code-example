@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TaskUserAdapter implements TaskUserPort {
 
-    private final UserLookup userLookup; // Modulith dependency is isolated here
+    private final UserLookup userLookup;
 
     @Override
     public String getEmployeeFullName(Long userId) {

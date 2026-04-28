@@ -1,10 +1,8 @@
 package demo.codeexample.comment.web;
 
 
-import demo.codeexample.comment.CommentDto;
 import demo.codeexample.comment.CreateCommentDto;
 import demo.codeexample.comment.application.CommentService;
-import demo.codeexample.company.TenantContext;
 import jakarta.validation.Valid;
 import lombok.*;
 import org.springframework.stereotype.*;

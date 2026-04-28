@@ -4,7 +4,6 @@ import demo.codeexample.shared.Category;
 import demo.codeexample.project.domain.Genre;
 import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
