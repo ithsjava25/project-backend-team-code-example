@@ -33,7 +33,7 @@ public class TaskEntity {
 
     private LocalDateTime deadline;
 
-    @Column(nullable = false)
+    @Column(name = "project_id", nullable = false)
     private Long projectId;
 
     private Long userId;

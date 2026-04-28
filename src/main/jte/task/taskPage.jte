@@ -3,6 +3,7 @@
 @import demo.codeexample.task.TaskResponseDto
 @param TaskResponseDto task
 @param Long currentUserId
+@param String company
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +17,7 @@
 
 <nav class="navbar">
     <div class="navbar-content">
-        <a href="/dashboard" class="logo-link">
+        <a href="/${company}/dashboard" class="logo-link">
             <div class="logo-container">
                 <img src="/images/logo.png" alt="Logo" class="logo-img">
                 <div class="brand-wrapper">
@@ -31,7 +32,7 @@
 <main class="container">
     <header class="dashboard-header">
         <h1 class="page-title">Task Details</h1>
-        <a href="/dashboard" style="color: #6366f1; text-decoration: none;">&larr; Back to Dashboard</a>
+        <a href="/${company}/dashboard/current" style="color: #6366f1; text-decoration: none;">&larr; Back to Dashboard</a>
     </header>
 
     <div class="table-card" style="padding: 2rem;">
@@ -54,7 +55,7 @@
 
             @elseif(task.getStatus().name().equals("ASSIGNED"))
                 @if(task.getUserId().equals(currentUserId))
-                    <form action="/tasks/${task.getId()}/accept" method="post">
+                    <form action="/${company}/${task.getId()}/accept" method="post">
                         <button type="submit" class="login-button" style="background: #6366f1; width: auto; padding: 0.8rem 2rem;">
                             Accept Task
                         </button>
@@ -65,7 +66,7 @@
 
             @elseif(task.getStatus().name().equals("IN_PROGRESS"))
                 @if(task.getUserId().equals(currentUserId))
-                    <form action="/tasks/${task.getId()}/complete" method="post">
+                    <form action="/${company}/${task.getId()}/complete" method="post">
                         <button type="submit" class="login-button" style="background: #10b981; width: auto; padding: 0.8rem 2rem;">
                             Mark as Completed
                         </button>
@@ -107,7 +108,7 @@
             @endif
         </div>
 
-        <form action="/${task.getId()}/comments" method="post" style="margin-top: 2rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
+        <form action="/${company}/${task.getId()}/comments" method="post" style="margin-top: 2rem; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
             <input type="hidden" name="taskId" value="${task.getId()}">
             <textarea name="content" rows="3" placeholder="Add a comment..." required
                       style="width: 100%; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;"></textarea>

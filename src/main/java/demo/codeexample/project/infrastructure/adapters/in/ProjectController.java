@@ -3,7 +3,10 @@ package demo.codeexample.project.infrastructure.adapters.in;
 import demo.codeexample.auth.CurrentUserLookup;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.project.ProjectDto;
+import demo.codeexample.project.TaskLookup;
 import demo.codeexample.project.application.in.ProjectUseCase;
+import demo.codeexample.task.TaskResponseDto;
+import demo.codeexample.task.TaskSummaryDto;
 import demo.codeexample.user.UserLookup;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -16,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,6 +30,7 @@ public class ProjectController {
     private final ProjectUseCase projectUseCase;
     private final UserLookup userLookup;
     private final CurrentUserLookup currentUserLookup;
+    private final TaskLookup taskLookup;
 
     @GetMapping("/dashboard/completed")
     @PreAuthorize("hasAnyRole('ADMIN','DIRECTOR','PRODUCER','RECRUITER','EDITOR')")
@@ -35,6 +40,7 @@ public class ProjectController {
 
         model.addAttribute("projects",
                 projectUseCase.findCompletedProjectsForUser(currentUser.getId(), companyName));
+        model.addAttribute("company", companyName);
 
         return "producer/dashboard";
     }
@@ -45,7 +51,10 @@ public class ProjectController {
         var currentUser = currentUserLookup.getCurrentUser()
                 .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
-        model.addAttribute("projects", projectUseCase.findCurrentProjectsForUser(currentUser.getId(), companyName));
+        model.addAttribute("projects",
+                projectUseCase.findCurrentProjectsForUser(currentUser.getId(), companyName));
+        model.addAttribute("company", companyName);
+
         return "producer/dashboard";
     }
 
@@ -55,6 +64,8 @@ public class ProjectController {
         var users = userLookup.findAll();
 
         model.addAttribute("users", users);
+        model.addAttribute("company", companyName);
+
         return "producer/create-project";
     }
 
@@ -67,7 +78,12 @@ public class ProjectController {
                                      Model model){
         ProjectDto currentProject = projectUseCase.getProjectDetails(projectId);
 
+        List<TaskSummaryDto> tasks = taskLookup.getTasksByProjectId(projectId);
+
         model.addAttribute("currentProject", currentProject);
+        model.addAttribute("company", companyName);
+        model.addAttribute("tasks", tasks);
+
         return "project-details";
     }
 
@@ -82,7 +98,6 @@ public class ProjectController {
 
         return "project-movieinfo";
     }
-
 
     @PostMapping("/projects")
     @Transactional
@@ -127,7 +142,7 @@ public class ProjectController {
         projectUseCase.finalizeProject(projectId);
         ProjectDto project = projectUseCase.getProjectDetails(projectId);
 
-        return "redirect:/producer/dashboard/" + project.getTitle() + "?projectId=" + projectId;
+        return "redirect:/{company}/dashboard/" + project.getTitle() + "?projectId=" + projectId;
     }
 }
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -25,7 +25,7 @@ public class TaskController {
     private final ModelMapper modelMapper;
 
 
-    @GetMapping("/{taskId}/view")
+    @GetMapping("/tasks/{taskId}/view")
     public String viewTask(@PathVariable Long taskId, Model model) {
         Task task = taskUseCase.findById(taskId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -42,15 +42,20 @@ public class TaskController {
     }
     // 1. Add the Accept Logic
     @PostMapping("/{taskId}/accept")
-    public String acceptTask(@PathVariable Long taskId) {
+    public String acceptTask(@PathVariable Long taskId, RedirectAttributes redirectAttributes) {
         taskUseCase.acceptTask(taskId);
-        return "redirect:/tasks/" + taskId + "/view";
+
+        // Add the attribute so it can be resolved in the redirect string
+        redirectAttributes.addAttribute("taskId", taskId);
+        return "redirect:/{company}/tasks/{taskId}/view";
     }
 
-    // 2. Add the Complete Logic
     @PostMapping("/{taskId}/complete")
-    public String completeTask(@PathVariable Long taskId) {
+    public String completeTask(@PathVariable Long taskId, RedirectAttributes redirectAttributes) {
         taskUseCase.completeTask(taskId);
-        return "redirect:/tasks/" + taskId + "/view";
+
+        // Add the attribute so it can be resolved in the redirect string
+        redirectAttributes.addAttribute("taskId", taskId);
+        return "redirect:/{company}/tasks/{taskId}/view";
     }
 }
