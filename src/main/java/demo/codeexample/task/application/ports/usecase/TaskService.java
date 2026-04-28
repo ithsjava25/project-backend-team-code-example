@@ -11,8 +11,6 @@ import demo.codeexample.task.application.ports.in.TaskUseCase;
 import demo.codeexample.task.application.ports.out.TaskRepositoryPort;
 import demo.codeexample.task.domain.Task;
 import demo.codeexample.task.domain.TaskType;
-import demo.codeexample.user.UserAuthPort;
-import demo.codeexample.user.application.UserService;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDateTime;

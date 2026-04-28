@@ -99,7 +99,7 @@ content = @`
                     This project is officially COMPLETED.
                 </div>
             @else
-                <form action="/projects/${currentProject.getId()}/finalize" method="post">
+                <form action="/${company}/projects/${currentProject.getId()}/finalize" method="post">
                     <button type="submit"
                             class="login-button"
                             style="background: #6366f1; width: auto; padding: 0.8rem 2rem;"
