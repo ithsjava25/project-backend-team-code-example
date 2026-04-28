@@ -1,5 +1,6 @@
 package demo.codeexample.project.application.usecase;
 
+import demo.codeexample.exceptions.DeadlineException;
 import demo.codeexample.project.CreateProjectDto;
 import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.project.ProjectCreatedEvent;
@@ -21,6 +22,7 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.AccessDeniedException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +47,15 @@ public class ProjectService implements ProjectUseCase {
         this.logger = logger;
         this.taskLookup = taskLookup;
         this.userLookup = userLookup;
+    }
+
+    @Override
+    public boolean isDeadlinesInOrder(LocalDateTime recruitingDeadline, LocalDateTime recordingDeadline, LocalDateTime editingDeadline) {
+        if (recruitingDeadline == null || recordingDeadline == null || editingDeadline == null) {
+            return true;
+        }
+
+        return recruitingDeadline.isBefore(recordingDeadline) && recordingDeadline.isBefore(editingDeadline);
     }
 
     @Override
@@ -82,32 +93,38 @@ public class ProjectService implements ProjectUseCase {
         }
         userPort.validateEmployees(projectDto.getEmployeesId());
 
-        Project project = repository.save(projectDto);
-        Long currentUserId = securityPort.getCurrentUserId();
-        String creatorName = securityPort.getCurrentUserName();
+        if(isDeadlinesInOrder(projectDto.getRecruitingDeadline(), projectDto.getRecordingDeadline(), projectDto.getEditingDeadline())){
+            Project project = repository.save(projectDto);
 
-        logger.log(
-                LoggerAction.PROJECT_CREATED,
-                currentUserId,
-                "PROJECT",
-                project.getId(),
-                project.getId(),
-                "New project created: " + project.getTitle() + ". Created by: " + creatorName
-        );
+            Long currentUserId = securityPort.getCurrentUserId();
+            String creatorName = securityPort.getCurrentUserName();
 
-        ProjectCreatedEvent event = new ProjectCreatedEvent(
-                project.getId(),
-                project.getTitle(),
-                project.getEmployeesId(),
-                project.getReleaseDate(),
-                project.getCompanyName(),
-                projectDto.getRecruitingDeadline(),
-                projectDto.getRecordingDeadline(),
-                projectDto.getEditingDeadline()
-        );
-        projectEventPort.publish(event);
+//        logger.log(
+//                LoggerAction.PROJECT_CREATED,
+//                currentUserId,
+//                "PROJECT",
+//                project.getId(),
+//                project.getId(),
+//                "New project created: " + project.getTitle() + ". Created by: " + creatorName
+//        );
 
-        return project;
+            ProjectCreatedEvent event = new ProjectCreatedEvent(
+                    project.getId(),
+                    project.getTitle(),
+                    project.getEmployeesId(),
+                    project.getReleaseDate(),
+                    project.getCompanyName(),
+                    projectDto.getRecruitingDeadline(),
+                    projectDto.getRecordingDeadline(),
+                    projectDto.getEditingDeadline()
+            );
+            projectEventPort.publish(event);
+
+            return project;
+        } else {
+            throw new DeadlineException();
+
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import demo.codeexample.s3FileStorage.S3FileLookup;
 import demo.codeexample.s3FileStorage.domain.S3File;
 import demo.codeexample.s3FileStorage.domain.S3FileRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -11,17 +12,19 @@ import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
-import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class S3FileService implements S3FileLookup {
 
-    private static final String BUCKET_NAME = "my-bucket";
+    @Value("${S3_BUCKET_NAME}")
+    private String bucketName;
+
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
     private final S3FileRepository s3FileRepository;
@@ -39,7 +42,7 @@ public class S3FileService implements S3FileLookup {
     public void init() {
         try {
             s3Client.putBucketCors(bucketCorsRequest -> bucketCorsRequest
-                    .bucket(BUCKET_NAME)
+                    .bucket(bucketName)
                     .corsConfiguration(conf -> conf
                             .corsRules(CORSRule.builder()
                                     .allowedOrigins(allowedOrigin)
@@ -54,39 +57,57 @@ public class S3FileService implements S3FileLookup {
     }
 
     public List<String> listFiles() {
-        return s3Client.listObjectsV2Paginator(req -> req.bucket(BUCKET_NAME))
+        return s3Client.listObjectsV2Paginator(req -> req.bucket(bucketName))
                 .contents()
                 .stream()
                 .map(S3Object::key)
                 .toList();
     }
 
+    @Transactional
     public void deleteFile(String bucket, String key) {
         DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
                 .bucket(bucket)
                 .key(key).build();
 
         s3Client.deleteObject(deleteObjectRequest);
+        s3FileRepository.deleteByFileKey(key);
     }
 
-    public String generatePresignedUploadUrl(String fileName, String contentType) {
+    private String buildPath(String company, String projectTitle, Long projectId, String fileName) {
+        String[] parts = {company, projectTitle, fileName};
+
+        for (int i = 0; i < parts.length; i++) {
+            String washed = parts[i].toLowerCase();
+            parts[i] = washed.replaceAll("'", "")
+                             .replaceAll("[^a-z0-9.]", "_");
+        }
+
+        return String.format("%s/%s_%d/%s", parts[0], parts[1], projectId, parts[2]);
+    }
+
+
+    public String generatePresignedUploadUrl(String company, String projectTitle, Long projectId,
+                                             String fileName, String contentType) {
+
+        String filePath = buildPath(company, projectTitle, projectId, fileName);
+
         PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
                 .signatureDuration(Duration.ofMinutes(10))
                 .putObjectRequest(objectRequest -> objectRequest
-                        .bucket(BUCKET_NAME)
-                        .key(fileName)
+                        .bucket(bucketName)
+                        .key(filePath)
                         .contentType(contentType)
                         .build())
                 .build();
 
-        PresignedPutObjectRequest presignedRequest = s3Presigner.presignPutObject(presignRequest);
-        return presignedRequest.url().toString();
+        return s3Presigner.presignPutObject(presignRequest).url().toString();
     }
 
     public String generatePresignedDownloadUrl(String fileName) {
         GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
                 .signatureDuration(Duration.ofMinutes(10))
-                .getObjectRequest(objectRequest -> objectRequest.bucket(BUCKET_NAME)
+                .getObjectRequest(objectRequest -> objectRequest.bucket(bucketName)
                         .key(fileName)
                         .build())
                 .build();
@@ -95,17 +116,21 @@ public class S3FileService implements S3FileLookup {
         return presignedRequest.url().toString();
     }
 
-    public void saveFileMetadata(Long projectId, String fileKey, String contentType) {
+
+    public void saveFileMetadata(String company, String projectTitle, Long projectId,
+                                 String fileName, String contentType) {
 
         try {
+            String fullS3Key = buildPath(company, projectTitle, projectId, fileName);
+
             S3File s3File = new S3File();
             s3File.setProjectId(projectId);
-            s3File.setFileKey(fileKey);
+            s3File.setFileKey(fullS3Key);
             s3File.setContentType(contentType);
+            s3FileRepository.saveAndFlush(s3File);
 
-            s3FileRepository.saveAndFlush(s3File); // saveAndFlush tvingar DB att skriva direkt
         } catch (Exception e) {
-            System.err.println("DEBUG: Fel vid sparning: " + e.getMessage());
+            System.err.println("DEBUG: Something went wrong when trying to save: " + e.getMessage());
         }
     }
 
@@ -116,4 +141,10 @@ public class S3FileService implements S3FileLookup {
                 .map(S3File::getFileKey)
                 .collect(Collectors.toList());
     }
+
+    public Optional<String> getProjectKey(Long projectId, String searchTerm) {
+        return s3FileRepository.findFirstByProjectIdAndFileKeyContainingIgnoreCase(projectId, searchTerm)
+                .map(S3File::getFileKey);
+    }
+
 }

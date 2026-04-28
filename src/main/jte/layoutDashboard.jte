@@ -18,14 +18,10 @@
 </head>
 <body>
     <nav class="navbar">
-            <a href="/${company}/dashboard/current" class="logo-link">
-                <div class="logo-container">
-                    <img src="/images/logo.png" alt="Logo" class="logo-img">
-                    <div class="brand-wrapper">
-                        <span class="brand-main">${company}</span>
-                    </div>
-                </div>
-            </a>
+        <div class="logo">
+            <img src="/images/logo.png" alt="Logo" class="logo-img">
+            <a href="/${company}/dashboard/current">${company}</a>
+        </div>
 
         <div class="nav-links">
             <a href="/${company}/dashboard/completed" class="active-tab">Completed Projects</a>

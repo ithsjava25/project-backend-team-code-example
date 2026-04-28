@@ -12,9 +12,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,7 +35,6 @@ public class ProjectController {
 
         model.addAttribute("projects",
                 projectUseCase.findCompletedProjectsForUser(currentUser.getId(), companyName));
-        model.addAttribute("company", companyName);
 
         return "producer/dashboard";
     }
@@ -43,10 +45,7 @@ public class ProjectController {
         var currentUser = currentUserLookup.getCurrentUser()
                 .orElseThrow(() -> new IllegalStateException("No authenticated user"));
 
-        model.addAttribute("projects",
-                projectUseCase.findCurrentProjectsForUser(currentUser.getId(), companyName));
-        model.addAttribute("company", companyName);
-
+        model.addAttribute("projects", projectUseCase.findCurrentProjectsForUser(currentUser.getId(), companyName));
         return "producer/dashboard";
     }
 
@@ -54,9 +53,8 @@ public class ProjectController {
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCER')")
     public String createProjectPage(@ModelAttribute("company") String companyName, Model model) {
         var users = userLookup.findAll();
-        model.addAttribute("users", users);
-        model.addAttribute("company", companyName);
 
+        model.addAttribute("users", users);
         return "producer/create-project";
     }
 
@@ -70,33 +68,45 @@ public class ProjectController {
         ProjectDto currentProject = projectUseCase.getProjectDetails(projectId);
 
         model.addAttribute("currentProject", currentProject);
-        model.addAttribute("company", companyName);
-
         return "project-details";
     }
 
-    @GetMapping("/{title}/info/{projectId}")
+    @GetMapping("/{title}/{projectId}")
     public String projectInfo(@PathVariable String title, @PathVariable Long projectId, Model model) {
         try {
             ProjectDto project = projectUseCase.getProjectDetails(projectId);
-
             model.addAttribute("project", project);
-            String companyName = project.getCompanyName();
-            model.addAttribute("company", companyName != null ? companyName.toLowerCase(java.util.Locale.ROOT) : "");
         } catch (jakarta.persistence.EntityNotFoundException e) {
             model.addAttribute("project", null);
-            model.addAttribute("company", "");
-
         }
 
         return "project-movieinfo";
     }
 
+
     @PostMapping("/projects")
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'PRODUCER')")
     @ResponseBody // Respond with JSON so that JavaScriptet can read the ID
-    public ResponseEntity<?> createProject(@ModelAttribute("projectDto") @Valid CreateProjectDto dto) {
+    public ResponseEntity<?> createProject(@ModelAttribute("project") @Valid CreateProjectDto dto,
+                                           BindingResult bindingResult) {
+
+        if (!projectUseCase.isDeadlinesInOrder(dto.getRecruitingDeadline(), dto.getRecordingDeadline(), dto.getEditingDeadline())) {
+            bindingResult.rejectValue("recruitingDeadline", "error.order", "Recruiting must be before other tasks.");
+            bindingResult.rejectValue("recordingDeadline", "error.order", "Recording must be after recruiting.");
+            bindingResult.rejectValue("editingDeadline", "error.order", "Editing must be after recording.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            var errors = bindingResult.getFieldErrors().stream()
+                    .collect(Collectors.toMap(
+                            FieldError::getField,
+                            FieldError::getDefaultMessage,
+                            (existing, replacement) -> existing
+                    ));
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         try {
             var newProject = projectUseCase.createProject(dto);
 
@@ -114,9 +124,7 @@ public class ProjectController {
 
     @PostMapping("/projects/{projectId}/finalize")
     public String finalizeProject(@PathVariable Long projectId) {
-
         projectUseCase.finalizeProject(projectId);
-
         ProjectDto project = projectUseCase.getProjectDetails(projectId);
 
         return "redirect:/producer/dashboard/" + project.getTitle() + "?projectId=" + projectId;

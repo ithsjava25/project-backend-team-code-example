@@ -123,6 +123,7 @@ public class TaskService implements TaskUseCase {
         @Override
         public Task createTask (TaskType taskType, String description, TaskStatus status,
                 LocalDateTime deadline, Long projectId, Long userId){
+
             String employeeName = userPort.getEmployeeFullName(userId);
 
             Task task = new Task(null, taskType, description, status, deadline, projectId, userId);

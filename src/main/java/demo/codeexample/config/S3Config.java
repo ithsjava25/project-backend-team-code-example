@@ -1,4 +1,4 @@
-package demo.codeexample.s3FileStorage;
+package demo.codeexample.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

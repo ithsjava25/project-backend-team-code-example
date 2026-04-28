@@ -99,7 +99,7 @@ public class SecurityConfig {
                                         "/login/oauth2/**",
                                         "/*/*/info/*"  // <-- not goo solution. Temporary!
                                 ).permitAll()
-                                .requestMatchers(HttpMethod.GET,
+                                .requestMatchers(
                                         "/api/files/**",
                                         "/*/api/files/**"
                                 ).permitAll()

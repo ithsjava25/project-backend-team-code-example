@@ -24,12 +24,22 @@ content = @`
 
                 <input type="hidden" name="companyName" value="${company}">
 
-                <label class="form-label">Category</label>
-                <select name="category" class="form-input" required>
+            <label class="form-label">Category</label>
+            <div class="task-group" style="position: relative;">
+                <button type="button" class="select-btn custom-dropdown-trigger" id="category-btn">
+                    <span class="btn-text">Select Category</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <input type="hidden" name="category" id="category-input" required>
+
+                <div class="dropdown-suggestions category-dropdown" style="display: none;">
                     @for(var c : Category.values())
-                        <option value="${c.name()}">${c.name()}</option>
+                        <div class="item category-item" data-value="${c.name()}">
+                            ${c.name()}
+                        </div>
                     @endfor
-                </select>
+                </div>
+            </div>
 
             <label class="form-label">Release Date</label>
             <input type="date"
@@ -39,43 +49,39 @@ content = @`
                    required>
 
             <label class="form-label">Genre</label>
-            <select name="genre" class="form-input" required>
-                @for(var g : Genre.values())
-                    <option value="${g.name()}">${g.name()}</option>
+            <div class="task-group" style="position: relative;">
+                <button type="button" class="select-btn custom-dropdown-trigger" id="genre-btn">
+                    <span class="btn-text">Select Genre</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <input type="hidden" name="genre" id="genre-input" required>
+
+                <div class="dropdown-suggestions genre-dropdown" style="display: none;">
+                    @for(var g : Genre.values())
+                        <div class="item genre-item" data-value="${g.name()}">
+                            ${g.name()}
+                        </div>
+                    @endfor
+                </div>
+            </div>
+
+            <div class="worker-assignment-section" data-users='[@for(var i = 0; i < users.size(); i++){"id": "${users.get(i).getId()}", "name": "${users.get(i).getFirstName()} ${users.get(i).getLastName()}", "role": "${users.get(i).getRole()}"}${i < users.size() - 1 ? "," : ""}@endfor]'>
+
+                @for(var role : List.of("RECRUITER", "DIRECTOR", "EDITOR"))
+                    <div class="task-group" style="margin-bottom: 20px; position: relative;">
+                        <label class="form-label">
+                            Assign ${role.substring(0,1) + role.substring(1).toLowerCase()}
+                        </label>
+                        <button type="button"
+                                class="form-input select-btn"
+                                data-role="${role}">
+                            <span class="btn-text">Select ${role.toLowerCase()}...</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <input type="hidden" name="employeesId">
+                        <div class="dropdown-suggestions" style="display: none;"></div>
+                    </div>
                 @endfor
-            </select>
-
-            <div class="task-group" style="margin-bottom: 20px; position: relative;">
-                <label class="form-label">Assign Recruiting Worker (Role: Recruiter)</label>
-                <input type="text"
-                       class="form-input worker-search"
-                       placeholder="Search name..."
-                       data-role="RECRUITER"
-                       autocomplete="off">
-                <input type="hidden" name="employeesId">
-                <div class="dropdown-suggestions" style="display: none;"></div>
-            </div>
-
-            <div class="task-group" style="margin-bottom: 20px; position: relative;">
-                <label class="form-label">Assign Recording Worker (Role: Director)</label>
-                <input type="text"
-                       class="form-input worker-search"
-                       placeholder="Search name..."
-                       data-role="DIRECTOR"
-                       autocomplete="off">
-                <input type="hidden" name="employeesId">
-                <div class="dropdown-suggestions" style="display: none;"></div>
-            </div>
-
-            <div class="task-group" style="margin-bottom: 20px; position: relative;">
-                <label class="form-label">Assign Editing Worker (Role: Editor)</label>
-                <input type="text"
-                       class="form-input worker-search"
-                       placeholder="Search name..."
-                       data-role="EDITOR"
-                       autocomplete="off">
-                <input type="hidden" name="employeesId">
-                <div class="dropdown-suggestions" style="display: none;"></div>
             </div>
 
             <label class="form-label">Deadline for Recruiting</label>
@@ -95,6 +101,7 @@ content = @`
             <div id="uploadStatus" style="margin-top: 10px; font-size: 0.9rem;"></div>
 
             <button type="submit" class="btn-primary" id="submitBtn">Create Project & Upload</button>
+<%--            <button type="submit" class="btn-primary">Create Project</button>--%>
         </form>
     </div>
 </main>
@@ -239,5 +246,9 @@ content = @`
     });
     @endraw
 </script>
+<script src="/js/form.js"></script>
+<script src="/js/media.js"></script>
 `
 )
+
+

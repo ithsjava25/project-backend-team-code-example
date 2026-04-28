@@ -15,5 +15,6 @@ public class ProjectEventListenerAdapter {
     @ApplicationModuleListener
     public void handle(ProjectCreatedEvent event) {
         taskUseCase.handleProjectCreated(event);
-        }
     }
+
+}

@@ -10,15 +10,15 @@ title = currentProject.getTitle(),
 company = company,
 currentUser = currentUser,
 content = @`
-    <div class="project-container">
+    <div class="project-container" data-company="${company}" data-project-id="${currentProject.getId()}" data-project-title="${currentProject.getTitle()}">
+
         <header class="project-header">
             <div class="header-content">
+                <span class="genre-badge">${currentProject.getGenre().toString()}</span>
                 <h1>${currentProject.getTitle()}</h1>
-                <span class="category-badge">${currentProject.getCategory().toString()}</span>
-                <p class="genre-tag">${currentProject.getGenre().toString()}</p>
             </div>
             <div class="header-actions">
-                <a href="/${company}/dashboard/current" class="btn-back">← Back to Dashboard</a>
+                <a href="/dashboard/current" class="btn-back">← Back to Dashboard</a>
             </div>
         </header>
 
@@ -29,14 +29,32 @@ content = @`
                     <p>${currentProject.getDescription()}</p>
                 </div>
 
-                <div class="card media-placeholder">
-                    <h2>Media Assets</h2>
-                    <div class="placeholder-box">
-                        <img class="card-image" src="/${company}/api/files/project-poster/${currentProject.getId()}"
-                             alt="${currentProject.getTitle()}"
-                             style="width: 100%; height: 100%; object-fit: contain; background-color: #000;"/>
+                <div class="card media-card">
+                    <div class="media-header">
+                        <h2>Media Assets</h2>
+                        <label for="detailFiles" class="btn-upload-media"> Upload Media </label>
+                        <input type="file" id="detailFiles" multiple style="display: none;" accept=".png, .jpg, .jpeg, .pdf, video/*">
+                    </div>
+
+                    <div id="detailStatus" style="margin-top: 10px; font-weight: bold;"></div>
+
+                    <div id="trailer-section" class="media-section" style="display: none;">
+                        <h3>Trailer</h3>
+                        <div id="project-trailer">
+                        </div>
+                    </div>
+
+                    <div id="gallery-section" class="media-section" style="display: none;">
+                        <h3>Gallery</h3>
+                        <div class="image-grid" id="image-gallery"></div>
+                    </div>
+
+                    <div id="docs-section" class="media-section" style="display: none;">
+                        <h3>Documents</h3>
+                        <div class="doc-list" id="document-list"></div>
                     </div>
                 </div>
+
             </section>
 
             <aside class="sidebar">
@@ -59,7 +77,7 @@ content = @`
                     This project is officially COMPLETED.
                 </div>
             @else
-                <form action="/${company}/projects/${currentProject.getId()}/finalize" method="post">
+                <form action="/projects/${currentProject.getId()}/finalize" method="post">
                     <button type="submit"
                             class="login-button"
                             style="background: #6366f1; width: auto; padding: 0.8rem 2rem;"
@@ -70,17 +88,7 @@ content = @`
             @endif
         </div>
 
-<%--                <div class="card team-card">--%>
-<%--                    <h2>Team Members</h2>--%>
-<%--                    <ul class="employee-list">--%>
-<%--                        @for(var empId : currentProject.getEmployeesId())--%>
-<%--                            <li>--%>
-<%--                                <div class="avatar"></div>--%>
-<%--                                <span>User ID: ${empId}</span>--%>
-<%--                            </li>--%>
-<%--                        @endfor--%>
-<%--                    </ul>--%>
-<%--                </div>--%>
+
             </aside>
         </div>
 
@@ -105,6 +113,12 @@ content = @`
             padding: 0 20px;
         }
 
+        .header-content{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
         .project-header {
             display: flex;
             justify-content: space-between;
@@ -114,7 +128,7 @@ content = @`
             padding-bottom: 20px;
         }
 
-        .category-badge {
+        .genre-badge {
             background: rgba(99, 102, 241, 0.1);
             color: var(--accent-purple);
             padding: 4px 12px;
@@ -122,9 +136,10 @@ content = @`
             font-size: 0.8rem;
             border: 1px solid var(--accent-purple);
             text-transform: uppercase;
+            width: fit-content;
         }
 
-        h1 { font-size: 3rem; margin: 10px 0; font-weight: 800; }
+        h1 { font-size: 3rem; margin: 0; font-weight: 800; }
         h2 { color: var(--accent-purple); font-size: 1.2rem; margin-bottom: 15px; }
 
         .project-grid {
@@ -139,17 +154,6 @@ content = @`
             padding: 25px;
             border: 1px solid rgba(255,255,255,0.05);
             margin-bottom: 20px;
-        }
-
-        .placeholder-box {
-            height: 300px;
-            background: rgba(0,0,0,0.2);
-            border: 2px dashed rgba(255,255,255,0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-dim);
         }
 
         .btn-back {
@@ -176,21 +180,114 @@ content = @`
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
         }
 
-        .employee-list { list-style: none; padding: 0; }
-        .employee-list li {
+
+        .btn-upload-media {
+            background: transparent;
+            color: var(--accent-purple);
+            border: 1px solid var(--accent-purple);
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-upload-media:hover {
+            background: var(--accent-purple);
+            color: white;
+            /* Här skapas lyskraften (glow) */
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.6), 0 0 5px rgba(99, 102, 241, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .media-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .media-section {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .video-player {
+            width: 100%;
+            max-height: 400px;
+            border-radius: 12px;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+
+        .doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Container för varje bild/media-item */
+        .media-item {
+            position: relative;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .media-item:hover {
+            transform: scale(1.05);
+        }
+
+        .media-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--danger-red);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 10;
         }
-        .avatar {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(45deg, #333, #666);
-            border-radius: 50%;
-        }
-    </style>
-`
 
+        .media-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger-red);
+            transform: scale(1.1);
+        }
+
+    </style>
+
+    <script src="/js/media.js"></script>
+`
 )
