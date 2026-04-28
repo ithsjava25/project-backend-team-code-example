@@ -35,21 +35,22 @@ public class WebAuthService {
 
     public String handleChangePassword(String currentPassword, String newPassword, String confirmPassword, String jwtToken) {
         String prefix = getRedirectPrefix();
+        String changePasswordUrl = "/" + TenantContext.getTenant() + "/login/change-password";
 
         if (isTokenMissing(jwtToken)) {
             return prefix + "/login";
         }
         if (!passwordsMatch(newPassword, confirmPassword)) {
-            return encodeRedirect(prefix + "/change-password",
+            return encodeRedirect(changePasswordUrl,
                     "Passwords do not match");
         }
         try {
             changePassword(currentPassword, newPassword, jwtToken);
-            return prefix + "/change-password" +
+            return "redirect:" + changePasswordUrl +
                     "?success=Password+changed+successfully!";
 
         } catch (Exception e) {
-            return encodeRedirect(prefix + "/change-password", "Could not change password");
+            return encodeRedirect(changePasswordUrl, "Could not change password");
         }
     }
 
@@ -73,7 +74,7 @@ public class WebAuthService {
         String prefix = getRedirectPrefix();
 
         if (response.isPasswordResetRequired()) {
-            return prefix + "/change-password";
+            return prefix + "/login/change-password";
         }
 
         return switch (response.getRole()) {

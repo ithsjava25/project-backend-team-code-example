@@ -63,9 +63,11 @@ public class WebAuthController {
     }
 
     @GetMapping("/login/change-password")
-    @ResponseBody
     public String changePasswordPage(@RequestParam(required = false) String error,
-                                     @RequestParam(required = false) String success) {
+                                     @RequestParam(required = false) String success,
+                                     Model model) {
+        model.addAttribute("error", error);
+        model.addAttribute("success", success);
 
         return "auth/change-password";
     }
