@@ -1,6 +1,5 @@
 package demo.codeexample.project;
 
-import demo.codeexample.task.TaskResponseDto;
 import demo.codeexample.task.TaskSummaryDto;
 
 import java.util.List;

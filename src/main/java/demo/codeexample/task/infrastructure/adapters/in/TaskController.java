@@ -40,12 +40,11 @@ public class TaskController {
         model.addAttribute("task", dto);
         return "task/taskPage";
     }
-    // 1. Add the Accept Logic
+
     @PostMapping("/{taskId}/accept")
     public String acceptTask(@PathVariable Long taskId, RedirectAttributes redirectAttributes) {
         taskUseCase.acceptTask(taskId);
 
-        // Add the attribute so it can be resolved in the redirect string
         redirectAttributes.addAttribute("taskId", taskId);
         return "redirect:/{company}/tasks/{taskId}/view";
     }
@@ -54,7 +53,6 @@ public class TaskController {
     public String completeTask(@PathVariable Long taskId, RedirectAttributes redirectAttributes) {
         taskUseCase.completeTask(taskId);
 
-        // Add the attribute so it can be resolved in the redirect string
         redirectAttributes.addAttribute("taskId", taskId);
         return "redirect:/{company}/tasks/{taskId}/view";
     }

@@ -1,6 +1,5 @@
 package demo.codeexample.task.domain;
 
-import jakarta.persistence.Column;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

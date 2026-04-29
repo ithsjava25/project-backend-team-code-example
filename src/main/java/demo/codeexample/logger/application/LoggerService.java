@@ -5,8 +5,6 @@ import demo.codeexample.shared.LoggerAction;
 import demo.codeexample.logger.domain.LoggerEntity;
 import demo.codeexample.logger.domain.LoggerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service

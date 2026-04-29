@@ -2,8 +2,6 @@ package demo.codeexample.project.infrastructure;
 
 import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.project.TaskLookup;
-import demo.codeexample.project.application.out.CompanyPort;
-import demo.codeexample.logger.LoggerLookup;
 import demo.codeexample.project.application.out.ProjectEventPort;
 import demo.codeexample.project.application.out.ProjectRepositoryPort;
 import demo.codeexample.project.application.out.SecurityPort;
